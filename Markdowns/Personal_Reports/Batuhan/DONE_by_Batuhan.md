@@ -33,8 +33,12 @@
 | 7 | `git branch -r` ile tum branch'lerin remote'ta gorundugu dogrulandi. | 17-04-2026 |
 | 8 | Ekip uyelerine branch erişim bilgisi iletildi. | 17-04-2026 |
 
-### Sprint 0.4: Teknik Dokumantasyon [BEKLEMEDE]
-> Roadmap ve Sprint dosyaları tamamlandı. Interim Report taslağı beklemede.
+### Sprint 0.4: Teknik Dokumantasyon [TAMAMLANDI]
+| # | Yapilan Is | Tarih |
+|---|-----------|-------|
+| 1 | Projenin 5 sprintlik genel plani `Roadmap_Full.md` dosyasinda detaylandirildi. | 17-04-2026 |
+| 2 | Her sprint (0-4) icin alt gorevleri barindiran `Sprint_X_detailed.md` dosyalari olusturuldu. | 17-04-2026 |
+| 3 | Universite ara rapor gereksinimi olan `Interim_Report.md` dosyasi taslak olarak hazirlandi. | 17-04-2026 |
 
 ### Sprint 0.5: GitHub Issues [BEKLEMEDE]
 > Henüz başlanmadı.

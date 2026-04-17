@@ -27,7 +27,7 @@
 ### Sprint 0.4: Teknik Dökümantasyon ve Yol Haritası Kaydı
 - [x] `Roadmap_Full.md` dosyası tüm sprint'leri ve rol dağılımlarını içerecek şekilde hazırlandı. **(Batuhan)**
 - [x] `Sprints/` dizini altında Sprint 0–4 detay dosyaları oluşturuldu. **(Batuhan)**
-- [ ] `Interim_Report.md` taslağı bölüm başlıklarıyla güncellendi.
+- [x] `Interim_Report.md` taslağı bölüm başlıklarıyla güncellendi. **(Batuhan)**
 
 ### Sprint 0.5: GitHub Issues ve Teknik Tartışma Kayıtları
 - [ ] [Teknik Tartışma] In-memory veri yönetimi ve Singleton yaşam döngüsü issue'su açıldı.

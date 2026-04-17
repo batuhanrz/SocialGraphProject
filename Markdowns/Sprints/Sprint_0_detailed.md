@@ -68,7 +68,7 @@ Sürecin izlenebilirliği için `Markdowns/` dizini altında teknik dokümanlar 
 **Kabul Kriterleri:**
 - [x] `Roadmap_Full.md` dosyası tüm sprint'leri ve rol dağılımlarını içeriyor.
 - [x] `Sprints/` dizini altında en az Sprint 0 detay dosyası mevcut.
-- [ ] `Interim_Report.md` taslak olarak oluşturuldu ve bölüm başlıkları tanımlı.
+- [x] `Interim_Report.md` taslak olarak oluşturuldu ve bölüm başlıkları tanımlı.
 
 ---
 

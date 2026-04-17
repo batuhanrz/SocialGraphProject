@@ -4,9 +4,6 @@
 
 ## SPRINT 0: Proje Başlatma (Devam Eden)
 
-### Sprint 0.4: Teknik Dökümantasyon
-- [ ] `Interim_Report.md` taslağının bölüm başlıklarıyla güncellenmesi. **(Batuhan)**
-
 ### Sprint 0.5: GitHub Issues
 - [ ] 3 adet GitHub Issue açılması (2 tartışma + 1 bulgu). **(Batuhan)**
 
