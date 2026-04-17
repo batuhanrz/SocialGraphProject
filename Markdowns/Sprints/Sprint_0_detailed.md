@@ -33,9 +33,9 @@ Proje mimarisi, gereksinim dokümanındaki B.1 maddesinde yer alan "Mikroservis 
 - **src/SocialGraph.UI/** — React ve TypeScript tabanlı kullanıcı arayüzü bileşenlerinin yer alacağı frontend projesi.
 
 **Kabul Kriterleri:**
-- [ ] `src/SocialGraph.API/`, `src/SocialGraph.AI/`, `src/SocialGraph.UI/` dizinleri oluşturuldu.
-- [ ] Her dizinde en az bir placeholder dosya (README.md veya .gitkeep) mevcut.
-- [ ] Klasör yapısı `git ls-tree` veya dosya gezgini ile doğrulandı.
+- [x] `src/SocialGraph.API/`, `src/SocialGraph.AI/`, `src/SocialGraph.UI/` dizinleri oluşturuldu.
+- [x] Her dizinde en az bir placeholder dosya (README.md veya .gitkeep) mevcut.
+- [x] Klasör yapısı `git ls-tree` veya dosya gezgini ile doğrulandı.
 
 ---
 

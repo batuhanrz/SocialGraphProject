@@ -14,8 +14,12 @@
 | 5 | Süreç yönetimi için `TODO.md` ve `DONE.md` dosyaları oluşturuldu. | 2026-04-17 |
 | 6 | Projenin 5 sprint'lik detaylı yol haritası (`Roadmap_Full.md`) ve tüm sprint detay dosyaları (Sprint 0–4) hazırlandı. | 2026-04-17 |
 
-### Sprint 0.2: Mikroservis Klasor Yapilandirmasi [BEKLEMEDE]
-> Henüz başlanmadı.
+### Sprint 0.2: Mikroservis Klasor Yapilandirmasi [TAMAMLANDI]
+| # | Yapilan Is | Tarih |
+|---|-----------|-------|
+| 1 | `src/SocialGraph.API/` dizini olusturuldu, servis sorumlulugunu anlatan README.md eklendi. | 2026-04-17 |
+| 2 | `src/SocialGraph.AI/` dizini olusturuldu, servis sorumlulugunu anlatan README.md eklendi. | 2026-04-17 |
+| 3 | `src/SocialGraph.UI/` dizini olusturuldu, servis sorumlulugunu anlatan README.md eklendi. | 2026-04-17 |
 
 ### Sprint 0.3: Branch Stratejisi [BEKLEMEDE]
 > Henüz başlanmadı.

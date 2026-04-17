@@ -11,10 +11,10 @@
 - [x] Proje kök dizininde dökümantasyon takibi için `Markdowns/` klasörü oluşturuldu. **(Batuhan)**
 - [x] Süreç yönetimi için `TODO.md` ve `DONE.md` dosyaları oluşturuldu. **(Batuhan)**
 
-### Sprint 0.2: Mikroservis Klasör Yapılandırması (Monorepo)
-- [ ] `src/SocialGraph.API/` dizini oluşturuldu.
-- [ ] `src/SocialGraph.AI/` dizini oluşturuldu.
-- [ ] `src/SocialGraph.UI/` dizini oluşturuldu.
+### Sprint 0.2: Mikroservis Klasor Yapilandirmasi (Monorepo)
+- [x] `src/SocialGraph.API/` dizini olusturuldu ve placeholder README eklendi. **(Batuhan)**
+- [x] `src/SocialGraph.AI/` dizini olusturuldu ve placeholder README eklendi. **(Batuhan)**
+- [x] `src/SocialGraph.UI/` dizini olusturuldu ve placeholder README eklendi. **(Batuhan)**
 
 ### Sprint 0.3: 5 Kişilik Ekip Yapısına Uygun Branch Stratejisi
 - [ ] `develop` branch oluşturuldu ve remote'a push edildi.

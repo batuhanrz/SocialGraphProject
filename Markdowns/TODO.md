@@ -4,11 +4,6 @@
 
 ## SPRINT 0: Proje Başlatma (Devam Eden)
 
-### Sprint 0.2: Mikroservis Klasör Yapılandırması
-- [ ] `src/SocialGraph.API/` dizininin oluşturulması ve placeholder README eklenmesi. **(Batuhan)**
-- [ ] `src/SocialGraph.AI/` dizininin oluşturulması ve placeholder README eklenmesi. **(Batuhan)**
-- [ ] `src/SocialGraph.UI/` dizininin oluşturulması ve placeholder README eklenmesi. **(Batuhan)**
-
 ### Sprint 0.3: Branch Stratejisi
 - [ ] `develop` branch oluşturulması ve remote'a push edilmesi. **(Batuhan)**
 - [ ] 5 adet `feature/*` branch oluşturulması ve remote'a push edilmesi. **(Batuhan)**
