@@ -46,7 +46,7 @@
 
 ---
 
-### Kişi C — API Servis Katmanı + Arama Arayüzü
+### Fatma Sude — API Servis Katmanı + Arama Arayüzü
 
 **Görev 1: Frontend API Servis Katmanı**
 - `apiService.ts`: Axios/Fetch wrapper, base URL config.
@@ -63,11 +63,11 @@
 - [ ] Frontend → Backend API bağlantısı çalışıyor.
 - [ ] Autocomplete sonuçları dropdown'da gösteriliyor.
 - [ ] Sonuç panelinde düğüm listesi var.
-- [ ] PR açıldı (`feature/c-frontend`).
+- [ ] PR açıldı (`feature/sude-frontend`).
 
 ---
 
-### Kişi D — REST API Controller'ları + AI Worker İskeleti
+### Muhammed Furkan — REST API Controller'ları + AI Worker İskeleti
 
 **Görev 1: API Controller Endpointleri**
 
@@ -92,11 +92,11 @@
 - [ ] 7 endpoint Swagger'dan test edilebiliyor.
 - [ ] Doğru HTTP status code'lar dönüyor.
 - [ ] AI Worker projesi hatasız başlıyor.
-- [ ] PR açıldı (`feature/d-infrastructure`).
+- [ ] PR açıldı (`feature/furkan-infrastructure`).
 
 ---
 
-### Kişi E — Sentetik Veri Üretimi + Birim Testler
+### Isra — Sentetik Veri Üretimi + Birim Testler
 
 **Görev 1: Sentetik Veri Üretim Motoru**
 - `DataGenerator` sınıfı: parametrik veri üretimi.
@@ -116,7 +116,7 @@
 - [ ] DataGenerator farklı boyutlarda graf üretebiliyor.
 - [ ] Seed data başarıyla yükleniyor.
 - [ ] 20+ birim test yazıldı ve hepsi geçiyor.
-- [ ] PR açıldı (`feature/e-optimization`).
+- [ ] PR açıldı (`feature/isra-optimization`).
 
 ---
 

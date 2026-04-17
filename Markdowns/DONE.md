@@ -16,13 +16,13 @@
 - [x] `src/SocialGraph.AI/` dizini olusturuldu ve placeholder README eklendi. **(Batuhan)**
 - [x] `src/SocialGraph.UI/` dizini olusturuldu ve placeholder README eklendi. **(Batuhan)**
 
-### Sprint 0.3: 5 Kişilik Ekip Yapısına Uygun Branch Stratejisi
-- [ ] `develop` branch oluşturuldu ve remote'a push edildi.
-- [ ] `feature/batuhan-core` branch oluşturuldu.
-- [ ] `feature/ozcan-algorithms` branch oluşturuldu.
-- [ ] `feature/c-frontend` branch oluşturuldu.
-- [ ] `feature/d-infrastructure` branch oluşturuldu.
-- [ ] `feature/e-optimization` branch oluşturuldu.
+### Sprint 0.3: 5 Kisilik Ekip Yapisina Uygun Branch Stratejisi
+- [x] `develop` branch olusturuldu ve remote'a push edildi. **(Batuhan)**
+- [x] `feature/batuhan-core` branch olusturuldu. **(Batuhan)**
+- [x] `feature/ozcan-algorithms` branch olusturuldu. **(Batuhan)**
+- [x] `feature/sude-frontend` branch olusturuldu. **(Batuhan)**
+- [x] `feature/furkan-infrastructure` branch olusturuldu. **(Batuhan)**
+- [x] `feature/isra-optimization` branch olusturuldu. **(Batuhan)**
 
 ### Sprint 0.4: Teknik Dökümantasyon ve Yol Haritası Kaydı
 - [x] `Roadmap_Full.md` dosyası tüm sprint'leri ve rol dağılımlarını içerecek şekilde hazırlandı. **(Batuhan)**

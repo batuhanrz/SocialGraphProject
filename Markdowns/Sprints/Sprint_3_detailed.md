@@ -49,7 +49,7 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 
 ---
 
-### Kişi C — Vis-network 2D Görselleştirme + Etkileşim
+### Fatma Sude — Vis-network 2D Görselleştirme + Etkileşim
 
 **Görev 1: 2D Node-Link Diyagramı**
 - Vis-network (veya D3.js) kütüphanesi ile interaktif graf görselleştirme.
@@ -76,11 +76,11 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 - [ ] 3 düğüm türü farklı şekil/renk ile gösterilliyor.
 - [ ] Düğüme tıklayınca yan panelde özellikler görünüyor.
 - [ ] Sorgu sonuçları graf üzerinde vurgulanıyor.
-- [ ] PR açıldı (`feature/c-frontend`).
+- [ ] PR açıldı (`feature/sude-frontend`).
 
 ---
 
-### Kişi D — AI Simulation Worker (BackgroundService)
+### Muhammed Furkan — AI Simulation Worker (BackgroundService)
 
 **Görev 1: AI Simulation Motoru**
 - `BackgroundService` / `IHostedService` olarak çalışan worker servis.
@@ -102,11 +102,11 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 - [ ] Üretilen veriler PropertyGraph'a başarıyla ekleniyor.
 - [ ] API kapalıyken worker crash etmiyor (retry/log çalışıyor).
 - [ ] Frontend'de graf verisi dinamik olarak güncelleniyor.
-- [ ] PR açıldı (`feature/d-infrastructure`).
+- [ ] PR açıldı (`feature/furkan-infrastructure`).
 
 ---
 
-### Kişi E — Entegrasyon Testleri + Big-O Analiz Taslağı
+### Isra — Entegrasyon Testleri + Big-O Analiz Taslağı
 
 **Görev 1: Servisler Arası Entegrasyon Testleri**
 - API ↔ PropertyGraph entegrasyon testleri.
@@ -130,7 +130,7 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 - [ ] 3+ entegrasyon test senaryosu yazıldı ve geçiyor.
 - [ ] 3 farklı graf boyutuyla yük testi yapıldı, sonuçlar tablo halinde.
 - [ ] Big-O analiz taslağı markdown olarak yazıldı.
-- [ ] PR açıldı (`feature/e-optimization`).
+- [ ] PR açıldı (`feature/isra-optimization`).
 
 ---
 

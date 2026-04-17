@@ -6,7 +6,6 @@ Bu proje, sosyal ağ sistemlerinde kullanılan property graph veri modelinin sad
 ---
 
 ## 2. EKİP ROLLERİ VE SORUMLULUKLARI
-# Kişi bazlı rol dağıtımı tamamlanacaktır.
 
 **Batuhan (Core Data Engineer)**
 * Ana Sorumluluk: Temel veri depolama motorunun ve zorunlu veri yapılarının sıfırdan inşası.
@@ -16,15 +15,15 @@ Bu proje, sosyal ağ sistemlerinde kullanılan property graph veri modelinin sad
 * Ana Sorumluluk: Graf üzerindeki arama, gezinme ve ilişkisel sorgu algoritmalarının yönetimi.
 * Teknik Görevler: Custom Queue yazımı, BFS, DFS, Bağlantı Derecesi hesaplama ve çok adımlı ilişkisel sorgu motorunun geliştirilmesi.
 
-**Kişi C (Frontend Lead)**
+**Fatma Sude (Frontend Lead)**
 * Ana Sorumluluk: React tabanlı görselleştirme ve kullanıcı etkileşim arayüzü.
 * Teknik Görevler: React + TypeScript kurulumu, Vis-network entegrasyonu, dinamik styling ve yan panel etkileşim mantığının kodlanması.
 
-**Kişi D (Architect & Infrastructure)**
+**Muhammed Furkan (Architect & Infrastructure)**
 * Ana Sorumluluk: Sistem mimarisi, mikroservis yönetimi ve asenkron süreçlerin koordinasyonu.
 * Teknik Görevler: ASP.NET Core Web API mimarisi, REST Controller yönetimi, AI Simulation Worker (IHostedService) geliştirilmesi, Docker konfigürasyonları.
 
-**Kişi E (Testing & Analysis Specialist)**
+**Isra (Testing & Analysis Specialist)**
 * Ana Sorumluluk: Veri yapısı implementasyonu (Trie), sentetik veri üretimi, sistem testi ve performans analizi.
 * Teknik Görevler: Custom Trie implementasyonu, sentetik veri üretim motoru, birim/entegrasyon testleri, Big-O analiz dökümantasyonu.
 
@@ -50,9 +49,9 @@ Bu proje, sosyal ağ sistemlerinde kullanılan property graph veri modelinin sad
 |------|-------|-------|
 | **Batuhan** | Node/Edge modelleri + Custom Hash Table | Düğüm ve kenar veri modellerinin tanımlanması, open addressing veya chaining tabanlı Hash Table implementasyonu |
 | **Özcan** | Custom Queue + BFS/DFS algoritma iskeletleri | Circular array veya linked-list tabanlı Queue, BFS ve DFS temel traversal fonksiyonlarının yazılması |
-| **Kişi C** | React + TypeScript proje kurulumu + temel bileşen mimarisi | Proje scaffolding, layout yapısı, arama çubuğu ve sonuç paneli bileşenlerinin oluşturulması |
-| **Kişi D** | ASP.NET Core Web API projesi + API contract tanımlaması | Web API iskeletinin başlatılması, Singleton yaşam döngüsü planlaması, endpoint sözleşmelerinin (request/response modelleri) belirlenmesi |
-| **Kişi E** | Custom Trie implementasyonu + test altyapısı kurulumu | Prefix-tree yapısının sıfırdan kodlanması (insert, search, autocomplete), birim test framework'ünün projeye entegrasyonu |
+| **Fatma Sude** | React + TypeScript proje kurulumu + temel bileşen mimarisi | Proje scaffolding, layout yapısı, arama çubuğu ve sonuç paneli bileşenlerinin oluşturulması |
+| **Muhammed Furkan** | ASP.NET Core Web API projesi + API contract tanımlaması | Web API iskeletinin başlatılması, Singleton yaşam döngüsü planlaması, endpoint sözleşmelerinin (request/response modelleri) belirlenmesi |
+| **Isra** | Custom Trie implementasyonu + test altyapısı kurulumu | Prefix-tree yapısının sıfırdan kodlanması (insert, search, autocomplete), birim test framework'ünün projeye entegrasyonu |
 
 ---
 
@@ -63,9 +62,9 @@ Bu proje, sosyal ağ sistemlerinde kullanılan property graph veri modelinin sad
 |------|-------|-------|
 | **Batuhan** | Adjacency List tabanlı Property Graph inşası | Sprint 1'deki Hash Table ve Node/Edge modellerinin graf yapısına entegrasyonu, DI konteynırına Singleton kaydı |
 | **Özcan** | BFS, DFS ve Bağlantı Derecesi algoritmalarının graf entegrasyonu | Algoritmaların Property Graph üzerinde çalışacak şekilde uyarlanması, shortest path (ağırlıksız) implementasyonu |
-| **Kişi C** | Frontend API servis katmanı + arama arayüzü | Axios/Fetch ile API bağlantılarının kurulması, arama ve sonuç listeleme ekranlarının kodlanması |
-| **Kişi D** | REST API Controller endpointleri + AI Worker iskelet yapısı | Düğüm/kenar CRUD, arama ve traversal endpointlerinin yazılması; BackgroundService altyapısının hazırlanması |
-| **Kişi E** | Sentetik veri üretim motoru + veri yapıları birim testleri | Programatik sentetik graf verisi üreten modülün yazılması, Hash Table / Trie / Queue için kapsamlı birim testlerin tamamlanması |
+| **Fatma Sude** | Frontend API servis katmanı + arama arayüzü | Axios/Fetch ile API bağlantılarının kurulması, arama ve sonuç listeleme ekranlarının kodlanması |
+| **Muhammed Furkan** | REST API Controller endpointleri + AI Worker iskelet yapısı | Düğüm/kenar CRUD, arama ve traversal endpointlerinin yazılması; BackgroundService altyapısının hazırlanması |
+| **Isra** | Sentetik veri üretim motoru + veri yapıları birim testleri | Programatik sentetik graf verisi üreten modülün yazılması, Hash Table / Trie / Queue için kapsamlı birim testlerin tamamlanması |
 
 ---
 
@@ -76,9 +75,9 @@ Bu proje, sosyal ağ sistemlerinde kullanılan property graph veri modelinin sad
 |------|-------|-------|
 | **Batuhan** | Thread-safety (locking) mekanizmaları + graf operasyonları optimizasyonu | Tüm yazım/okuma operasyonları için kilit mekanizmalarının implementasyonu, eşzamanlı erişim senaryolarının yönetimi |
 | **Özcan** | Çok adımlı ilişkisel sorgu motoru | User → Friends → Events → Photos zincir sorgularının tamamlanması, filtreli graf traversal algoritmalarının yazılması |
-| **Kişi C** | Vis-network 2D görselleştirme + yan panel etkileşimi | Node-link diyagramı, düğüm tiplerine göre şekil/renk mapping, tıklama ile düğüm özelliklerinin yan panelde gösterimi |
-| **Kişi D** | AI Simulation Worker (IHostedService) | Her 15 saniyede sentetik veri üreten BackgroundService'in tamamlanması, API servisi ile asenkron iletişim |
-| **Kişi E** | Entegrasyon testleri + ilk Big-O analiz taslağı | Servisler arası entegrasyon testlerinin yazılması, AI motoru yük testleri, algoritma karmaşıklıklarının ilk analizleri |
+| **Fatma Sude** | Vis-network 2D görselleştirme + yan panel etkileşimi | Node-link diyagramı, düğüm tiplerine göre şekil/renk mapping, tıklama ile düğüm özelliklerinin yan panelde gösterimi |
+| **Muhammed Furkan** | AI Simulation Worker (IHostedService) | Her 15 saniyede sentetik veri üreten BackgroundService'in tamamlanması, API servisi ile asenkron iletişim |
+| **Isra** | Entegrasyon testleri + ilk Big-O analiz taslağı | Servisler arası entegrasyon testlerinin yazılması, AI motoru yük testleri, algoritma karmaşıklıklarının ilk analizleri |
 
 ---
 
@@ -89,9 +88,9 @@ Bu proje, sosyal ağ sistemlerinde kullanılan property graph veri modelinin sad
 |------|-------|-------|
 | **Batuhan** | UML diyagramları + kod temizliği | Sistem mimarisi ve veri akış diyagramlarının çizimi, kod kalitesi iyileştirmeleri |
 | **Özcan** | Big-O analiz tablosu + algoritma dökümantasyonu | Tüm veri yapıları ve algoritmaların zaman/uzay karmaşıklığı analizi, rapor dosyasına işlenmesi |
-| **Kişi C** | UI son rötuşlar + demo videosu hazırlığı | Responsive düzenlemeler, görsel iyileştirmeler, demo video akışının planlanması |
-| **Kişi D** | Dockerfile + docker-compose konfigürasyonları | API, UI ve AI servisleri için container tanımları, tek komutla (`docker-compose up`) çalışır hale getirme |
-| **Kişi E** | Performans raporu + AI prompt dökümü + final test | AI simülasyonu için kullanılan prompt'ların dökümü, nihai performans test raporu, B.3 isimlendirme kontrolü |
+| **Fatma Sude** | UI son rötuşlar + demo videosu hazırlığı | Responsive düzenlemeler, görsel iyileştirmeler, demo video akışının planlanması |
+| **Muhammed Furkan** | Dockerfile + docker-compose konfigürasyonları | API, UI ve AI servisleri için container tanımları, tek komutla (`docker-compose up`) çalışır hale getirme |
+| **Isra** | Performans raporu + AI prompt dökümü + final test | AI simülasyonu için kullanılan prompt'ların dökümü, nihai performans test raporu, B.3 isimlendirme kontrolü |
 | **Tüm Ekip** | Cross-review (Code Defense hazırlığı) + demo videosu | Her üye en az bir başka üyenin modülünü inceleyip açıklayabilir hale gelir, demo videosu çekilir |
 
 ---

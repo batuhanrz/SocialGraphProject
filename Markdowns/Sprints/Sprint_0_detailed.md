@@ -46,14 +46,14 @@ Geliştirme sürecinin disiplinli ilerlemesi ve B.1 kuralındaki "her üyenin ke
 - **develop** — Tüm geliştirmelerin `main` branch'e aktarılmadan önce toplandığı ana entegrasyon dalı.
 - **feature/batuhan-core** — Çekirdek veri yapıları ve ana mimari geliştirmeleri için ayrılmış çalışma dalı.
 - **feature/ozcan-algorithms** — Graf algoritmaları ve traversal işlemleri için ayrılmış çalışma dalı.
-- **feature/c-frontend** — Arayüz ve görselleştirme çalışmaları için ayrılmış çalışma dalı.
-- **feature/d-infrastructure** — Sistem altyapısı ve asenkron servis yönetimi için ayrılmış çalışma dalı.
-- **feature/e-optimization** — Test, analiz ve optimizasyon çalışmaları için ayrılmış çalışma dalı.
+- **feature/sude-frontend** — Arayüz ve görselleştirme çalışmaları için ayrılmış çalışma dalı.
+- **feature/furkan-infrastructure** — Sistem altyapısı ve asenkron servis yönetimi için ayrılmış çalışma dalı.
+- **feature/isra-optimization** — Test, analiz ve optimizasyon çalışmaları için ayrılmış çalışma dalı.
 
 **Kabul Kriterleri:**
-- [ ] `develop` + 5 adet `feature/*` branch oluşturuldu.
-- [ ] Tüm branch'ler remote'a push edildi (`git branch -r` ile doğrulandı).
-- [ ] Her ekip üyesi kendi branch'ine checkout yapabildi (üyelere bildirildi).
+- [x] `develop` + 5 adet `feature/*` branch oluşturuldu.
+- [x] Tüm branch'ler remote'a push edildi (`git branch -r` ile doğrulandı).
+- [x] Her ekip üyesi kendi branch'ine checkout yapabildi (üyelere bildirildi).
 
 ---
 

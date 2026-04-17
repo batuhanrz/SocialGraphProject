@@ -62,7 +62,7 @@
 
 ---
 
-### Kişi C — UI Son Rötuşlar + Demo Videosu Hazırlığı
+### Fatma Sude — UI Son Rötuşlar + Demo Videosu Hazırlığı
 
 **Görev 1: Arayüz İyileştirmeleri**
 - Responsive layout: farklı ekran boyutlarında düzgün görünüm.
@@ -83,11 +83,11 @@
 - [ ] UI responsive çalışıyor (en az 2 farklı ekran boyutunda test).
 - [ ] Loading göstergeleri ve hata mesajları mevcut.
 - [ ] Demo senaryosu yazıldı ve en az 1 kez prova yapıldı.
-- [ ] PR açıldı (`feature/c-frontend`).
+- [ ] PR açıldı (`feature/sude-frontend`).
 
 ---
 
-### Kişi D — Docker Konfigürasyonları
+### Muhammed Furkan — Docker Konfigürasyonları
 
 **Görev 1: Dockerfile'lar**
 Her servis için ayrı Dockerfile:
@@ -124,11 +124,11 @@ services:
 - [ ] API, AI ve UI servisleri container içinde çalışıyor.
 - [ ] Servisler arası iletişim container ağı üzerinden sağlanıyor.
 - [ ] README çalıştırma talimatlarını içeriyor.
-- [ ] PR açıldı (`feature/d-infrastructure`).
+- [ ] PR açıldı (`feature/furkan-infrastructure`).
 
 ---
 
-### Kişi E — Performans Raporu + AI Prompt Dökümü + Final Test
+### Isra — Performans Raporu + AI Prompt Dökümü + Final Test
 
 **Görev 1: AI Prompt Dökümü**
 - AI simülasyonunda kullanılan prompt'ların (varsa) tam dökümü.
@@ -151,7 +151,7 @@ services:
 - [ ] 4 farklı graf boyutunda benchmark tablosu hazırlandı.
 - [ ] B.3 isimlendirme kontrolü tüm kodda yapıldı.
 - [ ] Temiz ortamda `docker-compose up` ile sistem çalıştı.
-- [ ] PR açıldı (`feature/e-optimization`).
+- [ ] PR açıldı (`feature/isra-optimization`).
 
 ---
 
@@ -164,9 +164,9 @@ Her ekip üyesi, en az bir başka üyenin modülünü inceler ve açıklayabilir
 |-----------|------------------|------|
 | Batuhan | Özcan'ın algoritmaları | BFS/DFS/Sorgu mantığı |
 | Özcan | Batuhan'ın veri yapıları | Hash Table / PropertyGraph |
-| Kişi C | Kişi D'nin API'si | Controller → Service akışı |
-| Kişi D | Kişi E'nin testleri + Trie | Trie yapısı + test stratejisi |
-| Kişi E | Kişi C'nin frontend'i | Görselleştirme + API bağlantısı |
+| Fatma Sude | Muhammed Furkan'nin API'si | Controller → Service akışı |
+| Muhammed Furkan | Isra'nin testleri + Trie | Trie yapısı + test stratejisi |
+| Isra | Fatma Sude'nin frontend'i | Görselleştirme + API bağlantısı |
 
 **Demo Videosu (max 10 dk):**
 - Tüm ekibin katılımıyla çekilir.

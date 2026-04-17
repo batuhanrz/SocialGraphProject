@@ -57,7 +57,7 @@ Graf traversal algoritmalarının temel yapısının oluşturulması:
 
 ---
 
-### Kişi C (Frontend Lead) — React + TypeScript Proje Kurulumu
+### Fatma Sude (Frontend Lead) — React + TypeScript Proje Kurulumu
 
 **Görev 1: Proje İskeletinin Kurulması**
 `src/SocialGraph.UI/` dizininde React + TypeScript projesi oluşturulur:
@@ -78,11 +78,11 @@ Uygulamanın ana layout'u ve temel bileşenlerin oluşturulması:
 - [ ] React + TypeScript projesi `npm run dev` ile hatasız başlıyor.
 - [ ] 4 temel bileşen oluşturuldu ve ekranda render ediliyor.
 - [ ] TypeScript interface'leri backend modelleriyle uyumlu şekilde tanımlandı.
-- [ ] Kod `feature/c-frontend` branch'inde ve PR açıldı.
+- [ ] Kod `feature/sude-frontend` branch'inde ve PR açıldı.
 
 ---
 
-### Kişi D (Architect & Infrastructure) — Web API Projesi + API Contract
+### Muhammed Furkan (Architect & Infrastructure) — Web API Projesi + API Contract
 
 **Görev 1: ASP.NET Core Web API Projesi**
 `src/SocialGraph.API/` dizininde backend projesinin kurulması:
@@ -102,11 +102,11 @@ Sprint 2'de yazılacak endpointlerin sözleşmelerinin önceden belirlenmesi:
 - [ ] Swagger UI erişilebilir durumda ve en az 2 placeholder endpoint görünüyor.
 - [ ] DTO modelleri ve endpoint sözleşmeleri dokümente edildi.
 - [ ] CORS ayarları frontend'in localhost portunu kabul edecek şekilde yapılandırıldı.
-- [ ] Kod `feature/d-infrastructure` branch'inde ve PR açıldı.
+- [ ] Kod `feature/furkan-infrastructure` branch'inde ve PR açıldı.
 
 ---
 
-### Kişi E (Testing & Analysis Specialist) — Custom Trie + Test Altyapısı
+### Isra (Testing & Analysis Specialist) — Custom Trie + Test Altyapısı
 
 **Görev 1: Custom Trie (Önek Ağacı) İmplementasyonu**
 Metin tabanlı arama ve otomatik tamamlama için Trie veri yapısının sıfırdan yazılması:
@@ -126,7 +126,7 @@ Proje genelinde birim test framework'ünün yapılandırılması:
 - [ ] `Insert`, `Search`, `StartsWith`, `AutoComplete` fonksiyonları çalışıyor.
 - [ ] 100+ kelime ile autocomplete doğru sonuç döndürüyor.
 - [ ] Test projesi oluşturuldu ve en az 10 birim test senaryosu yazıldı.
-- [ ] Kod `feature/e-optimization` branch'inde ve PR açıldı.
+- [ ] Kod `feature/isra-optimization` branch'inde ve PR açıldı.
 
 ---
 

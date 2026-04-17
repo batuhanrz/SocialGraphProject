@@ -37,9 +37,9 @@ SocialGraphProject/
 |-----|------|------------|
 | Core Data Engineer | Batuhan | Hash Table, Node/Edge, PropertyGraph, Thread-Safety |
 | Algorithm Master | Özcan | Queue, BFS, DFS, Çok Adımlı Sorgular |
-| Frontend Lead | Kişi C | React UI, Vis-network Görselleştirme |
-| Architect & Infrastructure | Kişi D | ASP.NET Core API, AI Worker, Docker |
-| Testing & Analysis | Kişi E | Trie, Sentetik Veri, Testler, Big-O Analizi |
+| Frontend Lead | Fatma Sude | React UI, Vis-network Görselleştirme |
+| Architect & Infrastructure | Muhammed Furkan | ASP.NET Core API, AI Worker, Docker |
+| Testing & Analysis | Isra | Trie, Sentetik Veri, Testler, Big-O Analizi |
 
 ## Çalıştırma
 
