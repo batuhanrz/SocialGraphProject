@@ -40,5 +40,9 @@
 | 2 | Her sprint (0-4) icin alt gorevleri barindiran `Sprint_X_detailed.md` dosyalari olusturuldu. | 17-04-2026 |
 | 3 | Universite ara rapor gereksinimi olan `Interim_Report.md` dosyasi taslak olarak hazirlandi. | 17-04-2026 |
 
-### Sprint 0.5: GitHub Issues [BEKLEMEDE]
-> Henüz başlanmadı.
+### Sprint 0.5: Kopru Asamasi — GitHub Issues On Hazirligi [TAMAMLANDI]
+| # | Yapilan Is | Tarih |
+|---|-----------|-------|
+| 1 | HashTable çakışma (collision) yönetimi üzerine ekip içi teknik değerlendirme yapıldı. | 18-04-2026 |
+| 2 | AI servisi ile API arasındaki asenkron veri iletişim protokolü kararlaştırıldı. | 18-04-2026 |
+| 3 | Mimarideki temel karar alma süreçleri takım içi toplantıda karara bağlanarak kayıt altına alındı. | 18-04-2026 |

@@ -1,11 +1,12 @@
 # TODO — Yapilacak Gorevler
 
+> **Önemli Not:** Sprint 1.1 çalışmaları başladıktan sonra projeyle ilgili GitHub Issue'ları resmi olarak raporlanmalıdır.
+
 ---
 
 ## SPRINT 0: Proje Başlatma (Devam Eden)
 
-### Sprint 0.5: GitHub Issues
-- [ ] 3 adet GitHub Issue açılması (2 tartışma + 1 bulgu). **(Batuhan)**
+> **Not:** İlgili mimari değerlendirme issue'ları GitHub'da açıldıktan sonra Sprint 0 tamamen bitti olarak kabul edilecektir.
 
 ---
 

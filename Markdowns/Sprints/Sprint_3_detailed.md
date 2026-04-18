@@ -8,7 +8,7 @@
 
 ## Görev Dağılımı
 
-### Batuhan — Thread-Safety ve Eşzamanlılık Yönetimi
+### Sprint 3.1: Batuhan — Thread-Safety ve Eşzamanlılık Yönetimi
 
 **Görev 1: Read/Write Lock Mekanizmaları**
 - Tüm graf okuma/yazma operasyonları için `ReaderWriterLockSlim` veya custom lock implementasyonu.
@@ -28,7 +28,7 @@
 
 ---
 
-### Özcan — Çok Adımlı İlişkisel Sorgu Motoru
+### Sprint 3.2: Özcan — Çok Adımlı İlişkisel Sorgu Motoru
 
 **Görev 1: Zincir Sorgu Motoru**
 Context.md'deki örnek sorgu akışının implementasyonu:
@@ -49,7 +49,7 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 
 ---
 
-### Fatma Sude — Vis-network 2D Görselleştirme + Etkileşim
+### Sprint 3.3: Fatma Sude — Vis-network 2D Görselleştirme + Etkileşim
 
 **Görev 1: 2D Node-Link Diyagramı**
 - Vis-network (veya D3.js) kütüphanesi ile interaktif graf görselleştirme.
@@ -80,7 +80,7 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 
 ---
 
-### Muhammed Furkan — AI Simulation Worker (BackgroundService)
+### Sprint 3.4: Muhammed Furkan — AI Simulation Worker (BackgroundService)
 
 **Görev 1: AI Simulation Motoru**
 - `BackgroundService` / `IHostedService` olarak çalışan worker servis.
@@ -106,7 +106,7 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 
 ---
 
-### Isra — Entegrasyon Testleri + Big-O Analiz Taslağı
+### Sprint 3.5: Isra — Entegrasyon Testleri + Big-O Analiz Taslağı
 
 **Görev 1: Servisler Arası Entegrasyon Testleri**
 - API ↔ PropertyGraph entegrasyon testleri.

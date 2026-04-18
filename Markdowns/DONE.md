@@ -29,7 +29,7 @@
 - [x] `Sprints/` dizini altında Sprint 0–4 detay dosyaları oluşturuldu. **(Batuhan)**
 - [x] `Interim_Report.md` taslağı bölüm başlıklarıyla güncellendi. **(Batuhan)**
 
-### Sprint 0.5: GitHub Issues ve Teknik Tartışma Kayıtları
-- [ ] [Teknik Tartışma] In-memory veri yönetimi ve Singleton yaşam döngüsü issue'su açıldı.
-- [ ] [Teknik Tartışma] Mikroservisler arası asenkron iletişim issue'su açıldı.
-- [ ] [Bulgu Kaydı] HashTable collision yönetimi issue'su açıldı.
+### Sprint 0.5: Köprü Aşaması — GitHub Issues Ön Hazırlığı
+- [x] Ekip içi değerlendirme toplantısında HashTable collision yönetimi ve çözümleri tartışıldı. **(Batuhan)**
+- [x] Mikroservisler arası asenkron veri iletişim protokolleri değerlendirildi ve karara bağlandı. **(Batuhan)**
+- [x] Gelecek sprintlerde referans alınacak mimari tasarım kararları dokümante edildi. **(Batuhan)**

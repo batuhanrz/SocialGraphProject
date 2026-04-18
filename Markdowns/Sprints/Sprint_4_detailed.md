@@ -8,7 +8,7 @@
 
 ## Görev Dağılımı
 
-### Batuhan — UML Diyagramları + Kod Kalitesi
+### Sprint 4.1: Batuhan — UML Diyagramları + Kod Kalitesi
 
 **Görev 1: Sistem UML Diyagramları**
 - Sınıf diyagramı (Class Diagram): Node, Edge, PropertyGraph, HashTable, Trie, Queue sınıfları ve aralarındaki ilişkiler.
@@ -29,7 +29,7 @@
 
 ---
 
-### Özcan — Big-O Analiz Tablosu + Algoritma Dokümantasyonu
+### Sprint 4.2: Özcan — Big-O Analiz Tablosu + Algoritma Dokümantasyonu
 
 **Görev 1: Zaman ve Uzay Karmaşıklığı Analiz Tablosu**
 
@@ -62,7 +62,7 @@
 
 ---
 
-### Fatma Sude — UI Son Rötuşlar + Demo Videosu Hazırlığı
+### Sprint 4.3: Fatma Sude — UI Son Rötuşlar + Demo Videosu Hazırlığı
 
 **Görev 1: Arayüz İyileştirmeleri**
 - Responsive layout: farklı ekran boyutlarında düzgün görünüm.
@@ -87,7 +87,7 @@
 
 ---
 
-### Muhammed Furkan — Docker Konfigürasyonları
+### Sprint 4.4: Muhammed Furkan — Docker Konfigürasyonları
 
 **Görev 1: Dockerfile'lar**
 Her servis için ayrı Dockerfile:
@@ -128,7 +128,7 @@ services:
 
 ---
 
-### Isra — Performans Raporu + AI Prompt Dökümü + Final Test
+### Sprint 4.5: Isra — Performans Raporu + AI Prompt Dökümü + Final Test
 
 **Görev 1: AI Prompt Dökümü**
 - AI simülasyonunda kullanılan prompt'ların (varsa) tam dökümü.
@@ -155,7 +155,7 @@ services:
 
 ---
 
-### Tüm Ekip — Cross-Review (Code Defense Hazırlığı) + Demo Videosu
+### Sprint 4.6: Tüm Ekip — Cross-Review (Code Defense Hazırlığı) + Demo Videosu
 
 **Cross-Review:**
 Her ekip üyesi, en az bir başka üyenin modülünü inceler ve açıklayabilir hale gelir:
@@ -169,8 +169,8 @@ Her ekip üyesi, en az bir başka üyenin modülünü inceler ve açıklayabilir
 | Isra | Fatma Sude'nin frontend'i | Görselleştirme + API bağlantısı |
 
 **Demo Videosu (max 10 dk):**
-- Tüm ekibin katılımıyla çekilir.
-- İçerik: Arayüz demosu + dinamik veri gösterimi + kod yapısının hızlı tanıtımı.
+- Ekip adına bir kişi tarafından (veya faceless/screencast şeklinde) çekilebilir.
+- İçerik: Arayüz demosu + dinamik veri üretimi + core veri yapılarının kod üzerinden hızlıca gösterimi.
 
 **Kabul Kriterleri:**
 - [ ] Her üye en az 1 başka modülü inceledi ve açıklayabiliyor.

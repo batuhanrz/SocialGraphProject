@@ -72,18 +72,16 @@ Sürecin izlenebilirliği için `Markdowns/` dizini altında teknik dokümanlar 
 
 ---
 
-### Sprint 0.5: GitHub Issues ve Teknik Tartışma Kayıtları
+### Sprint 0.5: Köprü Aşaması — GitHub Issues Ön Hazırlığı
 
-Ara rapor kriterlerinde belirtilen "ekip üyeleri ile ortak tartışma ve bulgu raporlama" sürecini dijital ortamda kayıt altına almak için GitHub Issues sekmesi altında şu başlıklar Batuhan tarafından açılır:
+Ara rapor tesliminden önce tamamlanması zorunlu olan "ekip içi teknik tartışma ve bulgu kayıtları" için altyapı hazırlanmıştır. Ancak bu tartışmaların Sprint 1 ve Sprint 2 geliştirme süreçleriyle doğal bir şekilde senkronize ilerlemesi gerekmektedir. Bu nedenle Sprint 0.5, sonraki sprintler (Sprint 1.1 vb.) için bir köprü vazifesi görür.
 
-- **[Teknik Tartışma]** Bellek içi (In-memory) veri yönetimi ve Singleton yaşam döngüsü planlaması.
-- **[Teknik Tartışma]** Mikroservisler arası asenkron veri iletim protokolü ve hata yönetimi üzerine değerlendirme.
-- **[Bulgu Kaydı]** Özel HashTable implementasyonunda çakışma (collision) yönetimi ve dinamik kapasite artırımı stratejileri.
+- **[Mimari Karar]** HashTable veri yapısının bellek dostu olması (Open Addressing) hedeflendi, implementasyon aşamasında referans alınacaktır.
+- **[Teknik Tartışma]** AI ve API mikroservisleri arasındaki asenkron veri akışında REST HTTP + Retry bazlı altyapı tasarımına onay verildi.
 
 **Kabul Kriterleri:**
-- [ ] GitHub Issues sekmesinde en az 3 issue açıldı (2 tartışma + 1 bulgu).
-- [ ] Her issue'da açıklayıcı başlık, açıklama metni ve uygun etiket (label) mevcut.
-- [ ] İlgili ekip üyeleri issue'lara assign veya mention edildi.
+- [x] Ekip içi değerlendirme toplantısında HashTable collision stratejisi ve AI-API asenkron iletişim protokolü tartışılıp karara bağlandı.
+- [ ] Alınan bu takım kararları projenin geliştirme aşamasında (Sprint 1 ve Sprint 2) ilgili geliştiriciler tarafından GitHub Issues üzerinden resmiyete kavuşturuldu. (Şimdilik Beklemede)
 
 ---
 

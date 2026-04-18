@@ -8,7 +8,7 @@
 
 ## Görev Dağılımı
 
-### Batuhan — Adjacency List Tabanlı Property Graph
+### Sprint 2.1: Batuhan — Adjacency List Tabanlı Property Graph
 
 **Görev 1: Property Graph Çekirdek Yapısı**
 - `PropertyGraph` sınıfı: Custom Hash Table ile düğüm deposu, adjacency list ile kenar deposu.
@@ -27,7 +27,7 @@
 
 ---
 
-### Özcan — Graf Algoritmaları Entegrasyonu
+### Sprint 2.2: Özcan — Graf Algoritmaları Entegrasyonu
 
 **Görev 1: BFS/DFS'in PropertyGraph'a Uyarlanması**
 - BFS: Custom Queue ile katmanlı gezinme, visited set olarak Custom Hash Table.
@@ -46,7 +46,7 @@
 
 ---
 
-### Fatma Sude — API Servis Katmanı + Arama Arayüzü
+### Sprint 2.3: Fatma Sude — API Servis Katmanı + Arama Arayüzü
 
 **Görev 1: Frontend API Servis Katmanı**
 - `apiService.ts`: Axios/Fetch wrapper, base URL config.
@@ -67,7 +67,7 @@
 
 ---
 
-### Muhammed Furkan — REST API Controller'ları + AI Worker İskeleti
+### Sprint 2.4: Muhammed Furkan — REST API Controller'ları + AI Worker İskeleti
 
 **Görev 1: API Controller Endpointleri**
 
@@ -96,7 +96,7 @@
 
 ---
 
-### Isra — Sentetik Veri Üretimi + Birim Testler
+### Sprint 2.5: Isra — Sentetik Veri Üretimi + Birim Testler
 
 **Görev 1: Sentetik Veri Üretim Motoru**
 - `DataGenerator` sınıfı: parametrik veri üretimi.

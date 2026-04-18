@@ -8,7 +8,7 @@
 
 ## Görev Dağılımı
 
-### Batuhan (Core Data Engineer) — Node/Edge Modelleri + Custom Hash Table
+### Sprint 1.1: Batuhan (Core Data Engineer) — Node/Edge Modelleri + Custom Hash Table
 
 **Görev 1: Node ve Edge Veri Modelleri**
 Sistemin temel yapı taşları olan düğüm ve kenar modellerinin tasarlanması:
@@ -32,7 +32,7 @@ Düğümlere O(1) ortalama erişim sağlayacak hash tablosu implementasyonu:
 
 ---
 
-### Özcan (Algorithm Master) — Custom Queue + BFS/DFS İskeletleri
+### Sprint 1.2: Özcan (Algorithm Master) — Custom Queue + BFS/DFS İskeletleri
 
 **Görev 1: Custom Queue**
 BFS algoritmasında kullanılacak kuyruk veri yapısının implementasyonu:
@@ -57,7 +57,7 @@ Graf traversal algoritmalarının temel yapısının oluşturulması:
 
 ---
 
-### Fatma Sude (Frontend Lead) — React + TypeScript Proje Kurulumu
+### Sprint 1.3: Fatma Sude (Frontend Lead) — React + TypeScript Proje Kurulumu
 
 **Görev 1: Proje İskeletinin Kurulması**
 `src/SocialGraph.UI/` dizininde React + TypeScript projesi oluşturulur:
@@ -82,7 +82,7 @@ Uygulamanın ana layout'u ve temel bileşenlerin oluşturulması:
 
 ---
 
-### Muhammed Furkan (Architect & Infrastructure) — Web API Projesi + API Contract
+### Sprint 1.4: Muhammed Furkan (Architect & Infrastructure) — Web API Projesi + API Contract
 
 **Görev 1: ASP.NET Core Web API Projesi**
 `src/SocialGraph.API/` dizininde backend projesinin kurulması:
@@ -106,7 +106,7 @@ Sprint 2'de yazılacak endpointlerin sözleşmelerinin önceden belirlenmesi:
 
 ---
 
-### Isra (Testing & Analysis Specialist) — Custom Trie + Test Altyapısı
+### Sprint 1.5: Isra (Testing & Analysis Specialist) — Custom Trie + Test Altyapısı
 
 **Görev 1: Custom Trie (Önek Ağacı) İmplementasyonu**
 Metin tabanlı arama ve otomatik tamamlama için Trie veri yapısının sıfırdan yazılması:
