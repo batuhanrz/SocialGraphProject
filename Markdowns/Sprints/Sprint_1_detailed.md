@@ -24,11 +24,11 @@ Düğümlere O(1) ortalama erişim sağlayacak hash tablosu implementasyonu:
 - Generic tip desteği: `CustomHashTable<TKey, TValue>`.
 
 **Kabul Kriterleri:**
-- [ ] Node ve Edge modelleri oluşturuldu, her biri en az 3 farklı türle test edildi.
-- [ ] Hash Table, standart kütüphane kullanılmadan sıfırdan yazıldı.
-- [ ] Hash Table'a 1000+ eleman ekleme/arama işlemi başarıyla gerçekleştirildi.
-- [ ] Rehashing mekanizması çalışıyor (load factor aşıldığında kapasite artıyor).
-- [ ] Kod `feature/batuhan-core` branch'inde ve PR açıldı.
+- [x] Node ve Edge modelleri oluşturuldu, her biri en az 3 farklı türle test edildi.
+- [x] Hash Table, standart kütüphane kullanılmadan sıfırdan yazıldı.
+- [x] Hash Table'a 1000+ eleman ekleme/arama işlemi başarıyla gerçekleştirildi.
+- [x] Rehashing mekanizması çalışıyor (load factor aşıldığında kapasite artıyor).
+- [x] Kod `feature/batuhan-core` branch'inde ve PR açıldı.
 
 ---
 

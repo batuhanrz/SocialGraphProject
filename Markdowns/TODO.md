@@ -10,9 +10,8 @@
 
 ---
 
-## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları (Beklemede)
+## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları (Devam Eden)
 
-- [ ] Node/Edge modelleri + Custom Hash Table **(Batuhan)**
 - [ ] Custom Queue + BFS/DFS iskeletleri **(Özcan)**
 - [ ] React + TypeScript proje kurulumu **(Fatma Sude)**
 - [ ] ASP.NET Core Web API + API Contract **(Muhammed Furkan)**
