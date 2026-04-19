@@ -56,3 +56,4 @@
 | 2 | Load Factor > %75 durumunda O(N) maliyetle resize işlemini tetikleyen dinamik `Rehash` sistemi kurgulandı ve eklendi. | 18-04-2026 |
 | 3 | User, Photo ve Event türündeki property'si içerisinde Custom Hash Table barındıran `Node` nesnesi ve aralarındaki bağlantıları kuran `Edge` nesnesi tasarlandı. | 18-04-2026 |
 | 4 | Terminal üzerinden 2500 adet rastgele elemanla yük testi (load-test) yapılarak O(1) maliyetli arama/ekleme ve Rehashing mekanizması valide edildi. | 18-04-2026 |
+| 5 | Geliştirilen Sprint 1.1 kodları GitHub üzerinden PR (Pull Request) ile `develop` aktarımı için sunuldu. | 19-04-2026 |

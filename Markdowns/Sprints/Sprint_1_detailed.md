@@ -28,7 +28,7 @@ Düğümlere O(1) ortalama erişim sağlayacak hash tablosu implementasyonu:
 - [x] Hash Table, standart kütüphane kullanılmadan sıfırdan yazıldı.
 - [x] Hash Table'a 1000+ eleman ekleme/arama işlemi başarıyla gerçekleştirildi.
 - [x] Rehashing mekanizması çalışıyor (load factor aşıldığında kapasite artıyor).
-- [ ] Kod `feature/batuhan-core` branch'inde ve PR açıldı.
+- [x] Kod `feature/batuhan-core` branch'inde ve PR açıldı.
 
 ---
 
