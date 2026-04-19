@@ -33,3 +33,9 @@
 - [x] Ekip içi değerlendirme toplantısında HashTable collision yönetimi ve çözümleri tartışıldı. **(Batuhan)**
 - [x] Mikroservisler arası asenkron veri iletişim protokolleri değerlendirildi ve karara bağlandı. **(Batuhan)**
 - [x] Gelecek sprintlerde referans alınacak mimari tasarım kararları dokümante edildi. **(Batuhan)**
+
+## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları
+
+### Sprint 1.1: Batuhan (Core Data Engineer) — Node/Edge Modelleri + Custom Hash Table
+- [x] C# Console test altyapısı kurularak `CustomHashTable` (Linear Probing), `Node` ve `Edge` veri yapıları %100 "from scratch" kodlandı. **(Batuhan)**
+- [x] Terminal üzerinden 2500 adet veriyle performans ve O(N) Rehashing simulasyon (yük testi) gerçekleştirilerek doğrulandı. **(Batuhan)**

@@ -46,3 +46,13 @@
 | 1 | HashTable çakışma (collision) yönetimi üzerine ekip içi teknik değerlendirme yapıldı. | 18-04-2026 |
 | 2 | AI servisi ile API arasındaki asenkron veri iletişim protokolü kararlaştırıldı. | 18-04-2026 |
 | 3 | Mimarideki temel karar alma süreçleri takım içi toplantıda karara bağlanarak kayıt altına alındı. | 18-04-2026 |
+
+## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları
+
+### Sprint 1.1: Node/Edge Modelleri + Custom Hash Table [TAMAMLANDI]
+| # | Yapilan Is | Tarih |
+|---|-----------|-------|
+| 1 | Standard C# Dictionary sınıfı yasaklanarak %100 sıfırdan Open Addressing (Linear Probing) özellikli `CustomHashTable<TKey, TValue>` yazıldı. | 18-04-2026 |
+| 2 | Load Factor > %75 durumunda O(N) maliyetle resize işlemini tetikleyen dinamik `Rehash` sistemi kurgulandı ve eklendi. | 18-04-2026 |
+| 3 | User, Photo ve Event türündeki property'si içerisinde Custom Hash Table barındıran `Node` nesnesi ve aralarındaki bağlantıları kuran `Edge` nesnesi tasarlandı. | 18-04-2026 |
+| 4 | Terminal üzerinden 2500 adet rastgele elemanla yük testi (load-test) yapılarak O(1) maliyetli arama/ekleme ve Rehashing mekanizması valide edildi. | 18-04-2026 |
