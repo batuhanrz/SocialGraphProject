@@ -49,11 +49,11 @@ Graf traversal algoritmalarının temel yapısının oluşturulması:
 - Bu aşamada graf yapısı henüz hazır olmadığı için basit bir adjacency list mock'u üzerinde test edilir.
 
 **Kabul Kriterleri:**
-- [ ] Custom Queue, standart kütüphane kullanılmadan sıfırdan yazıldı.
-- [ ] Queue'ya 1000+ eleman enqueue/dequeue işlemi doğru çalışıyor.
-- [ ] BFS ve DFS fonksiyonları basit bir test graf'ında çalışıyor.
-- [ ] Traversal sırası doğru (BFS → level-order, DFS → depth-order).
-- [ ] Kod `feature/ozcan-algorithms` branch'inde ve PR açıldı.
+- [x] Custom Queue, standart kütüphane kullanılmadan sıfırdan yazıldı.
+- [x] Queue'ya 1000+ eleman enqueue/dequeue işlemi doğru çalışıyor.
+- [x] BFS ve DFS fonksiyonları basit bir test graf'ında çalışıyor.
+- [x] Traversal sırası doğru (BFS → level-order, DFS → depth-order).
+- [x] Kod `feature/ozcan-algorithms` branch'inde ve PR açıldı.
 
 ---
 
