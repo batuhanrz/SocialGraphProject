@@ -40,3 +40,8 @@
 - [x] C# Console test altyapısı kurularak `CustomHashTable` (Linear Probing), `Node` ve `Edge` veri yapıları %100 "from scratch" kodlandı. **(Batuhan)**
 - [x] Terminal üzerinden 2500 adet veriyle performans ve O(N) Rehashing simulasyon (yük testi) gerçekleştirilerek doğrulandı. **(Batuhan)**
 - [x] Yazılan kodlar `feature/batuhan-core` branch'inden ana havuza (`develop`) PR açılarak gönderildi. **(Batuhan)**
+
+### Sprint 1.2: Özcan (Algorithm Master) — Custom Queue + BFS/DFS İskeletleri
+- [x] `CustomQueue` sınıfı dairesel dizi (circular array) tabanlı ve thread-safe (`lock`) olarak sıfırdan implemente edildi. **(Özcan)**
+- [x] `GraphTraversal` modülü oluşturularak, BFS ve DFS algoritmaları iskelet olarak yazıldı ve Mock graf eşliğinde doğrulandı. **(Özcan)**
+- [x] `Context.md` gereksinimleri (Özcan isimlendirmesi, lock ile eşzamanlılık, Big-O yorumları) tam olarak sağlandı. **(Özcan)**

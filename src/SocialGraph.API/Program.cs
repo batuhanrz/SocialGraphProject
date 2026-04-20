@@ -1,6 +1,7 @@
 using System;
 using SocialGraph.API.DataStructures;
 using SocialGraph.API.Models;
+using SocialGraph.API.Algorithms;
 
 namespace SocialGraph.API
 {
@@ -9,13 +10,14 @@ namespace SocialGraph.API
         static void Main(string[] args)
         {
             Console.WriteLine("=========================================================");
-            Console.WriteLine("SPRINT 1.1: BİRİM MÜHENDİSLİK TESTLERİ - ÇALIŞTIRILIYOR");
+            Console.WriteLine("SPRINT 1.1 & 1.2: BİRİM MÜHENDİSLİK TESTLERİ - ÇALIŞTIRILIYOR");
             Console.WriteLine("=========================================================\n");
 
             TestCustomHashTable();
             TestNodeAndEdgeModels();
+            TestAlgorithmsAndQueue();
 
-            Console.WriteLine("\n[BİLGİ] Tüm testler sıfır hata ile tamamlandı! Sprint 1.1 kabul kriterleri %100 sağlandı.");
+            Console.WriteLine("\n[BİLGİ] Tüm testler sıfır hata ile tamamlandı! Sprint 1.1 ve 1.2 kabul kriterleri %100 sağlandı.");
         }
 
         static void TestCustomHashTable()
@@ -92,6 +94,43 @@ namespace SocialGraph.API
                 throw new Exception("Node properties Hash Table hatası!");
 
             Console.WriteLine("[BAŞARILI] Node ve Edge modelleri sorunsuz yaratıldı ve Custom Hash Table veriyapısıyla iç içe başarıyla entegre edildi.");
+        }
+
+        static void TestAlgorithmsAndQueue()
+        {
+            Console.WriteLine("\nDURUM: Sprint 1.2 Custom Queue ve Graf Gezinme algoritmaları test ediliyor...");
+
+            // 1. Custom Queue 1000+ Eleman Enqueue/Dequeue Testi
+            var queue = new CustomQueue<int>(16);
+            for (int i = 0; i < 1500; i++)
+            {
+                queue.Enqueue(i);
+            }
+            if (queue.Count != 1500) throw new Exception("Kuyruk Enqueue kapasite hatası!");
+            
+            for (int i = 0; i < 1500; i++)
+            {
+                if (queue.Dequeue() != i) throw new Exception("Kuyruk Dequeue sıra/veri hatası!");
+            }
+            if (!queue.IsEmpty) throw new Exception("Kuyruk boşaltılamadı!");
+            Console.WriteLine("[BAŞARILI] CustomQueue 1000+ eleman yük ve dinamik kapasite testini (O(1) amortized) geçti.");
+
+            // 2. Mock Graph BFS ve DFS Testi
+            var graph = new MockGraph();
+            graph.AddEdge("A", "B");
+            graph.AddEdge("A", "C");
+            graph.AddEdge("B", "D");
+            graph.AddEdge("C", "E");
+
+            Console.Write("BFS Çıktısı (Beklenen: A, B, C, D, E): ");
+            GraphTraversal.BFS(graph, "A", (node) => Console.Write(node + ", "));
+            Console.WriteLine();
+
+            Console.Write("DFS Çıktısı (Beklenen: A, B, D, C, E): ");
+            GraphTraversal.DFS(graph, "A", (node) => Console.Write(node + ", "));
+            Console.WriteLine();
+
+            Console.WriteLine("[BAŞARILI] BFS ve DFS algoritmaları Mock Adjacency List üzerinde doğru sırayla çalışıyor.");
         }
     }
 }

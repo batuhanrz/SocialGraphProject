@@ -12,7 +12,9 @@
 
 ## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları (Devam Eden)
 
-- [ ] Custom Queue + BFS/DFS iskeletleri **(Özcan)**
+
+
+### Arka Planda Bekleyen Görevler (Sprint 1)
 - [ ] React + TypeScript proje kurulumu **(Fatma Sude)**
 - [ ] ASP.NET Core Web API + API Contract **(Muhammed Furkan)**
 - [ ] Custom Trie + Test altyapısı **(Isra)**
