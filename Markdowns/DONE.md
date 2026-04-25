@@ -52,3 +52,9 @@
 - [x] `AppLayout`, `SearchBar` ve `GraphCanvas` (placeholder) bileşenleri geliştirildi. **(Sude)**
 - [x] Backend modelleriyle uyumlu TypeScript interface'leri (`INode`, `IEdge` vb.) tanımlandı. **(Sude)**
 
+### Sprint 1.4: Muhammed Furkan (Architect & Infrastructure) — Web API Projesi + API Contract
+- [x] Console Application, ASP.NET Core Web API projesine donusturuldu (SDK degisimi, Swashbuckle entegrasyonu). **(Furkan)**
+- [x] Program.cs uzerinde CORS, Swagger/OpenAPI, JSON Serialization ve Singleton DI yapilandirmasi tamamlandi. **(Furkan)**
+- [x] Frontend interface'leriyle birebir uyumlu DTO modelleri (NodeDto, EdgeDto, SearchRequestDto, TraversalResultDto) olusturuldu. **(Furkan)**
+- [x] NodesController, SearchController ve TraversalController ile toplam 5 placeholder endpoint Swagger uzerinde dokumante edildi. **(Furkan)**
+- [x] CORS ayarlari frontend'in localhost portunu kabul edecek sekilde yapilandirildi. **(Furkan)**

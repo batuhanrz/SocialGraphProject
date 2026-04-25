@@ -98,11 +98,11 @@ Sprint 2'de yazılacak endpointlerin sözleşmelerinin önceden belirlenmesi:
 - Swagger üzerinden dokümantasyon.
 
 **Kabul Kriterleri:**
-- [ ] API projesi `dotnet run` ile hatasız başlıyor.
-- [ ] Swagger UI erişilebilir durumda ve en az 2 placeholder endpoint görünüyor.
-- [ ] DTO modelleri ve endpoint sözleşmeleri dokümente edildi.
-- [ ] CORS ayarları frontend'in localhost portunu kabul edecek şekilde yapılandırıldı.
-- [ ] Kod `feature/furkan-infrastructure` branch'inde ve PR açıldı.
+- [x] API projesi `dotnet run` ile hatasız başlıyor.
+- [x] Swagger UI erişilebilir durumda ve en az 2 placeholder endpoint görünüyor.
+- [x] DTO modelleri ve endpoint sözleşmeleri dokümente edildi.
+- [x] CORS ayarları frontend'in localhost portunu kabul edecek şekilde yapılandırıldı.
+- [x] Kod `feature/furkan-infrastructure` branch'inde ve PR açıldı. (PR acilmaya hazir)
 
 ---
 

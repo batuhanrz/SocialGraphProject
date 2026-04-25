@@ -15,7 +15,6 @@
 
 
 ### Arka Planda Bekleyen Görevler (Sprint 1)
-- [ ] ASP.NET Core Web API + API Contract **(Muhammed Furkan)**
 - [ ] Custom Trie + Test altyapısı **(Isra)**
 
 ---
