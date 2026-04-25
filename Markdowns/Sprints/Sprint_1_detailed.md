@@ -75,10 +75,10 @@ Uygulamanın ana layout'u ve temel bileşenlerin oluşturulması:
 - TypeScript interface tanımları: `INode`, `IEdge`, `IGraphData`, `ISearchResult`.
 
 **Kabul Kriterleri:**
-- [ ] React + TypeScript projesi `npm run dev` ile hatasız başlıyor.
-- [ ] 4 temel bileşen oluşturuldu ve ekranda render ediliyor.
-- [ ] TypeScript interface'leri backend modelleriyle uyumlu şekilde tanımlandı.
-- [ ] Kod `feature/sude-frontend` branch'inde ve PR açıldı.
+- [x] React + TypeScript projesi `npm run dev` ile hatasız başlıyor.
+- [x] 4 temel bileşen oluşturuldu ve ekranda render ediliyor.
+- [x] TypeScript interface'leri backend modelleriyle uyumlu şekilde tanımlandı.
+- [x] Kod `feature/sude-frontend` branch'inde ve PR açıldı. (PR açılmaya hazır)
 
 ---
 
