@@ -1,24 +1,20 @@
 # TODO — Yapilacak Gorevler
 
-> **Önemli Not:** Sprint 1.1 çalışmaları başladıktan sonra projeyle ilgili GitHub Issue'ları resmi olarak raporlanmalıdır.
+> **Onemli Not:** Sprint 1.1 calismalari basladiktan sonra projeyle ilgili GitHub Issue'lari resmi olarak raporlanmalidir.
 
 ---
 
-## SPRINT 0: Proje Başlatma (Devam Eden)
+## SPRINT 0: Proje Baslatma (Devam Eden)
 
-> **Not:** İlgili mimari değerlendirme issue'ları GitHub'da açıldıktan sonra Sprint 0 tamamen bitti olarak kabul edilecektir.
-
----
-
-## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları (Beklemede)
-
-- [ ] Node/Edge modelleri + Custom Hash Table **(Batuhan)**
-- [ ] Custom Queue + BFS/DFS iskeletleri **(Özcan)**
-- [ ] React + TypeScript proje kurulumu **(Fatma Sude)**
-- [ ] ASP.NET Core Web API + API Contract **(Muhammed Furkan)**
-- [ ] Custom Trie + Test altyapısı **(Isra)**
+> **Not:** Ilgili mimari degerlendirme issue'lari GitHub'da acildiktan sonra Sprint 0 tamamen bitti olarak kabul edilecektir.
 
 ---
 
-## SPRINT 2–4: (Beklemede)
-> Sprint 1 tamamlandıktan sonra aktifleştirilecek.
+## SPRINT 1: Altyapi ve Cekirdek Veri Yapilari [TAMAMLANDI]
+
+> Tum alt gorevler (1.1 - 1.5) basariyla tamamlandi.
+
+---
+
+## SPRINT 2-4: (Beklemede)
+> Sprint 2 aktiflestirilmeye hazir.

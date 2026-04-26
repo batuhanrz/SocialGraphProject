@@ -33,3 +33,42 @@
 - [x] Ekip içi değerlendirme toplantısında HashTable collision yönetimi ve çözümleri tartışıldı. **(Batuhan)**
 - [x] Mikroservisler arası asenkron veri iletişim protokolleri değerlendirildi ve karara bağlandı. **(Batuhan)**
 - [x] Gelecek sprintlerde referans alınacak mimari tasarım kararları dokümante edildi. **(Batuhan)**
+
+## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları
+
+### Sprint 1.1: Batuhan (Core Data Engineer) — Node/Edge Modelleri + Custom Hash Table
+- [x] C# Console test altyapısı kurularak `CustomHashTable` (Linear Probing), `Node` ve `Edge` veri yapıları %100 "from scratch" kodlandı. **(Batuhan)**
+- [x] Terminal üzerinden 2500 adet veriyle performans ve O(N) Rehashing simulasyon (yük testi) gerçekleştirilerek doğrulandı. **(Batuhan)**
+- [x] Yazılan kodlar `feature/batuhan-core` branch'inden ana havuza (`develop`) PR açılarak gönderildi. **(Batuhan)**
+
+### Sprint 1.2: Özcan (Algorithm Master) — Custom Queue + BFS/DFS İskeletleri
+- [x] `CustomQueue` sınıfı dairesel dizi (circular array) tabanlı ve thread-safe (`lock`) olarak sıfırdan implemente edildi. **(Özcan)**
+- [x] `GraphTraversal` modülü oluşturularak, BFS ve DFS algoritmaları iskelet olarak yazıldı ve Mock graf eşliğinde doğrulandı. **(Özcan)**
+- [x] `Context.md` gereksinimleri (Özcan isimlendirmesi, lock ile eşzamanlılık, Big-O yorumları) tam olarak sağlandı. **(Özcan)**
+
+### Sprint 1.3: Fatma Sude (Frontend Lead) — React + TypeScript Proje Kurulumu
+- [x] `SocialGraph.UI` projesi Vite + React + TypeScript kullanılarak sıfırdan oluşturuldu. **(Sude)**
+- [x] **Premium Swiss Minimal** tasarım sistemi (Glassmorphism, HSL paleti) `index.css` üzerinde kuruldu. **(Sude)**
+- [x] `AppLayout`, `SearchBar` ve `GraphCanvas` (placeholder) bileşenleri geliştirildi. **(Sude)**
+- [x] Backend modelleriyle uyumlu TypeScript interface'leri (`INode`, `IEdge` vb.) tanımlandı. **(Sude)**
+
+### Sprint 1.4: Muhammed Furkan (Architect & Infrastructure) — Web API Projesi + API Contract
+- [x] Console Application, ASP.NET Core Web API projesine donusturuldu (SDK degisimi, Swashbuckle entegrasyonu). **(Furkan)**
+- [x] Program.cs uzerinde CORS, Swagger/OpenAPI, JSON Serialization ve Singleton DI yapilandirmasi tamamlandi. **(Furkan)**
+- [x] Frontend interface'leriyle birebir uyumlu DTO modelleri (NodeDto, EdgeDto, SearchRequestDto, TraversalResultDto) olusturuldu. **(Furkan)**
+- [x] NodesController, SearchController ve TraversalController ile toplam 5 placeholder endpoint Swagger uzerinde dokumante edildi. **(Furkan)**
+- [x] CORS ayarlari frontend'in localhost portunu kabul edecek sekilde yapilandirildi. **(Furkan)**
+
+### Sprint 1.5: Isra (Testing & Analysis Specialist) — Custom Trie + Test Altyapisi
+- [x] `CustomTrie` ve `TrieNode` sifirdan implemente edildi (cocuk dugumler icin CustomHashTable kullanildi). **(Isra)**
+- [x] Insert, Search, StartsWith ve AutoComplete operasyonlari case-insensitive olarak yazildi. **(Isra)**
+- [x] xUnit test projesi (`SocialGraph.Tests`) olusturuldu ve API projesine referans eklendi. **(Isra)**
+- [x] CustomHashTable, CustomQueue ve CustomTrie icin toplam 14 birim test senaryosu yazildi ve %100 gecti. **(Isra)**
+
+---
+
+> **SPRINT 1 CHECKPOINT: TAMAMLANDI**
+> Tum alt gorevler (1.1 - 1.5) basariyla tamamlandi. 10/10 kabul kriteri karsilandi.
+> Zorunlu veri yapilari (Hash Table, Queue, Trie), Node/Edge modelleri, BFS/DFS iskeletleri,
+> React + TS frontend iskeleti, Web API + Swagger altyapisi ve 14 birim test senaryosu %100 hazir.
+> Sprint 2'ye gecis icin onay verildi.

@@ -24,11 +24,11 @@ Düğümlere O(1) ortalama erişim sağlayacak hash tablosu implementasyonu:
 - Generic tip desteği: `CustomHashTable<TKey, TValue>`.
 
 **Kabul Kriterleri:**
-- [ ] Node ve Edge modelleri oluşturuldu, her biri en az 3 farklı türle test edildi.
-- [ ] Hash Table, standart kütüphane kullanılmadan sıfırdan yazıldı.
-- [ ] Hash Table'a 1000+ eleman ekleme/arama işlemi başarıyla gerçekleştirildi.
-- [ ] Rehashing mekanizması çalışıyor (load factor aşıldığında kapasite artıyor).
-- [ ] Kod `feature/batuhan-core` branch'inde ve PR açıldı.
+- [x] Node ve Edge modelleri oluşturuldu, her biri en az 3 farklı türle test edildi.
+- [x] Hash Table, standart kütüphane kullanılmadan sıfırdan yazıldı.
+- [x] Hash Table'a 1000+ eleman ekleme/arama işlemi başarıyla gerçekleştirildi.
+- [x] Rehashing mekanizması çalışıyor (load factor aşıldığında kapasite artıyor).
+- [x] Kod `feature/batuhan-core` branch'inde ve PR açıldı.
 
 ---
 
@@ -49,11 +49,11 @@ Graf traversal algoritmalarının temel yapısının oluşturulması:
 - Bu aşamada graf yapısı henüz hazır olmadığı için basit bir adjacency list mock'u üzerinde test edilir.
 
 **Kabul Kriterleri:**
-- [ ] Custom Queue, standart kütüphane kullanılmadan sıfırdan yazıldı.
-- [ ] Queue'ya 1000+ eleman enqueue/dequeue işlemi doğru çalışıyor.
-- [ ] BFS ve DFS fonksiyonları basit bir test graf'ında çalışıyor.
-- [ ] Traversal sırası doğru (BFS → level-order, DFS → depth-order).
-- [ ] Kod `feature/ozcan-algorithms` branch'inde ve PR açıldı.
+- [x] Custom Queue, standart kütüphane kullanılmadan sıfırdan yazıldı.
+- [x] Queue'ya 1000+ eleman enqueue/dequeue işlemi doğru çalışıyor.
+- [x] BFS ve DFS fonksiyonları basit bir test graf'ında çalışıyor.
+- [x] Traversal sırası doğru (BFS → level-order, DFS → depth-order).
+- [x] Kod `feature/ozcan-algorithms` branch'inde ve PR açıldı.
 
 ---
 
@@ -75,10 +75,10 @@ Uygulamanın ana layout'u ve temel bileşenlerin oluşturulması:
 - TypeScript interface tanımları: `INode`, `IEdge`, `IGraphData`, `ISearchResult`.
 
 **Kabul Kriterleri:**
-- [ ] React + TypeScript projesi `npm run dev` ile hatasız başlıyor.
-- [ ] 4 temel bileşen oluşturuldu ve ekranda render ediliyor.
-- [ ] TypeScript interface'leri backend modelleriyle uyumlu şekilde tanımlandı.
-- [ ] Kod `feature/sude-frontend` branch'inde ve PR açıldı.
+- [x] React + TypeScript projesi `npm run dev` ile hatasız başlıyor.
+- [x] 4 temel bileşen oluşturuldu ve ekranda render ediliyor.
+- [x] TypeScript interface'leri backend modelleriyle uyumlu şekilde tanımlandı.
+- [x] Kod `feature/sude-frontend` branch'inde ve PR açıldı. (PR açılmaya hazır)
 
 ---
 
@@ -98,11 +98,11 @@ Sprint 2'de yazılacak endpointlerin sözleşmelerinin önceden belirlenmesi:
 - Swagger üzerinden dokümantasyon.
 
 **Kabul Kriterleri:**
-- [ ] API projesi `dotnet run` ile hatasız başlıyor.
-- [ ] Swagger UI erişilebilir durumda ve en az 2 placeholder endpoint görünüyor.
-- [ ] DTO modelleri ve endpoint sözleşmeleri dokümente edildi.
-- [ ] CORS ayarları frontend'in localhost portunu kabul edecek şekilde yapılandırıldı.
-- [ ] Kod `feature/furkan-infrastructure` branch'inde ve PR açıldı.
+- [x] API projesi `dotnet run` ile hatasız başlıyor.
+- [x] Swagger UI erişilebilir durumda ve en az 2 placeholder endpoint görünüyor.
+- [x] DTO modelleri ve endpoint sözleşmeleri dokümente edildi.
+- [x] CORS ayarları frontend'in localhost portunu kabul edecek şekilde yapılandırıldı.
+- [x] Kod `feature/furkan-infrastructure` branch'inde ve PR açıldı. (PR acilmaya hazir)
 
 ---
 
@@ -122,11 +122,11 @@ Proje genelinde birim test framework'ünün yapılandırılması:
 - Test çalıştırma komutunun (`dotnet test`) doğrulanması.
 
 **Kabul Kriterleri:**
-- [ ] Trie, standart kütüphane kullanılmadan sıfırdan yazıldı.
-- [ ] `Insert`, `Search`, `StartsWith`, `AutoComplete` fonksiyonları çalışıyor.
-- [ ] 100+ kelime ile autocomplete doğru sonuç döndürüyor.
-- [ ] Test projesi oluşturuldu ve en az 10 birim test senaryosu yazıldı.
-- [ ] Kod `feature/isra-optimization` branch'inde ve PR açıldı.
+- [x] Trie, standart kütüphane kullanılmadan sıfırdan yazıldı.
+- [x] `Insert`, `Search`, `StartsWith`, `AutoComplete` fonksiyonları çalışıyor.
+- [x] 100+ kelime ile autocomplete doğru sonuç döndürüyor.
+- [x] Test projesi oluşturuldu ve en az 10 birim test senaryosu yazıldı. (14 test, %100 basarili)
+- [x] Kod `feature/isra-optimization` branch'inde ve PR açıldı. (PR acilmaya hazir)
 
 ---
 
