@@ -31,6 +31,20 @@ SocialGraphProject/
 └── README.md
 ```
 
+## 📌 Ara Rapor (Interim Report) Durumu
+
+Projenin 30.04.2026 tarihli ara rapor teslimi için temel hedeflere (Sprint 1 ve Sprint 0) ulaşılmıştır. İlgili gereksinimler karşılanmış olmakla birlikte rapor henüz son halinde değildir; teslim tarihine kadar geliştirme süreci devam ettiği için ekip üyelerinden rapora yeni eklemeler ve iyileştirmeler gelebilir.
+
+- Standart kütüphane kullanılmadan çekirdek veri yapıları (Hash Table, Queue, Trie) sıfırdan yazılmıştır.
+- Mikroservis mimarisi (API, AI, UI) klasör yapısıyla projeye entegre edilmiştir.
+- Ekip üyeleri arası görev dağılımı yapılmış ve GitHub Issues & Discussions üzerinden mimari kararlar alınarak takım iletişimi sağlanmıştır.
+- **Git ve PR Stratejisi Aktif İşletilmektedir:** Mini sprint adımlarında (örn. Sprint 1.1) her ekip üyesi kendi feature branch'inde geliştirme yapıp `develop` branch'ine PR açmaktadır. Tüm sprint süreci tamamlandığında ise `develop` üzerinden `main` (ana) branch'ine genel bir sürüm birleştirme PR'ı atılmaktadır.
+
+Detaylı teknik rapor, alınan kararlar ve teknoloji yığını bilgileri için lütfen aşağıdaki raporu inceleyiniz:
+👉 **[Ara Rapor (Interim Report) Dosyası İçin Tıklayınız](./Markdowns/Project/Interim_Report.md)**
+
+---
+
 ## Ekip
 
 | Rol | Kişi | Sorumluluk |
