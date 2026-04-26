@@ -122,11 +122,11 @@ Proje genelinde birim test framework'ünün yapılandırılması:
 - Test çalıştırma komutunun (`dotnet test`) doğrulanması.
 
 **Kabul Kriterleri:**
-- [ ] Trie, standart kütüphane kullanılmadan sıfırdan yazıldı.
-- [ ] `Insert`, `Search`, `StartsWith`, `AutoComplete` fonksiyonları çalışıyor.
-- [ ] 100+ kelime ile autocomplete doğru sonuç döndürüyor.
-- [ ] Test projesi oluşturuldu ve en az 10 birim test senaryosu yazıldı.
-- [ ] Kod `feature/isra-optimization` branch'inde ve PR açıldı.
+- [x] Trie, standart kütüphane kullanılmadan sıfırdan yazıldı.
+- [x] `Insert`, `Search`, `StartsWith`, `AutoComplete` fonksiyonları çalışıyor.
+- [x] 100+ kelime ile autocomplete doğru sonuç döndürüyor.
+- [x] Test projesi oluşturuldu ve en az 10 birim test senaryosu yazıldı. (14 test, %100 basarili)
+- [x] Kod `feature/isra-optimization` branch'inde ve PR açıldı. (PR acilmaya hazir)
 
 ---
 

@@ -47,6 +47,13 @@ builder.Services.AddSingleton<CustomHashTable<string, Node>>(provider =>
     return store;
 });
 
+// Trie: Metin tabanli arama ve otomatik tamamlama icin (Isra - Sprint 1.5)
+builder.Services.AddSingleton<CustomTrie>(provider =>
+{
+    var trie = new CustomTrie();
+    return trie;
+});
+
 var app = builder.Build();
 
 // --- Middleware Pipeline ---
