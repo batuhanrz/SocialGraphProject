@@ -33,6 +33,7 @@
 - [x] Ekip içi değerlendirme toplantısında HashTable collision yönetimi ve çözümleri tartışıldı. **(Batuhan)**
 - [x] Mikroservisler arası asenkron veri iletişim protokolleri değerlendirildi ve karara bağlandı. **(Batuhan)**
 - [x] Gelecek sprintlerde referans alınacak mimari tasarım kararları dokümante edildi. **(Batuhan)**
+- [x] Alınan takım kararları projenin geliştirme aşamasında ilgili geliştiriciler tarafından GitHub Issues ve Discussions açılarak resmiyete kavuşturuldu. **(Batuhan, Furkan)**
 
 ## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları
 
@@ -72,3 +73,13 @@
 > Zorunlu veri yapilari (Hash Table, Queue, Trie), Node/Edge modelleri, BFS/DFS iskeletleri,
 > React + TS frontend iskeleti, Web API + Swagger altyapisi ve 14 birim test senaryosu %100 hazir.
 > Sprint 2'ye gecis icin onay verildi.
+
+## SPRINT 2: Property Graph Entegrasyonu ve API Servisleri
+
+### Sprint 2.1: Batuhan (Core Data Engineer) — Adjacency List Tabanli Property Graph
+- [x] Adjacency list tabanli `PropertyGraph` sinifi sifirdan implemente edildi. Ic depolama tamamen `CustomHashTable` ile yapildi (standart kutuphane yasagi tam uyum). **(Batuhan)**
+- [x] 3 dugum turu (User, Photo, Event) ve 4 kenar turu (FRIEND, LIKES, POSTED, ATTENDS) tip dogrulama ile desteklendi. **(Batuhan)**
+- [x] Yonsuz kenarlar (FRIEND) icin cift yonlu adjacency kaydi, yonlu kenarlar (LIKES, POSTED, ATTENDS) icin tek yonlu kayit mekanizmasi kuruldu. **(Batuhan)**
+- [x] `ReaderWriterLockSlim` ile temel read/write lock altyapisi saglandi (Context.md B.1 eszemanlilik gereksinimi). **(Batuhan)**
+- [x] `PropertyGraph` Singleton olarak DI container'a kaydedildi; mevcut Sprint 1 kayitlari (CustomHashTable, CustomTrie) korundu. **(Batuhan)**
+- [x] `dotnet build` 0 hata, `dotnet test` 14/14 test yesil (regresyon yok) ile dogrulandi. **(Batuhan)**

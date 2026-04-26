@@ -81,7 +81,7 @@ Ara rapor tesliminden önce tamamlanması zorunlu olan "ekip içi teknik tartı�
 
 **Kabul Kriterleri:**
 - [x] Ekip içi değerlendirme toplantısında HashTable collision stratejisi ve AI-API asenkron iletişim protokolü tartışılıp karara bağlandı.
-- [ ] Alınan bu takım kararları projenin geliştirme aşamasında (Sprint 1 ve Sprint 2) ilgili geliştiriciler tarafından GitHub Issues üzerinden resmiyete kavuşturuldu. (Şimdilik Beklemede)
+- [x] Alınan bu takım kararları projenin geliştirme aşamasında (Sprint 1 ve Sprint 2) ilgili geliştiriciler tarafından GitHub Issues üzerinden resmiyete kavuşturuldu. (Issue ve Discussion açıldı)
 
 ---
 

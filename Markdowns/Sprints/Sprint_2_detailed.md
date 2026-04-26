@@ -20,10 +20,10 @@
 - Temel read/write lock altyapısı (detaylı optimizasyon Sprint 3'te).
 
 **Kabul Kriterleri:**
-- [ ] PropertyGraph adjacency list tabanlı çalışıyor.
-- [ ] 3 düğüm türü + 4 kenar türü destekleniyor.
-- [ ] Singleton DI kaydı yapıldı, controller'lardan erişim doğrulandı.
-- [ ] PR açıldı (`feature/batuhan-core`).
+- [x] PropertyGraph adjacency list tabanli calisiyor. (AddNode, AddEdge, GetNeighbors, GetEdgesByType, RemoveNode, RemoveEdge)
+- [x] 3 dugum turu + 4 kenar turu destekleniyor. (User/Photo/Event + FRIEND/LIKES/POSTED/ATTENDS)
+- [x] Singleton DI kaydi yapildi, controller'lardan erisim dogrulandi. (Program.cs'de PropertyGraph Singleton kayitli)
+- [x] PR acildi (`feature/batuhan-core`).
 
 ---
 
