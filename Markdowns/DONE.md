@@ -58,3 +58,17 @@
 - [x] Frontend interface'leriyle birebir uyumlu DTO modelleri (NodeDto, EdgeDto, SearchRequestDto, TraversalResultDto) olusturuldu. **(Furkan)**
 - [x] NodesController, SearchController ve TraversalController ile toplam 5 placeholder endpoint Swagger uzerinde dokumante edildi. **(Furkan)**
 - [x] CORS ayarlari frontend'in localhost portunu kabul edecek sekilde yapilandirildi. **(Furkan)**
+
+### Sprint 1.5: Isra (Testing & Analysis Specialist) — Custom Trie + Test Altyapisi
+- [x] `CustomTrie` ve `TrieNode` sifirdan implemente edildi (cocuk dugumler icin CustomHashTable kullanildi). **(Isra)**
+- [x] Insert, Search, StartsWith ve AutoComplete operasyonlari case-insensitive olarak yazildi. **(Isra)**
+- [x] xUnit test projesi (`SocialGraph.Tests`) olusturuldu ve API projesine referans eklendi. **(Isra)**
+- [x] CustomHashTable, CustomQueue ve CustomTrie icin toplam 14 birim test senaryosu yazildi ve %100 gecti. **(Isra)**
+
+---
+
+> **SPRINT 1 CHECKPOINT: TAMAMLANDI**
+> Tum alt gorevler (1.1 - 1.5) basariyla tamamlandi. 10/10 kabul kriteri karsilandi.
+> Zorunlu veri yapilari (Hash Table, Queue, Trie), Node/Edge modelleri, BFS/DFS iskeletleri,
+> React + TS frontend iskeleti, Web API + Swagger altyapisi ve 14 birim test senaryosu %100 hazir.
+> Sprint 2'ye gecis icin onay verildi.
