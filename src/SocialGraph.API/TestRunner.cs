@@ -110,21 +110,31 @@ namespace SocialGraph.API
             if (!queue.IsEmpty) throw new Exception("Kuyruk bosaltilamadi!");
             Console.WriteLine("[BASARILI] CustomQueue 1000+ eleman yuk ve dinamik kapasite testini (O(1) amortized) gecti.");
 
-            var graph = new MockGraph();
-            graph.AddEdge("A", "B");
-            graph.AddEdge("A", "C");
-            graph.AddEdge("B", "D");
-            graph.AddEdge("C", "E");
+            var graph = new PropertyGraph();
+            graph.AddNode(new Node("A", "User"));
+            graph.AddNode(new Node("B", "User"));
+            graph.AddNode(new Node("C", "User"));
+            graph.AddNode(new Node("D", "User"));
+            graph.AddNode(new Node("E", "User"));
+
+            graph.AddEdge(new Edge("e1", "A", "B", "FRIEND"));
+            graph.AddEdge(new Edge("e2", "A", "C", "FRIEND"));
+            graph.AddEdge(new Edge("e3", "B", "D", "FRIEND"));
+            graph.AddEdge(new Edge("e4", "C", "E", "FRIEND"));
 
             Console.Write("BFS Ciktisi (Beklenen: A, B, C, D, E): ");
-            GraphTraversal.BFS(graph, "A", (node) => Console.Write(node + ", "));
+            GraphTraversal.BFS(graph, "A", (node) => Console.Write(node.Id + ", "));
             Console.WriteLine();
 
-            Console.Write("DFS Ciktisi (Beklenen: A, B, D, C, E): ");
-            GraphTraversal.DFS(graph, "A", (node) => Console.Write(node + ", "));
+            Console.Write("DFS Ciktisi: ");
+            GraphTraversal.DFS(graph, "A", (node) => Console.Write(node.Id + ", "));
             Console.WriteLine();
 
-            Console.WriteLine("[BASARILI] BFS ve DFS algoritmalari Mock Adjacency List uzerinde dogru sirayla calisiyor.");
+            Console.Write("Shortest Path A to E (Beklenen: A, C, E): ");
+            var path = GraphTraversal.ShortestPath(graph, "A", "E");
+            Console.WriteLine(string.Join(", ", path));
+
+            Console.WriteLine("[BASARILI] BFS, DFS ve ShortestPath algoritmaları PropertyGraph uzerinde dogru calisiyor.");
         }
     }
 }

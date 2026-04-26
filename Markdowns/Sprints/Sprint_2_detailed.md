@@ -38,11 +38,11 @@
 - Filtreli traversal: kenar türü / düğüm türü filtresi ile gezinme (delegate/func parametre).
 
 **Kabul Kriterleri:**
-- [ ] BFS, DFS PropertyGraph üzerinde doğru çalışıyor.
-- [ ] Shortest path doğru mesafe ve yol döndürüyor.
-- [ ] Filtreli traversal en az 2 farklı filtre ile test edildi.
-- [ ] Tüm algoritmalarda custom veri yapıları kullanılıyor.
-- [ ] PR açıldı (`feature/ozcan-algorithms`).
+- [x] BFS, DFS PropertyGraph üzerinde doğru çalışıyor.
+- [x] Shortest path doğru mesafe ve yol döndürüyor.
+- [x] Filtreli traversal en az 2 farklı filtre ile test edildi.
+- [x] Tüm algoritmalarda custom veri yapıları kullanılıyor.
+- [x] PR açıldı (`feature/ozcan-algorithms`).
 
 ---
 

@@ -31,10 +31,10 @@ Proje baslangicinda ve Sprint 1 sirasinda, ekibin karsilastigi mimari zorluklar 
 
 ## 4. Kod Entegrasyonu ve Gelecek Adimlar
 
-Su ana kadar yapilan Sprint 1 ve Sprint 2.1 entegrasyonlarinda:
+Su ana kadar yapilan Sprint 1, Sprint 2.1 ve Sprint 2.2 entegrasyonlarinda:
 - Cekirdek `Node` ve `Edge` siniflari baglandi.
 - Grafin temel iskeleti olan `PropertyGraph` adjacency list tabanli olarak `develop` branch'ine basariyla merge edildi.
-- `CustomQueue` kullanilarak BFS/DFS iskeletleri hazirlandi.
+- `CustomQueue` kullanılarak BFS/DFS algoritmaları ve iki düğüm arası en kısa yolu bulan `ShortestPath` fonksiyonu esnek filtreleme yetenekleriyle birlikte `PropertyGraph` sistemine tam entegre edildi.
 - API ve UI projeleri ayaga kaldirildi ve aralarindaki CORS yapilandirmalari tamamlandi.
 
 **Gelecek Adim (Sprint 2 Devami & Sprint 3):**
