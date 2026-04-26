@@ -89,3 +89,9 @@
 - [x] BFS algoritması kullanılarak iki düğüm arasındaki en kısa yolu bulan ve düğüm ID'lerini `string[]` olarak döndüren `ShortestPath` metodu eklendi. **(Özcan)**
 - [x] Tüm algoritmalara düğüm (`Func<Node, bool>`) ve kenar (`Func<Edge, bool>`) seviyesinde dinamik filtreleme yeteneği kazandırıldı. **(Özcan)**
 - [x] Yol bulma (parent takibi) ve ziyaret edilen düğüm (visited set) operasyonları için `%100` oranında `CustomHashTable` ve `CustomQueue` kullanılarak standart kütüphane yasağı korundu. **(Özcan)**
+
+### Sprint 2.3: Fatma Sude (Frontend Lead) — API Servis Katmanı ve Arama Arayüzü
+- [x] Backend API servisiyle haberleşecek `apiService.ts` dosyası, `axios` yerine native `fetch` kullanılarak TypeScript tipleriyle projeye kazandırıldı. **(Sude)**
+- [x] `nodeService.ts` ve `traversalService.ts` dosyaları oluşturulup, ilgili API çağrıları (CRUD ve algoritmalar) modüler hale getirildi. **(Sude)**
+- [x] `SearchBar.tsx` bileşenine asenkron veri çeken ve sonuçları dropdown şeklinde sunan bir "Autocomplete" mekanizması eklendi. **(Sude)**
+- [x] Seçilen düğümlerin detay özelliklerini göstermek üzere `ResultPanel.tsx` bileşeni güncellendi ve Redux kullanmadan `AppLayout` üzerinden state yönetimi sağlandı. **(Sude)**

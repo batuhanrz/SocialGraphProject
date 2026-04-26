@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchBar from './SearchBar';
 import GraphCanvas from './GraphCanvas';
 import ResultPanel from './ResultPanel';
 
 const AppLayout: React.FC = () => {
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
       {/* Sidebar */}
@@ -25,9 +27,9 @@ const AppLayout: React.FC = () => {
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>v1.0 • Explorer Mode</p>
         </div>
 
-        <SearchBar />
+        <SearchBar onNodeSelect={setSelectedNodeId} />
 
-        <ResultPanel />
+        <ResultPanel selectedNodeId={selectedNodeId} />
 
         <footer style={{ marginTop: 'auto', fontSize: '0.75rem', color: 'var(--text-secondary)', opacity: 0.5 }}>
           Built with React + TypeScript • Team SocialGraph
