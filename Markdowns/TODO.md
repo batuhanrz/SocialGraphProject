@@ -17,9 +17,8 @@
 ### Sprint 2.1: Batuhan — Adjacency List Tabanli Property Graph [TAMAMLANDI]
 > PropertyGraph sinifi, DI kaydi ve dogrulama tamamlandi.
 
-### Sprint 2.2: Ozcan — Graf Algoritmalari Entegrasyonu [BEKLEMEDE]
-- [ ] BFS/DFS'in PropertyGraph'a uyarlanmasi
-- [ ] Shortest path + filtreli traversal
+### Sprint 2.2: Ozcan — Graf Algoritmalarinin Entegrasyonu [TAMAMLANDI]
+> PropertyGraph entegrasyonlu BFS, DFS ve ShortestPath basariyla implemente edildi.
 
 ### Sprint 2.3: Sude — API Servis Katmani + Arama Arayuzu [BEKLEMEDE]
 - [ ] Frontend API servis katmani (apiService, nodeService, traversalService)

@@ -83,3 +83,9 @@
 - [x] `ReaderWriterLockSlim` ile temel read/write lock altyapisi saglandi (Context.md B.1 eszemanlilik gereksinimi). **(Batuhan)**
 - [x] `PropertyGraph` Singleton olarak DI container'a kaydedildi; mevcut Sprint 1 kayitlari (CustomHashTable, CustomTrie) korundu. **(Batuhan)**
 - [x] `dotnet build` 0 hata, `dotnet test` 14/14 test yesil (regresyon yok) ile dogrulandi. **(Batuhan)**
+
+### Sprint 2.2: Özcan (Algorithm Master) — Graf Algoritmaları Entegrasyonu
+- [x] `GraphTraversal` sınıfındaki BFS ve DFS metotları, `MockGraph` yerine `PropertyGraph` üzerinde çalışacak şekilde güncellendi. **(Özcan)**
+- [x] BFS algoritması kullanılarak iki düğüm arasındaki en kısa yolu bulan ve düğüm ID'lerini `string[]` olarak döndüren `ShortestPath` metodu eklendi. **(Özcan)**
+- [x] Tüm algoritmalara düğüm (`Func<Node, bool>`) ve kenar (`Func<Edge, bool>`) seviyesinde dinamik filtreleme yeteneği kazandırıldı. **(Özcan)**
+- [x] Yol bulma (parent takibi) ve ziyaret edilen düğüm (visited set) operasyonları için `%100` oranında `CustomHashTable` ve `CustomQueue` kullanılarak standart kütüphane yasağı korundu. **(Özcan)**
