@@ -51,5 +51,26 @@ namespace SocialGraph.Tests
 
             Assert.True(queue.IsEmpty);
         }
+
+        [Fact]
+        public void Peek_ShouldReturnFirstElementWithoutRemovingIt()
+        {
+            var queue = new CustomQueue<string>();
+            queue.Enqueue("A");
+            queue.Enqueue("B");
+
+            Assert.Equal("A", queue.Peek());
+            Assert.Equal(2, queue.Count); // Count degismemeli
+
+            queue.Dequeue();
+            Assert.Equal("B", queue.Peek());
+        }
+
+        [Fact]
+        public void Peek_OnEmptyQueue_ShouldThrowException()
+        {
+            var queue = new CustomQueue<string>();
+            Assert.Throws<InvalidOperationException>(() => queue.Peek());
+        }
     }
 }

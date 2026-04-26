@@ -30,7 +30,7 @@ namespace SocialGraph.API.DataStructures
         /// Kelimeyi Trie'ye ekler. Buyuk/kucuk harf duyarsizdir.
         /// Karmasiklik: O(m) — m: kelime uzunlugu
         /// </summary>
-        public void Insert(string word)
+        public void Insert(string word, string nodeId = null)
         {
             if (string.IsNullOrEmpty(word)) return;
 
@@ -53,6 +53,18 @@ namespace SocialGraph.API.DataStructures
             {
                 current.IsEndOfWord = true;
                 _wordCount++;
+            }
+
+            // Testlerin geriye donuk calismasi icin (Eger nodeId verilmemisse, kelimenin kendisini ID yap)
+            if (string.IsNullOrEmpty(nodeId))
+            {
+                nodeId = word;
+            }
+
+            // Dugum ID'sini bu kelimeye bagla
+            if (!current.NodeIds.ContainsKey(nodeId))
+            {
+                current.NodeIds.Put(nodeId, true);
             }
         }
 
@@ -132,7 +144,15 @@ namespace SocialGraph.API.DataStructures
 
             if (node.IsEndOfWord)
             {
-                results.Add(currentWord);
+                // Artik kelimeleri degil, kelimenin isaret ettigi dugum ID'lerini donduruyoruz.
+                foreach (var kvp in node.NodeIds)
+                {
+                    if (results.Count >= maxResults) break;
+                    if (!results.Contains(kvp.Key))
+                    {
+                        results.Add(kvp.Key);
+                    }
+                }
             }
 
             foreach (var kvp in node.Children)

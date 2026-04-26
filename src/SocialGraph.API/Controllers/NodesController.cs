@@ -14,10 +14,12 @@ namespace SocialGraph.API.Controllers
     public class NodesController : ControllerBase
     {
         private readonly PropertyGraph _graph;
+        private readonly CustomTrie _trie;
 
-        public NodesController(PropertyGraph graph)
+        public NodesController(PropertyGraph graph, CustomTrie trie)
         {
             _graph = graph;
+            _trie = trie;
         }
 
         /// <summary>
@@ -76,6 +78,62 @@ namespace SocialGraph.API.Controllers
             }
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Toplu sekilde dugum ekler (Seed Data icin).
+        /// POST /api/nodes/batch
+        /// </summary>
+        [HttpPost("batch")]
+        public ActionResult AddNodesBatch([FromBody] List<NodeDto> nodes)
+        {
+            int addedCount = 0;
+            foreach (var dto in nodes)
+            {
+                var node = new Node(dto.Id, dto.Type);
+                foreach (var prop in dto.Properties)
+                {
+                    node.Properties.Put(prop.Key, prop.Value);
+                }
+
+                _graph.AddNode(node);
+                addedCount++;
+
+                // Arama yapilabilmesi icin isim/basligi Trie'a ekle
+                if (dto.Properties.TryGetValue("Name", out var nameVal) && nameVal != null)
+                {
+                    _trie.Insert(nameVal.ToString()!, node.Id);
+                }
+                else if (dto.Properties.TryGetValue("Title", out var titleVal) && titleVal != null)
+                {
+                    _trie.Insert(titleVal.ToString()!, node.Id);
+                }
+            }
+
+            return Ok(new { Message = $"{addedCount} dugum basariyla eklendi." });
+        }
+
+        /// <summary>
+        /// Toplu sekilde kenar ekler (Seed Data icin).
+        /// POST /api/edges/batch
+        /// </summary>
+        [HttpPost("~/api/edges/batch")]
+        public ActionResult AddEdgesBatch([FromBody] List<EdgeDto> edges)
+        {
+            int addedCount = 0;
+            foreach (var dto in edges)
+            {
+                var edge = new Edge(dto.Id, dto.SourceId, dto.TargetId, dto.RelationType, dto.IsDirected);
+                foreach (var prop in dto.Properties)
+                {
+                    edge.Properties.Put(prop.Key, prop.Value);
+                }
+
+                _graph.AddEdge(edge);
+                addedCount++;
+            }
+
+            return Ok(new { Message = $"{addedCount} kenar basariyla eklendi." });
         }
 
         private static NodeDto MapToDto(Node node)
