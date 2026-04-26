@@ -78,7 +78,7 @@ Uygulamanın ana layout'u ve temel bileşenlerin oluşturulması:
 - [x] React + TypeScript projesi `npm run dev` ile hatasız başlıyor.
 - [x] 4 temel bileşen oluşturuldu ve ekranda render ediliyor.
 - [x] TypeScript interface'leri backend modelleriyle uyumlu şekilde tanımlandı.
-- [x] Kod `feature/sude-frontend` branch'inde ve PR açıldı. (PR açılmaya hazır)
+- [x] Kod `feature/sude-frontend` branch'inde ve PR açıldı.
 
 ---
 
@@ -102,7 +102,7 @@ Sprint 2'de yazılacak endpointlerin sözleşmelerinin önceden belirlenmesi:
 - [x] Swagger UI erişilebilir durumda ve en az 2 placeholder endpoint görünüyor.
 - [x] DTO modelleri ve endpoint sözleşmeleri dokümente edildi.
 - [x] CORS ayarları frontend'in localhost portunu kabul edecek şekilde yapılandırıldı.
-- [x] Kod `feature/furkan-infrastructure` branch'inde ve PR açıldı. (PR acilmaya hazir)
+- [x] Kod `feature/furkan-infrastructure` branch'inde ve PR açıldı.
 
 ---
 
@@ -126,7 +126,7 @@ Proje genelinde birim test framework'ünün yapılandırılması:
 - [x] `Insert`, `Search`, `StartsWith`, `AutoComplete` fonksiyonları çalışıyor.
 - [x] 100+ kelime ile autocomplete doğru sonuç döndürüyor.
 - [x] Test projesi oluşturuldu ve en az 10 birim test senaryosu yazıldı. (14 test, %100 basarili)
-- [x] Kod `feature/isra-optimization` branch'inde ve PR açıldı. (PR acilmaya hazir)
+- [x] Kod `feature/isra-optimization` branch'inde ve PR açıldı.
 
 ---
 

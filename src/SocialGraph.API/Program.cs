@@ -54,6 +54,10 @@ builder.Services.AddSingleton<CustomTrie>(provider =>
     return trie;
 });
 
+// PropertyGraph: Adjacency list tabanli cekirdek graf yapisi (Batuhan - Sprint 2.1)
+// Tum dugum ve kenar verisi bu singleton instance uzerinde saklanir.
+builder.Services.AddSingleton<PropertyGraph>();
+
 var app = builder.Build();
 
 // --- Middleware Pipeline ---

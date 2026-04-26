@@ -57,3 +57,19 @@
 | 3 | User, Photo ve Event türündeki property'si içerisinde Custom Hash Table barındıran `Node` nesnesi ve aralarındaki bağlantıları kuran `Edge` nesnesi tasarlandı. | 18.04.2026 |
 | 4 | Terminal üzerinden 2500 adet rastgele elemanla yük testi (load-test) yapılarak O(1) maliyetli arama/ekleme ve Rehashing mekanizması valide edildi. | 18.04.2026 |
 | 5 | Geliştirilen Sprint 1.1 kodları GitHub üzerinden PR (Pull Request) ile `develop` aktarımı için sunuldu. | 19.04.2026 |
+
+## SPRINT 2: Property Graph Entegrasyonu ve API Servisleri
+
+### Sprint 2.1: Adjacency List Tabanli Property Graph + DI Kaydi [TAMAMLANDI]
+**Rol Hedefi:** Mevcut veri yapilarini (CustomHashTable, Node, Edge) birlestiren cekirdek PropertyGraph sinifini adjacency list tabaniyla olusturmak ve DI container'a kaydetmek.
+
+| # | Tamamlanan Gorev Ozeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `PropertyGraph` sinifi sifirdan implemente edildi. Adjacency list yapisi tamamen `CustomHashTable<string, CustomHashTable<string, Edge>>` ile kuruldu. Standart kutuphane yasagina tam uyum saglandi. | 26.04.2026 |
+| 2 | 3 dugum turu (User, Photo, Event) ve 4 kenar turu (FRIEND, LIKES, POSTED, ATTENDS) tip dogrulama mekanizmasi ile desteklendi. Gecersiz tiplerde `ArgumentException` firlatilir. | 26.04.2026 |
+| 3 | Yonsuz kenarlar (FRIEND) icin cift yonlu adjacency kaydi (A->B ve B->A), yonlu kenarlar (LIKES, POSTED, ATTENDS) icin tek yonlu kayit mekanizmasi implemente edildi. | 26.04.2026 |
+| 4 | `ReaderWriterLockSlim` ile temel read/write lock altyapisi kuruldu. Okuma islemleri read lock, yazma islemleri write lock kullanir. (Context.md B.1 eszemanlilik gereksinimi) | 26.04.2026 |
+| 5 | `AddNode`, `AddEdge`, `GetNode`, `GetNeighbors`, `GetEdgesByType`, `RemoveNode`, `RemoveEdge`, `GetAllNodes`, `GetAllEdges` operasyonlari Big-O XML yorum dokumantasyonu ile yazildi. | 26.04.2026 |
+| 6 | PropertyGraph `Program.cs`'de Singleton olarak DI container'a kaydedildi. Sprint 1 kayitlari (CustomHashTable, CustomTrie) geri uyumluluk icin korundu. | 26.04.2026 |
+| 7 | `dotnet build` 0 hata ve `dotnet test` 14/14 test basarili (regresyon yok) ile dogrulama tamamlandi. | 26.04.2026 |
+| 8 | Projenin `Interim_Report.md` dosyasi genisletildi ve `README.md` ana sayfasina Ara Rapor durum bildirimi ile yonlendirme linki eklendi. | 26.04.2026 |

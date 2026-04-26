@@ -16,4 +16,16 @@
 
 ---
 
+## Sprint 2 Katkıları (Property Graph ve Gelişmiş Algoritmalar)
+
+### Yapılan İşlemler (Sprint 2.2)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `GraphTraversal.cs` içerisindeki `BFS` ve `DFS` metotları `PropertyGraph` veri yapısını destekleyecek şekilde güncellendi. | 26.04.2026 |
+| 2 | BFS ve DFS algoritmalarına, esnek arama senaryoları için düğüm (`Node`) ve kenar (`Edge`) bazlı filtreleme yeteneği (`Func<T, bool>`) kazandırıldı. | 26.04.2026 |
+| 3 | İki düğüm arasındaki en kısa yolu (kenar sayısına göre) bulan `ShortestPath` algoritması BFS kullanılarak sıfırdan yazıldı. Yol takibi için `CustomHashTable` kullanıldı. | 26.04.2026 |
+| 4 | Tüm güncellenen metotların regresyon testleri `TestRunner.cs` üzerinden çalıştırılıp doğrulandı. | 26.04.2026 |
+
+---
+
 *(Diğer sprintler geldikçe eklenecektir...)*
