@@ -113,10 +113,10 @@
 | PropertyGraph | AddNode, AddEdge, GetNeighbors, silme, izole düğüm |
 
 **Kabul Kriterleri:**
-- [ ] DataGenerator farklı boyutlarda graf üretebiliyor.
-- [ ] Seed data başarıyla yükleniyor.
-- [ ] 20+ birim test yazıldı ve hepsi geçiyor.
-- [ ] PR açıldı (`feature/isra-optimization`).
+- [x] DataGenerator farklı boyutlarda graf üretebiliyor.
+- [x] Seed data başarıyla yükleniyor.
+- [x] 20+ birim test yazıldı ve hepsi geçiyor.
+- [x] PR açıldı (`feature/isra-optimization`).
 
 ---
 
@@ -124,11 +124,11 @@
 
 | # | Kriter | Doğrulama |
 |---|--------|-----------|
-| 1 | PropertyGraph adjacency list tabanlı, 3 tür düğüm + 4 tür kenar | CRUD test |
-| 2 | BFS, DFS, shortest path, filtreli traversal fonksiyonel | 3+ sorgu senaryosu |
-| 3 | 7 REST API endpoint'i çalışır durumda | Swagger test |
-| 4 | Frontend API'ye bağlanıyor, arama çalışıyor | Tarayıcı demo |
-| 5 | Sentetik veri motoru parametrik çalışıyor | 3 farklı topoloji |
-| 6 | 20+ birim test yazıldı ve geçiyor | `dotnet test` |
-| 7 | AI Worker iskelet yapısı oluşturuldu | Proje hatasız başlıyor |
-| 8 | Her kişi kendi branch'inde, PR açtı | GitHub kontrolü |
+| 1 | PropertyGraph adjacency list tabanlı, 3 tür düğüm + 4 tür kenar | [x] CRUD test |
+| 2 | BFS, DFS, shortest path, filtreli traversal fonksiyonel | [x] 3+ sorgu senaryosu |
+| 3 | 7 REST API endpoint'i çalışır durumda | [x] Swagger test |
+| 4 | Frontend API'ye bağlanıyor, arama çalışıyor | [x] Tarayıcı demo |
+| 5 | Sentetik veri motoru parametrik çalışıyor | [x] 3 farklı topoloji |
+| 6 | 20+ birim test yazıldı ve geçiyor | [x] `dotnet test` |
+| 7 | AI Worker iskelet yapısı oluşturuldu | [x] Proje hatasız başlıyor |
+| 8 | Her kişi kendi branch'inde, PR açtı | [x] GitHub kontrolü |
