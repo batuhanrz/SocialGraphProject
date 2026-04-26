@@ -37,6 +37,7 @@ Su ana kadar yapilan Sprint 1, Sprint 2.1 ve Sprint 2.2 entegrasyonlarinda:
 - `CustomQueue` kullanılarak BFS/DFS algoritmaları ve iki düğüm arası en kısa yolu bulan `ShortestPath` fonksiyonu esnek filtreleme yetenekleriyle birlikte `PropertyGraph` sistemine tam entegre edildi.
 - API ve UI projeleri ayaga kaldirildi ve aralarindaki CORS yapilandirmalari tamamlandi.
 - Frontend tarafında native `fetch` destekli API servis modülleri oluşturuldu; arama ve sonuç listeleme (Autocomplete UI) bileşenleri state yönetimleriyle birlikte backend etkileşimine hazır hale getirildi.
+- API uçları (Nodes, Search, Traversal) mock verilerden arındırılarak gerçek `PropertyGraph` ve `CustomTrie` sınıflarına entegre edildi. Ayrıca bağımsız çalışacak `SocialGraph.AI` Worker projesi kuruldu.
 
 **Gelecek Adim (Sprint 2 Devami & Sprint 3):**
 Mevcut PropertyGraph uzerine gercek zamanli sentetik veri akisinin baglanmasi (AI Worker tarafindan) ve frontend arayuzunden gelen arama (Trie tabanli) ve gezinti (BFS/DFS tabanli) isteklerinin REST API uzerinden PropertyGraph'a entegre edilmesidir. Eslik eden read/write lock (eszamanlilik) optimizasyonlari saglanacaktir.

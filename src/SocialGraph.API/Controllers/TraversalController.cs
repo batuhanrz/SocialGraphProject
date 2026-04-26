@@ -1,58 +1,77 @@
 using Microsoft.AspNetCore.Mvc;
-using SocialGraph.API.DTOs;
+using SocialGraph.API.DataStructures;
+using SocialGraph.API.Algorithms;
 
 namespace SocialGraph.API.Controllers
 {
     /// <summary>
-    /// Graf traversal (BFS/DFS) islemleri icin API endpoint'leri.
-    /// Sprint 2'de gercek graf entegrasyonu yapilacaktir.
+    /// Graf traversal (BFS/DFS/ShortestPath) islemleri icin API endpoint'leri.
+    /// Sude'nin frontend kodlariyla uyumlu olmasi adina HTTP GET kullanilmistir.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class TraversalController : ControllerBase
     {
+        private readonly PropertyGraph _graph;
+
+        public TraversalController(PropertyGraph graph)
+        {
+            _graph = graph;
+        }
+
         /// <summary>
         /// BFS (Genislik Oncelikli Arama) calistirir.
-        /// POST /api/traversal/bfs
+        /// GET /api/traversal/bfs?startNodeId=...
         /// </summary>
-        [HttpPost("bfs")]
-        public ActionResult<TraversalResultDto> RunBfs([FromBody] TraversalRequestDto request)
+        [HttpGet("bfs")]
+        public ActionResult<IEnumerable<string>> RunBfs([FromQuery] string startNodeId)
         {
-            // Placeholder: Sprint 2'de gercek Property Graph uzerinde calisacak
-            var result = new TraversalResultDto
-            {
-                StartNodeId = request.StartNodeId,
-                Algorithm = "BFS",
-                VisitedNodeIds = new[] { request.StartNodeId, "placeholder-node-1", "placeholder-node-2" }
-            };
+            if (string.IsNullOrWhiteSpace(startNodeId))
+                return BadRequest("startNodeId gereklidir.");
 
-            return Ok(result);
+            if (_graph.GetNode(startNodeId) == null)
+                return NotFound($"Dugum bulunamadi: {startNodeId}");
+
+            var visitedIds = new List<string>();
+            GraphTraversal.BFS(_graph, startNodeId, node => visitedIds.Add(node.Id));
+
+            return Ok(visitedIds);
         }
 
         /// <summary>
         /// DFS (Derinlik Oncelikli Arama) calistirir.
-        /// POST /api/traversal/dfs
+        /// GET /api/traversal/dfs?startNodeId=...
         /// </summary>
-        [HttpPost("dfs")]
-        public ActionResult<TraversalResultDto> RunDfs([FromBody] TraversalRequestDto request)
+        [HttpGet("dfs")]
+        public ActionResult<IEnumerable<string>> RunDfs([FromQuery] string startNodeId)
         {
-            // Placeholder: Sprint 2'de gercek Property Graph uzerinde calisacak
-            var result = new TraversalResultDto
-            {
-                StartNodeId = request.StartNodeId,
-                Algorithm = "DFS",
-                VisitedNodeIds = new[] { request.StartNodeId, "placeholder-node-3", "placeholder-node-4" }
-            };
+            if (string.IsNullOrWhiteSpace(startNodeId))
+                return BadRequest("startNodeId gereklidir.");
 
-            return Ok(result);
+            if (_graph.GetNode(startNodeId) == null)
+                return NotFound($"Dugum bulunamadi: {startNodeId}");
+
+            var visitedIds = new List<string>();
+            GraphTraversal.DFS(_graph, startNodeId, node => visitedIds.Add(node.Id));
+
+            return Ok(visitedIds);
         }
-    }
 
-    /// <summary>
-    /// Traversal istegi icin request modeli.
-    /// </summary>
-    public class TraversalRequestDto
-    {
-        public string StartNodeId { get; set; } = string.Empty;
+        /// <summary>
+        /// BFS kullanarak iki dugum arasi en kisa yolu bulur.
+        /// GET /api/traversal/shortestpath?startNodeId=...&targetNodeId=...
+        /// </summary>
+        [HttpGet("shortestpath")]
+        public ActionResult<IEnumerable<string>> RunShortestPath([FromQuery] string startNodeId, [FromQuery] string targetNodeId)
+        {
+            if (string.IsNullOrWhiteSpace(startNodeId) || string.IsNullOrWhiteSpace(targetNodeId))
+                return BadRequest("startNodeId ve targetNodeId gereklidir.");
+
+            if (_graph.GetNode(startNodeId) == null || _graph.GetNode(targetNodeId) == null)
+                return NotFound("Kaynak veya hedef dugum bulunamadi.");
+
+            var path = GraphTraversal.ShortestPath(_graph, startNodeId, targetNodeId);
+            return Ok(path);
+        }
     }
 }

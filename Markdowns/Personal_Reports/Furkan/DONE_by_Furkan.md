@@ -18,4 +18,14 @@
 
 ---
 
+## Sprint 2 Katkıları (API Entegrasyonu ve Worker Altyapısı)
+
+### Yapılan İşlemler (Sprint 2.4)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `NodesController.cs` güncellendi: Tüm düğümler ve kenarlar sahte veri yerine `PropertyGraph` üzerinden getirilmeye başlandı. | 26.04.2026 |
+| 2 | `SearchController.cs` güncellendi: Frontend ile tam uyum için `/api/search/autocomplete` ucu yazılarak `CustomTrie` aramasına bağlandı. | 26.04.2026 |
+| 3 | `TraversalController.cs` güncellendi: `BFS`, `DFS` ve `ShortestPath` uçları `POST` yerine frontend dostu `GET` yapısıyla `GraphTraversal` algoritmasına bağlandı. | 26.04.2026 |
+| 4 | `SocialGraph.AI` projesi `.NET Worker Service` formatında oluşturularak her 15 saniyede bir log atan iskelet mekanizması (`BackgroundService`) kuruldu. | 26.04.2026 |
+
 *(Diger sprintler geldikce eklenecektir...)*

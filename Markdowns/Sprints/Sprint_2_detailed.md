@@ -75,11 +75,11 @@
 |----------|--------|----------|
 | `/api/nodes` | GET | Tüm düğümleri listele |
 | `/api/nodes/{id}` | GET | Düğüm detayı (Hash Table O(1)) |
-| `/api/nodes/search?query=` | GET | Trie ile metin arama |
-| `/api/edges/{nodeId}` | GET | Düğümün kenarlarını listele |
-| `/api/traversal/bfs` | POST | BFS traversal |
-| `/api/traversal/dfs` | POST | DFS traversal |
-| `/api/traversal/shortest-path` | POST | En kısa yol |
+| `/api/nodes/search?query=` | GET | Trie ile metin arama (Sude uyumu: `/api/search/autocomplete`) |
+| `/api/nodes/{id}/edges` | GET | Düğümün kenarlarını listele |
+| `/api/traversal/bfs` | GET | BFS traversal |
+| `/api/traversal/dfs` | GET | DFS traversal |
+| `/api/traversal/shortestpath` | GET | En kısa yol |
 
 - Controller → Service → PropertyGraph katmanlı mimari.
 
@@ -89,10 +89,10 @@
 - `appsettings.json` konfigürasyonu.
 
 **Kabul Kriterleri:**
-- [ ] 7 endpoint Swagger'dan test edilebiliyor.
-- [ ] Doğru HTTP status code'lar dönüyor.
-- [ ] AI Worker projesi hatasız başlıyor.
-- [ ] PR açıldı (`feature/furkan-infrastructure`).
+- [x] 7 endpoint Swagger'dan test edilebiliyor.
+- [x] Doğru HTTP status code'lar dönüyor.
+- [x] AI Worker projesi hatasız başlıyor.
+- [x] PR açıldı (`feature/furkan-infrastructure`).
 
 ---
 
