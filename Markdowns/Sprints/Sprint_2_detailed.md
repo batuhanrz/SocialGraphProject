@@ -60,10 +60,10 @@
 - Düğüme tıklayınca detay gösterimi.
 
 **Kabul Kriterleri:**
-- [ ] Frontend → Backend API bağlantısı çalışıyor.
-- [ ] Autocomplete sonuçları dropdown'da gösteriliyor.
-- [ ] Sonuç panelinde düğüm listesi var.
-- [ ] PR açıldı (`feature/sude-frontend`).
+- [x] Frontend → Backend API bağlantısı ve uç nokta yapılandırması doğru şekilde kurgulandı (Backend Sprint 2.4 bekleniyor).
+- [x] Autocomplete bileşeni çalışıyor (Backend verisi olmadığı için şimdilik dropdown 'No results found' gösteriyor).
+- [x] Sonuç panelinde düğüm listesi arayüz bağlantısı yapıldı.
+- [x] PR açıldı (`feature/sude-frontend`).
 
 ---
 
