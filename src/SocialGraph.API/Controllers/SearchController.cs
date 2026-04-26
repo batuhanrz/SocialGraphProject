@@ -1,37 +1,61 @@
 using Microsoft.AspNetCore.Mvc;
 using SocialGraph.API.DTOs;
+using SocialGraph.API.DataStructures;
 
 namespace SocialGraph.API.Controllers
 {
     /// <summary>
     /// Metin tabanli arama islemleri icin API endpoint'leri.
-    /// Sprint 2'de Trie entegrasyonu yapilacaktir.
+    /// CustomTrie kullanilarak PropertyGraph uzerinde arama yapilir.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class SearchController : ControllerBase
     {
-        /// <summary>
-        /// Metin tabanli dugum arama.
-        /// GET /api/search?query=Fatma&maxResults=10
-        /// </summary>
-        [HttpGet]
-        public ActionResult<List<NodeDto>> Search([FromQuery] string query = "", [FromQuery] int maxResults = 10)
+        private readonly CustomTrie _trie;
+        private readonly PropertyGraph _graph;
+
+        public SearchController(CustomTrie trie, PropertyGraph graph)
         {
-            // Placeholder: Sprint 2'de Trie + Hash Table entegrasyonu yapilacak
-            var results = new List<NodeDto>
+            _trie = trie;
+            _graph = graph;
+        }
+
+        /// <summary>
+        /// Trie uzerinde prefix (autocomplete) aramasi yapar.
+        /// GET /api/search/autocomplete?query=...
+        /// </summary>
+        [HttpGet("autocomplete")]
+        public ActionResult<List<SearchResultDto>> AutoComplete([FromQuery] string query = "")
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return Ok(new List<SearchResultDto>());
+
+            // Trie uzerinden autocomplete sonuclarini (ID dizisi) al
+            var nodeIds = _trie.AutoComplete(query);
+            
+            var results = new List<SearchResultDto>();
+            
+            foreach (var id in nodeIds)
             {
-                new NodeDto
+                var node = _graph.GetNode(id);
+                if (node != null)
                 {
-                    Id = "search-result-1",
-                    Type = "User",
-                    Properties = new Dictionary<string, object>
+                    // Label icin 'Name' veya 'Title' ozelligini kullan, yoksa ID dondur
+                    string label = id;
+                    if (node.Properties.TryGetValue("Name", out var nameVal) && nameVal != null)
+                        label = nameVal.ToString()!;
+                    else if (node.Properties.TryGetValue("Title", out var titleVal) && titleVal != null)
+                        label = titleVal.ToString()!;
+
+                    results.Add(new SearchResultDto
                     {
-                        { "Name", $"Arama sonucu: '{query}'" },
-                        { "Info", "Bu bir placeholder sonuctur. Sprint 2'de gercek arama aktif olacaktir." }
-                    }
+                        NodeId = node.Id,
+                        Type = node.Type,
+                        Label = label
+                    });
                 }
-            };
+            }
 
             return Ok(results);
         }

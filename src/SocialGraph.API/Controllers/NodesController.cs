@@ -6,18 +6,18 @@ using SocialGraph.API.Models;
 namespace SocialGraph.API.Controllers
 {
     /// <summary>
-    /// Dugum (Node) islemleri icin API endpoint'leri.
-    /// Sprint 2'de gercek veri entegrasyonu yapilacaktir.
+    /// Dugum (Node) ve Kenar (Edge) islemleri icin API endpoint'leri.
+    /// PropertyGraph kullanilarak gercek verilere erisilir.
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class NodesController : ControllerBase
     {
-        private readonly CustomHashTable<string, Node> _nodeStore;
+        private readonly PropertyGraph _graph;
 
-        public NodesController(CustomHashTable<string, Node> nodeStore)
+        public NodesController(PropertyGraph graph)
         {
-            _nodeStore = nodeStore;
+            _graph = graph;
         }
 
         /// <summary>
@@ -27,18 +27,12 @@ namespace SocialGraph.API.Controllers
         [HttpGet]
         public ActionResult<List<NodeDto>> GetAll()
         {
-            var result = new List<NodeDto>();
+            var nodes = _graph.GetAllNodes();
+            var result = new List<NodeDto>(nodes.Length);
 
-            foreach (var kvp in _nodeStore)
+            foreach (var node in nodes)
             {
-                result.Add(MapToDto(kvp.Value));
-            }
-
-            // Eger store bos ise ornek veri don (placeholder)
-            if (result.Count == 0)
-            {
-                result.Add(new NodeDto { Id = "placeholder-1", Type = "User", Properties = new Dictionary<string, object> { { "Name", "Ornek Kullanici" } } });
-                result.Add(new NodeDto { Id = "placeholder-2", Type = "Event", Properties = new Dictionary<string, object> { { "Title", "Ornek Etkinlik" } } });
+                result.Add(MapToDto(node));
             }
 
             return Ok(result);
@@ -51,13 +45,37 @@ namespace SocialGraph.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<NodeDto> GetById(string id)
         {
-            if (_nodeStore.ContainsKey(id))
+            var node = _graph.GetNode(id);
+            if (node != null)
             {
-                var node = _nodeStore.Get(id);
                 return Ok(MapToDto(node));
             }
 
             return NotFound(new { Message = $"Node '{id}' bulunamadi." });
+        }
+
+        /// <summary>
+        /// Belirli bir dugumun kenarlarini listeler.
+        /// GET /api/nodes/{id}/edges
+        /// </summary>
+        [HttpGet("{id}/edges")]
+        public ActionResult<List<EdgeDto>> GetEdges(string id)
+        {
+            var node = _graph.GetNode(id);
+            if (node == null)
+            {
+                return NotFound(new { Message = $"Node '{id}' bulunamadi." });
+            }
+
+            var edges = _graph.GetEdges(id);
+            var result = new List<EdgeDto>(edges.Length);
+
+            foreach (var edge in edges)
+            {
+                result.Add(MapToEdgeDto(edge));
+            }
+
+            return Ok(result);
         }
 
         private static NodeDto MapToDto(Node node)
@@ -72,6 +90,25 @@ namespace SocialGraph.API.Controllers
             {
                 Id = node.Id,
                 Type = node.Type,
+                Properties = props
+            };
+        }
+
+        private static EdgeDto MapToEdgeDto(Edge edge)
+        {
+            var props = new Dictionary<string, object>();
+            foreach (var kvp in edge.Properties)
+            {
+                props[kvp.Key] = kvp.Value;
+            }
+
+            return new EdgeDto
+            {
+                Id = edge.Id,
+                SourceId = edge.SourceId,
+                TargetId = edge.DestinationId,
+                RelationType = edge.RelationType,
+                IsDirected = edge.IsDirected,
                 Properties = props
             };
         }

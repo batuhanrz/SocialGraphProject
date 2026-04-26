@@ -95,3 +95,8 @@
 - [x] `nodeService.ts` ve `traversalService.ts` dosyaları oluşturulup, ilgili API çağrıları (CRUD ve algoritmalar) modüler hale getirildi. **(Sude)**
 - [x] `SearchBar.tsx` bileşenine asenkron veri çeken ve sonuçları dropdown şeklinde sunan bir "Autocomplete" mekanizması eklendi. **(Sude)**
 - [x] Seçilen düğümlerin detay özelliklerini göstermek üzere `ResultPanel.tsx` bileşeni güncellendi ve Redux kullanmadan `AppLayout` üzerinden state yönetimi sağlandı. **(Sude)**
+
+### Sprint 2.4: Muhammed Furkan (Architect) — REST API Controller'ları + AI Worker İskeleti
+- [x] Tüm Controller uçları (Nodes, Search, Traversal) sahte verilerden kurtarılarak `PropertyGraph` ve `CustomTrie` veri yapılarına doğrudan bağlandı. **(Furkan)**
+- [x] BFS, DFS ve ShortestPath algoritmaları HTTP GET uçlarıyla (Frontend dostu olacak şekilde) dışa açıldı. **(Furkan)**
+- [x] `SocialGraph.AI` adında bağımsız bir .NET Worker Service mikroservisi ayağa kaldırıldı ve her 15 saniyede bir log atarak simülasyona hazır hale getirildi. **(Furkan)**

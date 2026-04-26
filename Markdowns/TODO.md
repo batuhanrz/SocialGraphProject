@@ -23,9 +23,8 @@
 ### Sprint 2.3: Sude — API Servis Katmani + Arama Arayuzu [TAMAMLANDI]
 > Frontend servis yonetimi ve autocomplete arama arayuzu UI uzerine basariyla eklendi.
 
-### Sprint 2.4: Furkan — REST API Controller'lari + AI Worker Iskeleti [BEKLEMEDE]
-- [ ] 7 endpoint (controller -> service -> PropertyGraph)
-- [ ] AI Worker iskeleti
+### Sprint 2.4: Furkan — REST API Controller'lari + AI Worker Iskeleti [TAMAMLANDI]
+> PropertyGraph uzerinde calisan 7 endpoint (GET tabanli) ve SocialGraph.AI background worker basariyla implemente edildi.
 
 ### Sprint 2.5: Isra — Sentetik Veri Uretimi + Birim Testler [BEKLEMEDE]
 - [ ] DataGenerator sinifi ve seed data
