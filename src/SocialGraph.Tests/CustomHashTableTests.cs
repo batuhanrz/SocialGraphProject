@@ -66,5 +66,27 @@ namespace SocialGraph.Tests
             Assert.Equal("Data_500", ht.Get("User_500"));
             Assert.Equal("Data_1499", ht.Get("User_1499"));
         }
+
+        [Fact]
+        public void Get_NonExistentKey_ShouldThrowKeyNotFoundException()
+        {
+            var ht = new CustomHashTable<string, string>();
+            Assert.Throws<KeyNotFoundException>(() => ht.Get("GhostKey"));
+        }
+
+        [Fact]
+        public void Collision_ShouldBeHandledByLinearProbing()
+        {
+            // Ayni hashe sahip key'ler uretmek zordur, ama kapasiteyi cok kucuk tutup 
+            // rehashing oncesi bolca eleman eklersek probing test edilmis olur.
+            var ht = new CustomHashTable<int, string>(4);
+            ht.Put(1, "A");
+            ht.Put(5, "B"); // Muhtemel collision (1 % 4 == 1, 5 % 4 == 1)
+            ht.Put(9, "C"); // Muhtemel collision (9 % 4 == 1)
+
+            Assert.Equal("A", ht.Get(1));
+            Assert.Equal("B", ht.Get(5));
+            Assert.Equal("C", ht.Get(9));
+        }
     }
 }

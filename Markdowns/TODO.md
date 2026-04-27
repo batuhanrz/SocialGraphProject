@@ -1,14 +1,16 @@
-# TODO — Yapilacak Gorevler
+# TODO — Yapılacak Görevler
 
 ---
 
-## SPRINT 0: Proje Baslatma [TAMAMLANDI]
+## SPRINT 0: Proje Başlatma [TAMAMLANDI]
 
-> Tum kurulumlar ve GitHub Issues/Discussions resmiyet kazandirma adimlari tamamlandi.
+Tüm kurulumlar ve GitHub Issues/Discussions resmiyet kazandırma adımları tamamlandı.
 
-## SPRINT 1: Altyapi ve Cekirdek Veri Yapilari [TAMAMLANDI]
+---
 
-> Tum alt gorevler (1.1 - 1.5) basariyla tamamlandi.
+## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları [TAMAMLANDI]
+
+Tüm alt görevler (1.1 - 1.5) başarıyla tamamlandı.
 
 ---
 
