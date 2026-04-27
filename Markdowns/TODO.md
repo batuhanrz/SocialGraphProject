@@ -12,24 +12,22 @@
 
 ---
 
-## SPRINT 2: Property Graph Entegrasyonu ve API Servisleri [DEVAM EDIYOR]
+## SPRINT 2: Property Graph Entegrasyonu ve API Servisleri [TAMAMLANDI]
 
-### Sprint 2.1: Batuhan — Adjacency List Tabanli Property Graph [TAMAMLANDI]
-> PropertyGraph sinifi, DI kaydi ve dogrulama tamamlandi.
+### Sprint 2.1 - 2.4: [TAMAMLANDI]
+> PropertyGraph, Algoritmalar, Frontend Servisleri ve API Controller'ları başarıyla entegre edildi.
 
-### Sprint 2.2: Ozcan — Graf Algoritmalarinin Entegrasyonu [TAMAMLANDI]
-> PropertyGraph entegrasyonlu BFS, DFS ve ShortestPath basariyla implemente edildi.
-
-### Sprint 2.3: Sude — API Servis Katmani + Arama Arayuzu [TAMAMLANDI]
-> Frontend servis yonetimi ve autocomplete arama arayuzu UI uzerine basariyla eklendi.
-
-### Sprint 2.4: Furkan — REST API Controller'lari + AI Worker Iskeleti [TAMAMLANDI]
-> PropertyGraph uzerinde calisan 7 endpoint (GET tabanli) ve SocialGraph.AI background worker basariyla implemente edildi.
-
-### Sprint 2.5: Isra — Sentetik Veri Uretimi + Birim Testler [BEKLEMEDE]
-- [ ] DataGenerator sinifi ve seed data
-- [ ] 20+ birim test
+### Sprint 2.5: Isra — Sentetik Veri Üretimi + Birim Testler [TAMAMLANDI]
+> DataGenerator ve 23 birim test tamamlandı.
 
 ---
 
-## SPRINT 3-4: (Beklemede)
+## SPRINT 3: Çok Adımlı Sorgular ve Görselleştirme [DEVAM EDİYOR]
+
+### Sprint 3.1: Batuhan — Thread-Safety ve Eşzamanlılık Yönetimi [TAMAMLANDI]
+> `ReaderWriterLockSlim` optimizasyonu ve eşzamanlılık testleri tamamlandı.
+
+### Sprint 3.2: Özcan — Çok Adımlı İlişkisel Sorgu Motoru [SIRADAKİ]
+### Sprint 3.3: Fatma Sude — Vis-network 2D Görselleştirme [SIRADAKİ]
+### Sprint 3.4: Muhammed Furkan — AI Simulation Motoru (Faz 2) [SIRADAKİ]
+### Sprint 3.5: Isra — Entegrasyon Testleri + Big-O Analiz Taslağı [SIRADAKİ]

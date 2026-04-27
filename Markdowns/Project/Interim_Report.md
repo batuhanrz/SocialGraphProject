@@ -29,15 +29,15 @@ Proje baslangicinda ve Sprint 1 sirasinda, ekibin karsilastigi mimari zorluklar 
 1. **[Bulgu] Ozel HashTable Implementasyonunda Collision Yonetimi:** Dugumlerin (Nodes) ram uzerinde hizli bulunabilmesi icin Chaining yerine "Linear Probing" (Open Addressing) teknigi secildi. CPU Cache Miss oranini dusurmek icin GitHub'da tartisildi ve onaylandi. *(Acan: Batuhan)*
 2. **[Teknik Tartisma] AI Simulasyon Servisi ile API Arasindaki Iletisim:** AI Worker ile ana API arasindaki asenkron iletisimde gRPC veya RabbitMQ yerine donanim/zaman maliyeti dusunulerek "Retry mekanizmali HTTP POST" kullanilmasi kararlastirildi. *(Acan: Furkan)*
 
-## 4. Kod Entegrasyonu ve Gelecek Adimlar
+## 4. Kod Entegrasyonu ve Ara Rapor Guncellemesi
 
-Su ana kadar yapilan Sprint 1, Sprint 2.1 ve Sprint 2.2 entegrasyonlarinda:
+Su ana kadar yapilan Sprint 1, Sprint 2 ve Sprint 3.1 entegrasyonlarinda:
 - Cekirdek `Node` ve `Edge` siniflari baglandi.
-- Grafin temel iskeleti olan `PropertyGraph` adjacency list tabanli olarak `develop` branch'ine basariyla merge edildi.
-- `CustomQueue` kullanılarak BFS/DFS algoritmaları ve iki düğüm arası en kısa yolu bulan `ShortestPath` fonksiyonu esnek filtreleme yetenekleriyle birlikte `PropertyGraph` sistemine tam entegre edildi.
-- API ve UI projeleri ayaga kaldirildi ve aralarindaki CORS yapilandirmalari tamamlandi.
-- Frontend tarafında native `fetch` destekli API servis modülleri oluşturuldu; arama ve sonuç listeleme (Autocomplete UI) bileşenleri state yönetimleriyle birlikte backend etkileşimine hazır hale getirildi.
-- API uçları (Nodes, Search, Traversal) mock verilerden arındırılarak gerçek `PropertyGraph` ve `CustomTrie` sınıflarına entegre edildi. Ayrıca bağımsız çalışacak `SocialGraph.AI` Worker projesi kuruldu.
+- Grafin temel iskeleti olan `PropertyGraph` adjacency list tabanli olarak tamamlandi.
+- `CustomQueue` kullanılarak BFS/DFS algoritmaları ve `ShortestPath` fonksiyonu sisteme entegre edildi.
+- **Eşzamanlılık (Concurrency):** `ReaderWriterLockSlim` kullanılarak API okumaları ile AI Worker yazmaları arasındaki yarış durumları (race conditions) engellendi. Kilit süreleri minimize edilerek yüksek yük altında stabilite sağlandı.
+- **Sentetik Veri:** AI Worker aracılığıyla 100+ düğüm ve ilişkiden oluşan gerçekçi veri akışı API üzerinden graf sistemine bağlandı.
+- API uçları (Nodes, Search, Traversal) ve Frontend (React + TS) arasındaki iletişim native fetch servisleriyle sağlandı.
 
-**Gelecek Adim (Sprint 2 Devami & Sprint 3):**
-Mevcut PropertyGraph uzerine gercek zamanli sentetik veri akisinin baglanmasi (AI Worker tarafindan) ve frontend arayuzunden gelen arama (Trie tabanli) ve gezinti (BFS/DFS tabanli) isteklerinin REST API uzerinden PropertyGraph'a entegre edilmesidir. Eslik eden read/write lock (eszamanlilik) optimizasyonlari saglanacaktir.
+**Gelecek Adim (Sprint 3 Devami):**
+Çok adımlı ilişkisel sorgu motorunun (Zincir Sorgular) tamamlanması ve `Vis-network` ile interaktif 2D graf görselleştirme arayüzünün canlıya alınması hedeflenmektedir.

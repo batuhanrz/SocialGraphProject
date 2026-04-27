@@ -96,7 +96,24 @@
 - [x] `SearchBar.tsx` bileşenine asenkron veri çeken ve sonuçları dropdown şeklinde sunan bir "Autocomplete" mekanizması eklendi. **(Sude)**
 - [x] Seçilen düğümlerin detay özelliklerini göstermek üzere `ResultPanel.tsx` bileşeni güncellendi ve Redux kullanmadan `AppLayout` üzerinden state yönetimi sağlandı. **(Sude)**
 
-### Sprint 2.4: Muhammed Furkan (Architect) — REST API Controller'ları + AI Worker İskeleti
-- [x] Tüm Controller uçları (Nodes, Search, Traversal) sahte verilerden kurtarılarak `PropertyGraph` ve `CustomTrie` veri yapılarına doğrudan bağlandı. **(Furkan)**
-- [x] BFS, DFS ve ShortestPath algoritmaları HTTP GET uçlarıyla (Frontend dostu olacak şekilde) dışa açıldı. **(Furkan)**
-- [x] `SocialGraph.AI` adında bağımsız bir .NET Worker Service mikroservisi ayağa kaldırıldı ve her 15 saniyede bir log atarak simülasyona hazır hale getirildi. **(Furkan)**
+### Sprint 2.5: Isra (Testing & Analysis Specialist) — Sentetik Veri Üretimi + Birim Testler
+- [x] Gemini 3.1 Pro kullanılarak elde edilen 100+ sofistike veri DataGenerator.cs içerisine entegre edildi. **(Isra)**
+- [x] Dense, Sparse, Star ve Chain topolojilerinde programatik graf üretebilen algoritmalar yazıldı. **(Isra)**
+- [x] AI Worker (Worker.cs) üzerinden üretilen verilerin API'ye batch transferi sağlandı. **(Isra)**
+- [x] Toplam birim test sayısı 23'e çıkarıldı ve %100 başarıyla geçti. **(Isra)**
+
+---
+
+> **SPRINT 2 CHECKPOINT: TAMAMLANDI**
+> PropertyGraph entegrasyonu, API servislerinin frontend ile bağlanması, AI Worker veri simülasyonu ve 23 birim test senaryosu %100 başarıyla tamamlandı. Sprint 3'e geçiş onaylandı.
+
+---
+
+## SPRINT 3: Çok Adımlı Sorgular ve Görselleştirme
+
+### Sprint 3.1: Batuhan (Core Data Engineer) — Thread-Safety ve Eşzamanlılık Yönetimi
+- [x] `PropertyGraph` üzerindeki tüm operasyonlar `ReaderWriterLockSlim` ile thread-safe hale getirildi. **(Batuhan)**
+- [x] Yazma kilitlerinin (Write Lock) kapsamı daraltılarak (reverse edge hazırlığı kilit dışına alındı) performans artışı sağlandı. **(Batuhan)**
+- [x] `GetAllEdges` metodu `_edgeCount` kullanılarak tek geçişte çalışacak şekilde optimize edildi. **(Batuhan)**
+- [x] 15 okuyucu ve 2 yazıcı thread ile yapılan 30 saniyelik yük testinde deadlock ve race condition oluşmadığı doğrulandı. **(Batuhan)**
+- [x] Eşzamanlı okuma/yazma senaryolarını içeren `PropertyGraphConcurrencyTests.cs` xUnit projesine eklendi. **(Batuhan)**

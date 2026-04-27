@@ -21,10 +21,10 @@
 - Performans: lock altında ortalama okuma süresi ölçümü.
 
 **Kabul Kriterleri:**
-- [ ] Graf operasyonları thread-safe çalışıyor.
-- [ ] Eşzamanlı 10+ okuma + 1 yazma senaryosu deadlock olmadan tamamlanıyor.
-- [ ] Lock mekanizması doğru çalıştığını gösteren test senaryoları yazıldı.
-- [ ] PR açıldı (`feature/batuhan-core`).
+- [x] Graf operasyonları thread-safe çalışıyor.
+- [x] Eşzamanlı 10+ okuma + 1 yazma senaryosu deadlock olmadan tamamlanıyor.
+- [x] Lock mekanizması doğru çalıştığını gösteren test senaryoları yazıldı.
+- [x] PR açıldı (`feature/batuhan-core`).
 
 ---
 

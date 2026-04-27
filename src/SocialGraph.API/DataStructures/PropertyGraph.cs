@@ -260,6 +260,25 @@ namespace SocialGraph.API.DataStructures
             if (!IsValidEdgeType(edge.RelationType))
                 throw new ArgumentException($"Gecersiz kenar turu: '{edge.RelationType}'. Gecerli turler: FRIEND, LIKES, POSTED, ATTENDS.");
 
+            // Yonsuz kenar ise ters yon hazirligini kilit disinda yap (lock suresini azaltmak icin)
+            Edge? reverseEdge = null;
+            if (!edge.IsDirected)
+            {
+                reverseEdge = new Edge(
+                    edge.Id + "_reverse",
+                    edge.DestinationId,
+                    edge.SourceId,
+                    edge.RelationType,
+                    false
+                );
+
+                // Orijinal kenarin ek ozelliklerini kopyala
+                foreach (var propKvp in edge.Properties)
+                {
+                    reverseEdge.Properties.Put(propKvp.Key, propKvp.Value);
+                }
+            }
+
             _lock.EnterWriteLock();
             try
             {
@@ -274,26 +293,11 @@ namespace SocialGraph.API.DataStructures
 
                 _adjacency.Get(edge.SourceId).Put(edge.DestinationId, edge);
 
-                // Yonsuz kenar ise ters yonu de ekle (ayni Edge nesnesi, farkli yon)
-                if (!edge.IsDirected)
+                // Yonsuz kenar ise onceden hazirlanan ters yonu ekle
+                if (reverseEdge != null)
                 {
                     if (!_adjacency.ContainsKey(edge.DestinationId))
                         _adjacency.Put(edge.DestinationId, new CustomHashTable<string, Edge>());
-
-                    // Ters yon icin ayri bir Edge nesnesi olustur
-                    var reverseEdge = new Edge(
-                        edge.Id + "_reverse",
-                        edge.DestinationId,
-                        edge.SourceId,
-                        edge.RelationType,
-                        false
-                    );
-
-                    // Orijinal kenarin ek ozelliklerini kopyala
-                    foreach (var propKvp in edge.Properties)
-                    {
-                        reverseEdge.Properties.Put(propKvp.Key, propKvp.Value);
-                    }
 
                     _adjacency.Get(edge.DestinationId).Put(edge.SourceId, reverseEdge);
                 }
@@ -483,22 +487,10 @@ namespace SocialGraph.API.DataStructures
             _lock.EnterReadLock();
             try
             {
-                // Ilk gecis: toplam kenar sayisini hesapla (reverse'leri haric tut)
-                int totalCount = 0;
-                foreach (var adjKvp in _adjacency)
-                {
-                    foreach (var edgeKvp in adjKvp.Value)
-                    {
-                        Edge e = edgeKvp.Value;
-                        // Reverse kenarlari haric tut
-                        if (!e.Id.EndsWith("_reverse"))
-                            totalCount++;
-                    }
-                }
+                // Optimizasyon: _edgeCount zaten reverse olmayan (lojik) kenarlari sayiyor.
+                if (_edgeCount == 0) return Array.Empty<Edge>();
 
-                if (totalCount == 0) return Array.Empty<Edge>();
-
-                Edge[] result = new Edge[totalCount];
+                Edge[] result = new Edge[_edgeCount];
                 int index = 0;
 
                 foreach (var adjKvp in _adjacency)
@@ -506,11 +498,24 @@ namespace SocialGraph.API.DataStructures
                     foreach (var edgeKvp in adjKvp.Value)
                     {
                         Edge e = edgeKvp.Value;
+                        // Reverse kenarlari haric tutarak sadece orijinal/ana kenarlari dondur
                         if (!e.Id.EndsWith("_reverse"))
                         {
-                            result[index++] = e;
+                            // Olasi bir yaris durumuna (race condition) karsi dizi siniri kontrolu
+                            if (index < _edgeCount)
+                            {
+                                result[index++] = e;
+                            }
                         }
                     }
+                }
+
+                // Eger index _edgeCount'tan kucukse (silinme olduysa), diziyi daralt
+                if (index < _edgeCount)
+                {
+                    Edge[] trimmed = new Edge[index];
+                    Array.Copy(result, trimmed, index);
+                    return trimmed;
                 }
 
                 return result;
