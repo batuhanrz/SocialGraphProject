@@ -35,15 +35,15 @@ Ekip içi yapılan tartışmalar ve projenin gereksinimleri doğrultusunda aşa�
 - AI Worker aracılığıyla otomatik veri üretimi ve API'ye batch transfer mekanizması kuruldu.
 - Custom Trie üzerinden dinamik arama (autocomplete) frontend ile bağlandı.
 
-## 4. Sentetik Veri ve GenAI Yaklaşımı
+## 4. Kod Entegrasyonu ve Ara Rapor Guncellemesi
 
-Projenin B.2 değerlendirme kriterlerine uygun olarak, sentetik veri üretiminde GenAI (Gemini 3.1 Pro Preview) kullanılmıştır. Stabiliteyi korumak amacıyla "Offline Prompting" stratejisi benimsenmiş, üretilen sofistike veriler DataGenerator katmanına statik olarak entegre edilmiştir.
+Su ana kadar yapilan Sprint 1, Sprint 2 ve Sprint 3.1 entegrasyonlarinda:
+- Cekirdek `Node` ve `Edge` siniflari baglandi.
+- Grafin temel iskeleti olan `PropertyGraph` adjacency list tabanli olarak tamamlandi.
+- `CustomQueue` kullanılarak BFS/DFS algoritmaları ve `ShortestPath` fonksiyonu sisteme entegre edildi.
+- **Eşzamanlılık (Concurrency):** `ReaderWriterLockSlim` kullanılarak API okumaları ile AI Worker yazmaları arasındaki yarış durumları (race conditions) engellendi. Kilit süreleri minimize edilerek yüksek yük altında stabilite sağlandı.
+- **Sentetik Veri:** AI Worker aracılığıyla 100+ düğüm ve ilişkiden oluşan gerçekçi veri akışı API üzerinden graf sistemine bağlandı.
+- API uçları (Nodes, Search, Traversal) ve Frontend (React + TS) arasındaki iletişim native fetch servisleriyle sağlandı.
 
-Kullanılan profesyonel prompt detaylarına [prompt.md](../Prompts/prompt.md) dosyasından erişilebilir.
-
-## 5. Gelecek Planlar (Sprint 3 & 4)
-
-- Vis-network ile 2D graf görselleştirmesi.
-- Çok adımlı ilişkisel sorgu motoru.
-- Detaylı Big-O zaman karmaşıklığı analizi ve performans raporu.
-- Docker-compose ile konteynerizasyon.
+**Gelecek Adim (Sprint 3 Devami):**
+Çok adımlı ilişkisel sorgu motorunun (Zincir Sorgular) tamamlanması ve `Vis-network` ile interaktif 2D graf görselleştirme arayüzünün canlıya alınması hedeflenmektedir.

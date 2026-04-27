@@ -73,3 +73,6 @@
 | 6 | PropertyGraph `Program.cs`'de Singleton olarak DI container'a kaydedildi. Sprint 1 kayitlari (CustomHashTable, CustomTrie) geri uyumluluk icin korundu. | 26.04.2026 |
 | 7 | `dotnet build` 0 hata ve `dotnet test` 14/14 test basarili (regresyon yok) ile dogrulama tamamlandi. | 26.04.2026 |
 | 8 | Projenin `Interim_Report.md` dosyasi genisletildi ve `README.md` ana sayfasina Ara Rapor durum bildirimi ile yonlendirme linki eklendi. | 26.04.2026 |
+| 9 | `ReaderWriterLockSlim` ile thread-safety optimizasyonu yapildi, kilit kapsami daraltildi. | 27.04.2026 |
+| 10 | `PropertyGraphConcurrencyTests.cs` ile 15+ thread yuk testi basariyla tamamlandi. | 27.04.2026 |
+| 11 | `GetAllEdges` metodu O(E) maliyetinden lojik sayac kullanan optimize versiyona gecirildi. | 27.04.2026 |
