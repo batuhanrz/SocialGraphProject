@@ -29,7 +29,8 @@ Tüm alt görevler (1.1 - 1.5) başarıyla tamamlandı.
 ### Sprint 3.1: Batuhan — Thread-Safety ve Eşzamanlılık Yönetimi [TAMAMLANDI]
 > `ReaderWriterLockSlim` optimizasyonu ve eşzamanlılık testleri tamamlandı.
 
-### Sprint 3.2: Özcan — Çok Adımlı İlişkisel Sorgu Motoru [SIRADAKİ]
+### Sprint 3.2: Özcan — Çok Adımlı İlişkisel Sorgu Motoru [TAMAMLANDI]
+> Zincir sorgu motoru (ExecuteChainQuery) ve arkadaş öneri sistemi başarıyla implemente edildi.
 ### Sprint 3.3: Fatma Sude — Vis-network 2D Görselleştirme [SIRADAKİ]
 ### Sprint 3.4: Muhammed Furkan — AI Simulation Motoru (Faz 2) [SIRADAKİ]
 ### Sprint 3.5: Isra — Entegrasyon Testleri + Big-O Analiz Taslağı [SIRADAKİ]

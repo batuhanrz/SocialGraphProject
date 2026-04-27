@@ -41,11 +41,11 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 - Kullanıcı A ve B'nin ortak arkadaş sayısı → öneri skoru.
 
 **Kabul Kriterleri:**
-- [ ] User→Friends→Events→Photos zincir sorgusu tam fonksiyonel.
-- [ ] En az 3 farklı zincir tipi ile test edildi.
-- [ ] Sonuç kümesi doğru ve tutarlı.
-- [ ] (Opsiyonel) Arkadaş önerisi algoritması çalışıyor.
-- [ ] PR açıldı (`feature/ozcan-algorithms`).
+- [x] User→Friends→Events→Photos zincir sorgusu tam fonksiyonel.
+- [x] En az 3 farklı zincir tipi ile test edildi.
+- [x] Sonuç kümesi doğru ve tutarlı.
+- [x] (Opsiyonel) Arkadaş önerisi algoritması çalışıyor.
+- [x] PR açıldı (`feature/ozcan-algorithms`).
 
 ---
 

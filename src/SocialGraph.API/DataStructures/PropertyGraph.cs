@@ -27,7 +27,7 @@ namespace SocialGraph.API.DataStructures
     {
         // --- Gecerli dugum ve kenar turleri ---
         private static readonly string[] ValidNodeTypes = { "User", "Photo", "Event" };
-        private static readonly string[] ValidEdgeTypes = { "FRIEND", "LIKES", "POSTED", "ATTENDS" };
+        private static readonly string[] ValidEdgeTypes = { "FRIEND", "LIKES", "POSTED", "ATTENDS", "UPLOADED" };
 
         // --- Ic veri yapilari (tumu CustomHashTable) ---
 
