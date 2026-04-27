@@ -37,13 +37,13 @@ Ekip içi yapılan tartışmalar ve projenin gereksinimleri doğrultusunda aşa�
 
 ## 4. Kod Entegrasyonu ve Ara Rapor Guncellemesi
 
-Su ana kadar yapilan Sprint 1, Sprint 2 ve Sprint 3.1 entegrasyonlarinda:
+Su ana kadar yapilan Sprint 1, Sprint 2 ve Sprint 3.1-3.2 entegrasyonlarinda:
 - Cekirdek `Node` ve `Edge` siniflari baglandi.
 - Grafin temel iskeleti olan `PropertyGraph` adjacency list tabanli olarak tamamlandi.
-- `CustomQueue` kullanılarak BFS/DFS algoritmaları ve `ShortestPath` fonksiyonu sisteme entegre edildi.
-- **Eşzamanlılık (Concurrency):** `ReaderWriterLockSlim` kullanılarak API okumaları ile AI Worker yazmaları arasındaki yarış durumları (race conditions) engellendi. Kilit süreleri minimize edilerek yüksek yük altında stabilite sağlandı.
+- **Eşzamanlılık (Concurrency):** `ReaderWriterLockSlim` kullanılarak API okumaları ile AI Worker yazmaları arasındaki yarış durumları (race conditions) engellendi.
+- **İlişkisel Sorgu Motoru:** `RelationalQueryEngine` ile `User → Friend → Event → Photo` gibi çok adımlı zincir sorgular ve ortak arkadaş sayısına dayalı öneri sistemi sisteme kazandırıldı.
 - **Sentetik Veri:** AI Worker aracılığıyla 100+ düğüm ve ilişkiden oluşan gerçekçi veri akışı API üzerinden graf sistemine bağlandı.
 - API uçları (Nodes, Search, Traversal) ve Frontend (React + TS) arasındaki iletişim native fetch servisleriyle sağlandı.
 
 **Gelecek Adim (Sprint 3 Devami):**
-Çok adımlı ilişkisel sorgu motorunun (Zincir Sorgular) tamamlanması ve `Vis-network` ile interaktif 2D graf görselleştirme arayüzünün canlıya alınması hedeflenmektedir.
+`Vis-network` ile interaktif 2D graf görselleştirme arayüzünün tamamlanması ve AI Worker simülasyon motorunun (Faz 2) dinamik veri akışını sürekli hale getirmesi hedeflenmektedir.

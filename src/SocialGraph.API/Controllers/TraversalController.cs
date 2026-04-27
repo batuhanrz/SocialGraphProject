@@ -1,26 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
 using SocialGraph.API.DataStructures;
 using SocialGraph.API.Algorithms;
+using SocialGraph.API.DTOs;
+using SocialGraph.API.Models;
 
 namespace SocialGraph.API.Controllers
 {
     /// <summary>
-    /// Graf traversal (BFS/DFS/ShortestPath) islemleri icin API endpoint'leri.
-    /// Sude'nin frontend kodlariyla uyumlu olmasi adina HTTP GET kullanilmistir.
+    /// Graf traversal (BFS/DFS/ShortestPath) ve ilişkisel sorgu işlemleri için API endpoint'leri.
+    /// Geliştiren: Özcan (Algorithm Master)
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class TraversalController : ControllerBase
     {
         private readonly PropertyGraph _graph;
+        private readonly RelationalQueryEngine _queryEngine;
 
         public TraversalController(PropertyGraph graph)
         {
             _graph = graph;
+            _queryEngine = new RelationalQueryEngine(graph);
         }
 
         /// <summary>
-        /// BFS (Genislik Oncelikli Arama) calistirir.
+        /// BFS (Genişlik Öncelikli Arama) çalıştırır.
         /// GET /api/traversal/bfs?startNodeId=...
         /// </summary>
         [HttpGet("bfs")]
@@ -30,7 +34,7 @@ namespace SocialGraph.API.Controllers
                 return BadRequest("startNodeId gereklidir.");
 
             if (_graph.GetNode(startNodeId) == null)
-                return NotFound($"Dugum bulunamadi: {startNodeId}");
+                return NotFound($"Düğüm bulunamadı: {startNodeId}");
 
             var visitedIds = new List<string>();
             GraphTraversal.BFS(_graph, startNodeId, node => visitedIds.Add(node.Id));
@@ -39,7 +43,7 @@ namespace SocialGraph.API.Controllers
         }
 
         /// <summary>
-        /// DFS (Derinlik Oncelikli Arama) calistirir.
+        /// DFS (Derinlik Öncelikli Arama) çalıştırır.
         /// GET /api/traversal/dfs?startNodeId=...
         /// </summary>
         [HttpGet("dfs")]
@@ -49,7 +53,7 @@ namespace SocialGraph.API.Controllers
                 return BadRequest("startNodeId gereklidir.");
 
             if (_graph.GetNode(startNodeId) == null)
-                return NotFound($"Dugum bulunamadi: {startNodeId}");
+                return NotFound($"Düğüm bulunamadı: {startNodeId}");
 
             var visitedIds = new List<string>();
             GraphTraversal.DFS(_graph, startNodeId, node => visitedIds.Add(node.Id));
@@ -58,7 +62,7 @@ namespace SocialGraph.API.Controllers
         }
 
         /// <summary>
-        /// BFS kullanarak iki dugum arasi en kisa yolu bulur.
+        /// İki düğüm arası en kısa yolu bulur.
         /// GET /api/traversal/shortestpath?startNodeId=...&targetNodeId=...
         /// </summary>
         [HttpGet("shortestpath")]
@@ -68,10 +72,72 @@ namespace SocialGraph.API.Controllers
                 return BadRequest("startNodeId ve targetNodeId gereklidir.");
 
             if (_graph.GetNode(startNodeId) == null || _graph.GetNode(targetNodeId) == null)
-                return NotFound("Kaynak veya hedef dugum bulunamadi.");
+                return NotFound("Kaynak veya hedef düğüm bulunamadı.");
 
             var path = GraphTraversal.ShortestPath(_graph, startNodeId, targetNodeId);
             return Ok(path);
+        }
+
+        /// <summary>
+        /// Çok adımlı ilişkisel zincir sorgusu çalıştırır.
+        /// GET /api/traversal/chain?startNodeId=...&relations=FRIEND&relations=ATTENDS
+        /// </summary>
+        [HttpGet("chain")]
+        public ActionResult<List<NodeDto>> RunChainQuery([FromQuery] string startNodeId, [FromQuery] string[] relations)
+        {
+            if (string.IsNullOrWhiteSpace(startNodeId) || relations == null || relations.Length == 0)
+                return BadRequest("startNodeId ve en az bir ilişki türü gereklidir.");
+
+            var nodes = _queryEngine.ExecuteChainQuery(startNodeId, relations);
+            var result = new List<NodeDto>(nodes.Length);
+
+            foreach (var node in nodes)
+            {
+                result.Add(MapToDto(node));
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Belirli bir kullanıcı için arkadaş önerileri sunar (Ortak arkadaş sayısına göre).
+        /// GET /api/traversal/recommendations?userId=...
+        /// </summary>
+        [HttpGet("recommendations")]
+        public ActionResult<List<RecommendationDto>> GetRecommendations([FromQuery] string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                return BadRequest("userId gereklidir.");
+
+            var recommendations = _queryEngine.GetRecommendations(userId);
+            var result = new List<RecommendationDto>(recommendations.Length);
+
+            foreach (var rec in recommendations)
+            {
+                result.Add(new RecommendationDto
+                {
+                    Node = MapToDto(rec.RecommendedNode),
+                    MutualFriendsCount = rec.Score
+                });
+            }
+
+            return Ok(result);
+        }
+
+        private static NodeDto MapToDto(Node node)
+        {
+            var props = new Dictionary<string, object>();
+            foreach (var kvp in node.Properties)
+            {
+                props[kvp.Key] = kvp.Value;
+            }
+
+            return new NodeDto
+            {
+                Id = node.Id,
+                Type = node.Type,
+                Properties = props
+            };
         }
     }
 }

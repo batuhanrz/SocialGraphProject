@@ -117,3 +117,10 @@
 - [x] `GetAllEdges` metodu `_edgeCount` kullanılarak tek geçişte çalışacak şekilde optimize edildi. **(Batuhan)**
 - [x] 15 okuyucu ve 2 yazıcı thread ile yapılan 30 saniyelik yük testinde deadlock ve race condition oluşmadığı doğrulandı. **(Batuhan)**
 - [x] Eşzamanlı okuma/yazma senaryolarını içeren `PropertyGraphConcurrencyTests.cs` xUnit projesine eklendi. **(Batuhan)**
+
+### Sprint 3.2: Özcan (Algorithm Master) — Çok Adımlı İlişkisel Sorgu Motoru
+- [x] `RelationalQueryEngine.cs` implemente edilerek, `User → FRIEND → Event` gibi sınırsız derinlikte zincir sorgu desteği eklendi. **(Özcan)**
+- [x] Her adımda benzersiz düğüm setleri oluşturularak (O(N) karmaşıklıkta) ara sonuçların doğru aktarımı sağlandı. **(Özcan)**
+- [x] "Triadic Closure" prensibiyle ortak arkadaş sayısına dayalı arkadaş öneri sistemi (Recommendation Engine) geliştirildi. **(Özcan)**
+- [x] Zincir sorgu motoru, karmaşık `User→Friend→Event→Photo` senaryoları ile `RelationalQueryTests.cs` üzerinden doğrulandı. **(Özcan)**
+- [x] `PropertyGraph`'a `UPLOADED` kenar türü eklenerek projenin ilişkisel modeli genişletildi. **(Özcan)**

@@ -28,4 +28,14 @@
 
 ---
 
-*(Diğer sprintler geldikçe eklenecektir...)*
+## Sprint 3 Katkıları (Çok Adımlı Sorgular ve Öneri Sistemi)
+
+### Yapılan İşlemler (Sprint 3.2)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `RelationalQueryEngine.cs` sınıfı oluşturuldu; sonsuz derinlikte zincir sorgu (`ExecuteChainQuery`) mantığı implemente edildi. | 27.04.2026 |
+| 2 | Her bir sorgu adımında benzersiz düğüm kümeleri oluşturularak (CustomHashTable ile) ara sonuçların doğru aktarılması sağlandı. | 27.04.2026 |
+| 3 | "Triadic Closure" algoritması kullanılarak ortak arkadaş sayısına dayalı arkadaş önerisi sistemi (`GetRecommendations`) geliştirildi. | 27.04.2026 |
+| 4 | Önerilerin ortak arkadaş sayısına göre büyükten küçüğe sıralanması için custom "Selection Sort" implementasyonu yapıldı. | 27.04.2026 |
+| 5 | `TraversalController` güncellenerek zincir sorgu ve öneri sistemi API uçları (`GET` tabanlı) olarak dışa açıldı. | 27.04.2026 |
+| 6 | `RelationalQueryTests.cs` ile tüm ilişkisel sorgu senaryoları (Complex Chain, Mutual Friends) %100 başarıyla test edildi. | 27.04.2026 |
