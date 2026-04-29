@@ -119,10 +119,10 @@
 - [x] Eşzamanlı okuma/yazma senaryolarını içeren `PropertyGraphConcurrencyTests.cs` xUnit projesine eklendi. **(Batuhan)**
 
 ### Sprint 3.2: Özcan (Algorithm Master) — Çok Adımlı İlişkisel Sorgu Motoru
-- [x] `RelationalQueryEngine.cs` implemente edilerek, `User → FRIEND → Event` gibi sınırsız derinlikte zincir sorgu desteği eklendi. **(Özcan)**
+- [x] `RelationalQueryEngine.cs` implemente edilerek, `User -> FRIEND -> Event` gibi sınırsız derinlikte zincir sorgu desteği eklendi. **(Özcan)**
 - [x] Her adımda benzersiz düğüm setleri oluşturularak (O(N) karmaşıklıkta) ara sonuçların doğru aktarımı sağlandı. **(Özcan)**
 - [x] "Triadic Closure" prensibiyle ortak arkadaş sayısına dayalı arkadaş öneri sistemi (Recommendation Engine) geliştirildi. **(Özcan)**
-- [x] Zincir sorgu motoru, karmaşık `User→Friend→Event→Photo` senaryoları ile `RelationalQueryTests.cs` üzerinden doğrulandı. **(Özcan)**
+- [x] Zincir sorgu motoru, karmaşık `User->Friend->Event->Photo` senaryoları ile `RelationalQueryTests.cs` üzerinden doğrulandı. **(Özcan)**
 - [x] `PropertyGraph`'a `UPLOADED` kenar türü eklenerek projenin ilişkisel modeli genişletildi. **(Özcan)**
 
 ### Sprint 3.3: Fatma Sude (Frontend Lead) — Vis-network 2D Görselleştirme + Etkileşim
@@ -146,5 +146,12 @@
 - [x] Sistem performansının 5000+ düğümde bile 10ms altında kaldığı deneysel olarak kanıtlandı. **(Isra)**
 - [x] PR açıldı (`feature/isra-optimization`). **(Isra)**
 
-> [!TIP]
 > **Sprint 3 SONUÇ:** Çok adımlı sorgular, interaktif görselleştirme, dinamik AI simülasyonu ve kapsamlı analiz raporları başarıyla tamamlanmıştır. Sistem tüm teknik gereksinimleri karşılamaktadır.
+
+---
+
+## SPRINT 3.9: Ara Rapor (Interim Report) Finalizasyonu [TAMAMLANDI]
+- [x] 30.04.2026 tarihli ara rapor için projenin ana dökümantasyon sayfası (`README.md`) bir rapor niteliği taşıyacak şekilde güncellendi.
+- [x] Tespit edilen hatalar, PR geçmişi ve ekip içi mimari tartışmalar rapor dökümanlarına eklendi.
+- [x] Projenin tüm ekip üyelerinin aktif katılımıyla "Interim Report Context" kriterlerine (master/main branch karşılama sayfası güncelliği) uyumu sağlandı.
+- [x] Proje linki üzerinden teslimat yapmaya hazır hale getirildi.

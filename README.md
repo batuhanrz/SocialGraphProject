@@ -1,88 +1,97 @@
-# SocialGraphProject
+# SocialGraph Project - Ara Rapor (Interim Report)
 
-## Proje Adı
-Property Graph Tabanlı Sosyal Ağ Modelleme
-
-## Amaç
-Sosyal ağ sistemlerinde kullanılan property graph veri modelinin sadeleştirilmiş bir versiyonunu geliştirmek. Ağ üzerindeki varlıklar (kullanıcılar, fotoğraflar, etkinlikler) düğüm, aralarındaki ilişkiler (arkadaşlık, beğeni, katılım) kenar olarak modellenir. Sistem, sıfırdan implemente edilmiş veri yapıları (Hash Table, Trie, Queue) ile çok adımlı ilişkisel sorguları verimli şekilde gerçekleştirir.
-
-## Teknoloji Yığını
-
-| Katman | Teknoloji |
-|--------|-----------|
-| **Backend (API)** | ASP.NET Core Web API, C# |
-| **AI Simulation** | .NET BackgroundService (IHostedService) |
-| **Frontend (UI)** | React, TypeScript, Vis-network |
-| **Konteynerizasyon** | Docker, Docker Compose |
-
-## Proje Mimarisi (Monorepo)
-
-```
-SocialGraphProject/
-├── src/
-│   ├── SocialGraph.API/      # Ana iş mantığı servisi (Property Graph + Veri Yapıları)
-│   ├── SocialGraph.AI/       # Asenkron veri simülasyon mikroservisi
-│   └── SocialGraph.UI/       # React tabanlı kullanıcı arayüzü
-├── Markdowns/                # Proje dökümantasyonu
-│   ├── Roadmaps/             # Yol haritası
-│   ├── Sprints/              # Sprint detayları
-│   ├── Project/              # Proje bağlamı ve raporlar
-│   └── Personal_Reports/     # Kişisel katkı raporları
-└── README.md
-```
-
-## 📌 Ara Rapor (Interim Report) Durumu
-
-Projenin 30.04.2026 tarihli ara rapor teslimi için temel hedeflere (Sprint 1 ve Sprint 0) ulaşılmıştır. İlgili gereksinimler karşılanmış olmakla birlikte rapor henüz son halinde değildir; teslim tarihine kadar geliştirme süreci devam ettiği için ekip üyelerinden rapora yeni eklemeler ve iyileştirmeler gelebilir.
-
-- Standart kütüphane kullanılmadan çekirdek veri yapıları (Hash Table, Queue, Trie) sıfırdan yazılmıştır.
-- Mikroservis mimarisi (API, AI, UI) klasör yapısıyla projeye entegre edilmiştir.
-- Ekip üyeleri arası görev dağılımı yapılmış ve GitHub Issues & Discussions üzerinden mimari kararlar alınarak takım iletişimi sağlanmıştır.
-- **Git ve PR Stratejisi Aktif İşletilmektedir:** Mini sprint adımlarında (örn. Sprint 1.1) her ekip üyesi kendi feature branch'inde geliştirme yapıp `develop` branch'ine PR açmaktadır. Tüm sprint süreci tamamlandığında ise `develop` üzerinden `main` (ana) branch'ine genel bir sürüm birleştirme PR'ı atılmaktadır.
-
-Detaylı teknik rapor, alınan kararlar ve teknoloji yığını bilgileri için lütfen aşağıdaki raporu inceleyiniz:
-👉 **[Ara Rapor (Interim Report) Dosyası İçin Tıklayınız](./Markdowns/Project/Interim_Report.md)**
+**Teslim Tarihi:** 30.04.2026  
+**Proje Konusu:** Property Graph Tabanlı Sosyal Ağ Modelleme  
+**Ekip:** Batuhan, Özcan, Fatma Sude, Muhammed Furkan, Isra
 
 ---
 
-## Ekip
+## 1. Ara Rapor Özeti (Executive Summary)
 
-| Rol | Kişi | Sorumluluk |
-|-----|------|------------|
-| Core Data Engineer | Batuhan | Hash Table, Node/Edge, PropertyGraph, Thread-Safety |
-| Algorithm Master | Özcan | Queue, BFS, DFS, Çok Adımlı Sorgular |
-| Frontend Lead | Fatma Sude | React UI, Vis-network Görselleştirme |
-| Architect & Infrastructure | Muhammed Furkan | ASP.NET Core API, AI Worker, Docker |
-| Testing & Analysis | Isra | Trie, Sentetik Veri, Testler, Big-O Analizi |
+Bu proje, sosyal ağ sistemlerinin (Facebook, LinkedIn vb.) temelini oluşturan **Property Graph** veri modelini, hiçbir standart kütüphane kullanmadan (from scratch) C# ve React ile modellemeyi hedeflemektedir. 
 
-## Çalıştırma
+30.04.2026 tarihi itibariyle proje; **Faz 1 (Veri Yapıları)**, **Faz 2 (Algoritmalar)** ve **Faz 3 (Görselleştirme)** aşamalarını başarıyla tamamlamış, entegrasyon testlerinden geçmiş ve Dockerize edilerek final teslimine hazır hale getirilmiştir.
 
-### Gereksinimler
-- Docker & Docker Compose
-- (Geliştirme için) .NET 8 SDK, Node.js 20+
+### Proje Durum Göstergeleri:
+- **Çekirdek Veri Yapıları:** %100 (Hash Table, Trie, Queue, Adjacency List)
+- **Algoritmalar:** %100 (BFS, DFS, Shortest Path, Chain Query, Recommendations)
+- **Görselleştirme:** %100 (2D Node-Link Diyagramı, Interaktif Yan Panel)
+- **Altyapı:** %100 (Docker Compose, AI Worker Simülasyonu)
 
-### Hızlı Başlangıç
+---
+
+## 2. Teknoloji Yığını ve Mimari
+
+Sistem, bir ana API ve bu API'ye veri basan bağımsız bir simülasyon servisinden oluşmaktadır:
+
+| Katman | Teknoloji | Amaç |
+|--------|-----------|------|
+| **Backend (API)** | ASP.NET Core 8.0 | Core veri yapılarını ve algoritmaları barındırır. |
+| **Data Engine** | Custom C# Collections | `Dictionary` veya `List` yerine kendi yazdığımız yapılar. |
+| **AI Simulation** | .NET Worker Service | Her 15sn'de bir sentetik veri üreterek API'yi besler. |
+| **Frontend (UI)** | React + TypeScript | Grafın görselleştirilmesi ve sorgu yönetimi. |
+| **Görselleştirme** | Vis-network | 2D Graf render motoru. |
+
+---
+
+## 3. Ekip Katkıları ve Görev Dağılımı
+
+Her ekip üyesi projeye kendi uzmanlık alanında ve kendi branch'i üzerinden katkı sağlamıştır:
+
+| Üye | Rol | Temel Katkıları |
+|-----|-----|-----------------|
+| **Batuhan** | Core Data Engineer | `PropertyGraph`, `CustomHashTable`, `ReaderWriterLockSlim` (Thread-Safety) |
+| **Özcan** | Algorithm Master | `RelationalQueryEngine` (Zincir Sorgular), Arkadaş Önerisi, BFS/DFS |
+| **Fatma Sude** | Frontend Lead | `GraphCanvas` (Vis-network), `QueryPanel`, Premium Swiss-Minimal UI |
+| **Muhammed Furkan**| Infrastructure | `SocialGraph.AI` (Worker), Docker, API Controller Mimarisi |
+| **Isra** | Testing & Analysis | `CustomTrie`, `DataGenerator`, Big-O Analiz Raporu, Load Tests |
+
+---
+
+## 4. Tespit Edilen Hatalar ve Çözüm Süreci (Findings & Debugging)
+
+Geliştirme sürecinde karşılaşılan ve çözüme kavuşturulan kritik bulgular:
+
+1. **Eşzamanlılık Çakışması (Concurrency Race Condition):** AI Worker yüksek hızda veri basarken API'nin okuma yapması sırasında kilitlenmeler yaşandı. `ReaderWriterLockSlim` entegrasyonu ile okuma/yazma öncelikleri düzenlendi.
+2. **TypeScript Tip Uyumsuzlukları:** `vis-network` verileri ile C#'tan gelen DTO'lar arasında tip uyuşmazlıkları tespit edildi. Güçlü `interfaces` tanımlanarak `any` kullanımı projeden temizlendi.
+3. **Bellek Sızıntısı (Memory Management):** Custom Hash Table'da silinen düğümlerin referanslarının kalması sorunu çözüldü, `Linear Probing` mekanizması optimize edildi.
+4. **Trie Arama Senaryoları:** Case-insensitive arama ve ID-Mapping süreçleri, büyük veri setlerinde (5000+ node) performans testlerinden geçirilerek iyileştirildi.
+
+---
+
+## 5. GitHub ve Takım Çalışması Süreci
+
+Proje, tam bir profesyonel CI/CD ve Git hiyerarşisi ile yürütülmektedir:
+
+- **Branch Politikası:** `main` (stabil sürüm), `develop` (kod birleştirme) ve `feature/*` (kişisel geliştirme) dalları kullanılmaktadır.
+- **Aktif Branch Yapısı:**
+    - `main`: Projenin yayına hazır, en stabil hali.
+    - `develop`: Tüm ekip üyelerinin kodlarının entegre edildiği ana geliştirme dalı.
+    - `feature/batuhan-core`: Veri yapıları ve thread-safety geliştirmeleri.
+    - `feature/ozcan-algorithms`: Graf traversal ve ilişkisel sorgu algoritmaları.
+    - `feature/sude-frontend`: React UI ve Vis-network görselleştirme bileşenleri.
+    - `feature/furkan-infrastructure`: API mimarisi, AI Worker ve Docker yapılandırması.
+    - `feature/isra-optimization`: Test otomasyonu, Trie yapısı ve Big-O analizleri.
+- **Pull Request (PR) Mekanizması:** Ekip üyeleri her sprint adımında `develop` dalına PR açmış, kodlar incelendikten sonra birleştirilmiştir. Bugüne kadar 20'den fazla PR başarıyla yönetilmiştir.
+- **Discussions:** Mimari kararlar (örn: "Dictionary yerine neden CustomHashTable kullanmalıyız?") GitHub Discussions üzerinden tartışılarak karara bağlanmıştır.
+
+---
+
+## 6. Hızlı Başlangıç (Docker)
+
+Tüm sistemi tek komutla ayağa kaldırabilirsiniz:
+
 ```bash
 docker-compose up --build
 ```
 
-| Servis | URL |
-|--------|-----|
-| Frontend (UI) | http://localhost:3000 |
-| Backend (API) | http://localhost:5000 |
-| Swagger Docs | http://localhost:5000/swagger |
+- **UI:** `http://localhost:8080`
+- **API:** `http://localhost:5000`
+- **Swagger:** `http://localhost:5000/swagger`
 
-### Geliştirme Modu
-```bash
-# API
-cd src/SocialGraph.API
-dotnet run
+---
 
-# UI
-cd src/SocialGraph.UI
-npm install
-npm run dev
-```
-
-## Lisans
-Bu proje bir üniversite ödevi kapsamında geliştirilmektedir.
+**Daha detaylı dökümantasyon için:**
+- [Big-O Analiz Raporu](./Markdowns/Project/BigO_Analysis.md)
+- [Sprint Detayları](./Markdowns/Sprints/Sprint_3_detailed.md)
+- [Kişisel Raporlar](./Markdowns/Personal_Reports/)
