@@ -72,11 +72,11 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 - Sonuç: hem liste hem graf üzerinde görsel olarak gösterim.
 
 **Kabul Kriterleri:**
-- [ ] Graf 50+ düğüm ile sorunsuz render ediliyor.
-- [ ] 3 düğüm türü farklı şekil/renk ile gösterilliyor.
-- [ ] Düğüme tıklayınca yan panelde özellikler görünüyor.
-- [ ] Sorgu sonuçları graf üzerinde vurgulanıyor.
-- [ ] PR açıldı (`feature/sude-frontend`).
+- [x] Graf 50+ düğüm ile sorunsuz render ediliyor.
+- [x] 3 düğüm türü farklı şekil/renk ile gösterilliyor.
+- [x] Düğüme tıklayınca yan panelde özellikler görünüyor.
+- [x] Sorgu sonuçları graf üzerinde vurgulanıyor.
+- [x] PR açıldı (`feature/sude-frontend`).
 
 ---
 

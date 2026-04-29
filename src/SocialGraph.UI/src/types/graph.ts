@@ -27,3 +27,8 @@ export interface ISearchResult {
     label: string;
     type: string;
 }
+
+export interface IRecommendation {
+    node: INode;
+    mutualFriendsCount: number;
+}

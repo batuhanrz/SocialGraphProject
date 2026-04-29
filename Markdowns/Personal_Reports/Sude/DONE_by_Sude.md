@@ -29,4 +29,14 @@
 
 ---
 
-*(Diğer sprintler geldikçe eklenecektir...)*
+## Sprint 3 Katkıları (Interaktif Görselleştirme ve Sorgu Arayüzü)
+
+### Yapılan İşlemler (Sprint 3.3)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `vis-network` kütüphanesi entegre edilerek, projenin en temel gereksinimi olan 2D Node-Link diyagramı interaktif hale getirildi. | 27.04.2026 |
+| 2 | Düğüm tipleri (User, Photo, Event) ve kenar tipleri (Friend, Likes, Attends) için "Swiss Standard" tasarım yönergelerine uygun görsel özelleştirmeler yapıldı. | 27.04.2026 |
+| 3 | `QueryPanel.tsx` bileşeni geliştirilerek; BFS, DFS, Shortest Path ve Zincir Sorgu türleri için kullanıcı dostu bir arayüz sunuldu. | 27.04.2026 |
+| 4 | Sorgu sonuçlarının graf üzerinde vurgulanması (highlight) ve seçilen düğüme otomatik odaklanma (focus/zoom) mekanizmaları kuruldu. | 27.04.2026 |
+| 5 | Grafa tıklama (click event) ile `ResultPanel` arasındaki senkronizasyon sağlanarak O(1) hızında veri gösterimi tamamlandı. | 27.04.2026 |
+| 6 | Arayüzün responsive yapısı iyileştirildi ve modern bir lejant (legend) sistemi eklendi. | 27.04.2026 |

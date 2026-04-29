@@ -41,9 +41,11 @@ Su ana kadar yapilan Sprint 1, Sprint 2 ve Sprint 3.1-3.2 entegrasyonlarinda:
 - Cekirdek `Node` ve `Edge` siniflari baglandi.
 - Grafin temel iskeleti olan `PropertyGraph` adjacency list tabanli olarak tamamlandi.
 - **Eşzamanlılık (Concurrency):** `ReaderWriterLockSlim` kullanılarak API okumaları ile AI Worker yazmaları arasındaki yarış durumları (race conditions) engellendi.
-- **İlişkisel Sorgu Motoru:** `RelationalQueryEngine` ile `User → Friend → Event → Photo` gibi çok adımlı zincir sorgular ve ortak arkadaş sayısına dayalı öneri sistemi sisteme kazandırıldı.
-- **Sentetik Veri:** AI Worker aracılığıyla 100+ düğüm ve ilişkiden oluşan gerçekçi veri akışı API üzerinden graf sistemine bağlandı.
+- **İlişkisel Sorgu Motoru:** `RelationalQueryEngine` ile `User → Friend → Event → Photo` gibi çok adımlı zincir sorgular ve ortak arkadaş sayısına dayalı öneri sistemi sisteme kazandırıldı. (Özcan)
+- **Interaktif Görselleştirme:** `vis-network` kütüphanesi kullanılarak grafın 2D node-link diyagramı oluşturuldu. Düğüm tipleri (renk/şekil) ve kenar tipleri (çizgi stilleri) görsel olarak ayrıştırılarak "Premium Swiss Minimal" tasarım diline uygun bir arayüz geliştirildi. (Sude)
+- **Kullanıcı Deneyimi:** Sorgu paneli ve yan panel etkileşimi ile BFS, DFS ve Zincir Sorgu sonuçlarının anlık olarak graf üzerinde vurgulanması sağlandı. (Sude)
+- **Sentetik Veri:** AI Worker aracılığıyla 100+ düğüm ve ilişkiden oluşan gerçekçi veri akışı API üzerinden graf sistemine bağlandı. (Isra & Furkan)
 - API uçları (Nodes, Search, Traversal) ve Frontend (React + TS) arasındaki iletişim native fetch servisleriyle sağlandı.
 
-**Gelecek Adim (Sprint 3 Devami):**
-`Vis-network` ile interaktif 2D graf görselleştirme arayüzünün tamamlanması ve AI Worker simülasyon motorunun (Faz 2) dinamik veri akışını sürekli hale getirmesi hedeflenmektedir.
+**Gelecek Adım (Sprint 3.4 & 3.5):**
+AI Worker simülasyon motorunun (Faz 2) dinamik veri akışını sürekli hale getirmesi ve sistemin uçtan uca entegrasyon testleri ile Big-O analizinin tamamlanması hedeflenmektedir.

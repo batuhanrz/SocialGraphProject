@@ -124,3 +124,10 @@
 - [x] "Triadic Closure" prensibiyle ortak arkadaş sayısına dayalı arkadaş öneri sistemi (Recommendation Engine) geliştirildi. **(Özcan)**
 - [x] Zincir sorgu motoru, karmaşık `User→Friend→Event→Photo` senaryoları ile `RelationalQueryTests.cs` üzerinden doğrulandı. **(Özcan)**
 - [x] `PropertyGraph`'a `UPLOADED` kenar türü eklenerek projenin ilişkisel modeli genişletildi. **(Özcan)**
+
+### Sprint 3.3: Fatma Sude (Frontend Lead) — Vis-network 2D Görselleştirme + Etkileşim
+- [x] `vis-network` kütüphanesi entegre edilerek tüm grafın 2D node-link diyagramı olarak interaktif görselleştirmesi sağlandı. **(Sude)**
+- [x] Düğüm tipleri (User, Photo, Event) farklı şekil ve renklerle, kenar tipleri (Friend, Likes, Attends) farklı çizgi stilleriyle özelleştirildi. **(Sude)**
+- [x] Grafa tıklandığında ilgili düğümün özelliklerini yan panelde gösteren O(1) etkileşim mekanizması kuruldu. **(Sude)**
+- [x] `QueryPanel` bileşeni ile BFS, DFS, En Kısa Yol ve Zincir Sorgu sonuçlarının graf üzerinde vurgulanması (highlight) sağlandı. **(Sude)**
+- [x] Premium Swiss Minimal tasarım diline uygun lejant, floating kontrol panelleri ve responsive layout düzenlemeleri yapıldı. **(Sude)**
