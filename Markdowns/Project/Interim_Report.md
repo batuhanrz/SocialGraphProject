@@ -1,53 +1,65 @@
-# Ara Rapor (Interim Report) — 30.04.2026
+# Ara Rapor (Interim Report) — SocialGraph Project
 
-Not: Bu doküman, Veri Yapıları Projesi kapsamında 30.04.2026 tarihli Ara Rapor teslimi için hazırlanan temel iskeleti yansıtmaktadır. Mevcut haliyle ara rapor kriterleri karşılanmış olup, teslim gününe kadar geliştirme süreci devam ettiği için ekip üyeleri tarafından rapora yeni eklemeler/düzenlemeler gelebilir.
+**Tarih:** 30.04.2026  
+**Ekip Üyeleri:** Batuhan, Özcan, Fatma Sude, Muhammed Furkan, Isra
 
-Bu doküman, Veri Yapıları Projesi kapsamında 30.04.2026 tarihli Ara Rapor (Interim Report) teslimi için hazırlanmıştır. 
+---
 
-Projenin başlangıcından bu güne kadar yapılan mimari tartışmalar, teknoloji seçimleri, iş bölümü ve kod entegrasyonu detayları aşağıda sunulmuştur. Tüm çalışmalar master/develop branch'i üzerinde toplanmakta olup, projeye ait repository github üzerinde aktif olarak kullanılmaktadır.
+## 1. Giriş ve Amaç
 
-## 1. Proje Durumu ve GitHub Güncel Durumu
+Bu rapor, Veri Yapıları dersi kapsamında geliştirilen **Property Graph Tabanlı Sosyal Ağ Modelleme** projesinin 30.04.2026 tarihli ara rapor teslimidir. Projenin temel amacı, karmaşık sosyal ağ ilişkilerini (arkadaşlık, etkileşim, katılım) temsil edebilen, yüksek performanslı ve "from scratch" (sıfırdan) veri yapıları üzerine kurulu bir sistem inşa etmektir.
 
-Projenin temel iskeleti, mikroservis mimarisine ve takım çalışmasına uygun olacak şekilde kurgulanmıştır:
-- **Repository:** Proje için [SocialGraphProject] adlı GitHub repository'si oluşturuldu.
-- **Branch Stratejisi:** Projede ana entegrasyon dalı olarak develop ve main kullanılmaktadır. Her ekip üyesi (Batuhan, Özcan, Fatma Sude, Muhammed Furkan, Isra) kendi feature/* dallarında çalışmalarını yürütmektedir.
-- **Pull Requests (PR) Stratejisi:** Projede profesyonel bir kod birleştirme hiyerarşisi kurgulanmıştır. Mini sprint adımlarında (örneğin Sprint 1.1) her ekip üyesi geliştirme yaptığı kendi feature/* branch'inden ortak develop branch'ine PR açar ve kodlar buraya entegre edilir. Bir sprintin tamamı bittiğinde ise, develop branch'inden main (ana) branch'ine tek bir ana sürüm PR'ı açılarak release edilir.
-- **Görev Takibi:** Markdowns/Sprints ve Markdowns/Roadmaps klasörleri altında projenin tüm fazları, haftalık görevleri ve yapılan işler (TODO.md, DONE.md) izlenmektedir.
+## 2. Takım İçi İletişim ve Karar Alma Süreci
 
-## 2. Teknoloji Seçim Kararları (Tech Stack)
+Proje süresince tüm mimari kararlar ekip içi ortak tartışmalarla alınmıştır:
+- **Veri Yapısı Seçimi:** Hızlı arama için `Trie` ve O(1) erişim için `Hash Table` kullanılmasına karar verildi. Standard kütüphane (`Dictionary`, `List`) kullanımının çekirdek mantıkta yasaklanması konusunda mutabık kalındı.
+- **Asenkron Yapı:** AI Worker'ın ana servisten bağımsız çalışması (Microservice yaklaşımı), sistemin ölçeklenebilirliği için kritik bir karar olarak uygulanmıştır.
+- **Tasarım Dili:** Kullanıcı deneyimi için "Premium Swiss Minimal" tasarım dili benimsenmiştir.
 
-Ekip içi yapılan tartışmalar ve projenin gereksinimleri doğrultusunda aşağıdaki teknolojiler seçilmiştir:
-* **Backend:** ASP.NET Core Web API. Kapsamlı dependency injection ve yüksek performanslı sunucu yetenekleri nedeniyle tercih edildi.
-* **Veri Yapıları:** Custom Hash Table (Linear Probing ile), Custom Queue, Custom Trie ve PropertyGraph modelleri hiçbir standart kütüphane kullanılmadan sıfırdan C# ile yazılmıştır. Bellekte tek bir instance (Singleton) olarak yaşar.
-* **Frontend:** React + TypeScript. Kullanıcı arayüzü ve dinamik arama sonuçları için seçildi. Graf görselleştirmesi Sprint 3'te Vis-network kütüphanesi ile sağlanacaktır.
-* **AI Worker:** SocialGraph.AI adlı bağımsız BackgroundService. Sentetik veri üretimi ve simülasyon işlemleri için tasarlanmıştır.
+## 3. GitHub İş Akışı ve PR Geçmişi
 
-## 3. Tamamlanan Aşamalar (Sprint 1 & 2)
+Projede "Git Flow" benzeri bir yapı uygulanmaktadır:
+- **Main Branch:** Sadece stabil ve test edilmiş sürümler barındırılır (Projenin ana gövdesi).
+- **Develop Branch:** Ekip üyelerinin kodlarının birleştiği ana geliştirme dalı.
+- **Feature Branches:** Ekip üyelerinin uzmanlık alanlarına göre özelleşmiş dallar:
+    - `feature/batuhan-core`: Veri yapıları (HashTable, Graph).
+    - `feature/ozcan-algorithms`: BFS, DFS ve Zincir sorgular.
+    - `feature/sude-frontend`: UI ve Görselleştirme.
+    - `feature/furkan-infrastructure`: API ve AI Worker.
+    - `feature/isra-optimization`: Testler ve Optimizasyon.
+- **PR Kontrolü:** Her PR en az bir ekip üyesi tarafından gözden geçirilmiş ve çakışmalar (conflict) manuel olarak çözülmüştür.
 
-### Sprint 1: Çekirdek Altyapı
-- Temel veri yapıları (HashTable, Queue, Trie) implemente edildi.
-- API ve UI projeleri başlatıldı.
-- xUnit ile birim test altyapısı kuruldu.
+## 4. Teknik Gelişim Özeti
 
-### Sprint 2: Property Graph ve Servis Entegrasyonu
-- Adjacency list tabanlı Property Graph mimarisi tamamlandı.
-- BFS, DFS ve Shortest Path algoritmaları Property Graph'a entegre edildi.
-- AI Worker aracılığıyla otomatik veri üretimi ve API'ye batch transfer mekanizması kuruldu.
-- Custom Trie üzerinden dinamik arama (autocomplete) frontend ile bağlandı.
+### 4.1. Veri Yapıları (Faz 1)
+- **CustomHashTable:** Linear probing ile implemente edildi. Load factor kontrolü eklendi.
+- **CustomTrie:** Autocomplete ve Prefix search yetenekleri eklendi.
+- **CustomQueue:** BFS traversal için optimize edildi.
 
-## 4. Kod Entegrasyonu ve Ara Rapor Guncellemesi
+### 4.2. Algoritmalar (Faz 2)
+- **Graph Traversal:** BFS ve DFS algoritmaları PropertyGraph üzerinde test edildi.
+- **Relational Query Engine:** Çok adımlı sorgu zincirleri (User -> Friend -> Photo) implemente edildi.
+- **Arkadaş Önerisi:** Ortak arkadaş sayısına dayalı Triadic Closure algoritması eklendi.
 
-Su ana kadar yapilan Sprint 1, Sprint 2 ve Sprint 3.1-3.2 entegrasyonlarinda:
-- Cekirdek `Node` ve `Edge` siniflari baglandi.
-- Grafin temel iskeleti olan `PropertyGraph` adjacency list tabanli olarak tamamlandi.
-- **Eşzamanlılık (Concurrency):** `ReaderWriterLockSlim` kullanılarak API okumaları ile AI Worker yazmaları arasındaki yarış durumları (race conditions) engellendi.
-- **İlişkisel Sorgu Motoru:** `RelationalQueryEngine` ile `User → Friend → Event → Photo` gibi çok adımlı zincir sorgular ve ortak arkadaş sayısına dayalı öneri sistemi sisteme kazandırıldı. (Özcan)
-- **Interaktif Görselleştirme:** `vis-network` kütüphanesi kullanılarak grafın 2D node-link diyagramı oluşturuldu. Düğüm tipleri (renk/şekil) ve kenar tipleri (çizgi stilleri) görsel olarak ayrıştırılarak "Premium Swiss Minimal" tasarım diline uygun bir arayüz geliştirildi. (Sude)
-- **Kullanıcı Deneyimi:** Sorgu paneli ve yan panel etkileşimi ile BFS, DFS ve Zincir Sorgu sonuçlarının anlık olarak graf üzerinde vurgulanması sağlandı. (Sude)
-- **AI Simulation (Faz 2):** AI Worker, sadece statik veri basan bir yapıdan; her 15 saniyede bir dinamik olarak yeni düğümler ve ilişkiler üreten, resilient (hataya dayanıklı) bir simülasyon motoruna dönüştürüldü. (Furkan)
-- **Sentetik Veri:** AI Worker aracılığıyla 100+ düğüm ve ilişkiden oluşan gerçekçi veri akışı API üzerinden graf sistemine bağlandı. (Isra & Furkan)
-- **Doğrulama ve Analiz:** Sistemin 5000+ düğümde bile 10ms altında performans sergilediği yük testleri ile kanıtlandı ve teorik Big-O analiz raporu (`BigO_Analysis.md`) tamamlandı. (Isra)
-- API uçları (Nodes, Search, Traversal) ve Frontend (React + TS) arasındaki iletişim native fetch servisleriyle sağlandı.
+### 4.3. Görselleştirme (Faz 3)
+- **2D Rendering:** Vis-network ile düğüm ve kenar tiplerine göre özelleşmiş görselleştirme.
+- **Side Panel:** Tıklanan düğümün özelliklerine O(1) hızında erişim ve detay gösterimi.
 
-**Sonuç ve Teslim:**
-Sprint 3'ün tamamlanmasıyla birlikte SocialGraph projesinin teknik gereksinimleri %100 karşılanmıştır. Proje, Docker altyapısı ve kapsamlı analiz raporlarıyla birlikte final teslimine hazırdır.
+## 5. Hata ve Bulgular Raporu (Bug Report)
+
+| Bulgu Kimliği | Tanım | Çözüm Durumu |
+|---------------|-------|--------------|
+| BUG-001 | AI Worker yazarken API'nin veri okuyamaması. | **Çözüldü** (ReaderWriterLockSlim eklendi) |
+| BUG-002 | React hydration hataları. | **Çözüldü** (Client-side rendering ayarlandı) |
+| BUG-003 | Trie aramasında küçük/büyük harf duyarlılığı. | **Çözüldü** (Normalization eklendi) |
+| BUG-004 | Vis-network'te yüksek düğüm sayısında kasılma. | **İyileştirildi** (Physics engine optimize edildi) |
+
+## 6. Sonuç ve Gelecek Planı
+
+Proje, 30.04.2026 tarihi itibariyle tüm zorunlu isterleri karşılamaktadır. Önümüzdeki final döneminde (12-13. Hafta):
+- Big-O analizi daha detaylı hale getirilecek.
+- UML diyagramları son haline getirilecek.
+- 10 dakikalık final demo videosu çekilecektir.
+
+---
+**GitHub Repo Linki:** [https://github.com/batuhanrz/SocialGraphProject](https://github.com/batuhanrz/SocialGraphProject)
