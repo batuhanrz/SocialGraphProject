@@ -138,3 +138,13 @@
 - [x] API bağlantı hatalarına karşı dayanıklı (resilient) `try-catch` tabanlı retry mekanizması kuruldu. **(Furkan)**
 - [x] Simülasyon hızı ve veri yoğunluğu `appsettings.json` üzerinden konfigüre edilebilir hale getirildi. **(Furkan)**
 - [x] Üretilen verilerin API üzerinden `PropertyGraph`'a anlık akışı loglar üzerinden doğrulandı. **(Furkan)**
+
+### Sprint 3.5: Isra (Testing & Analysis) — Entegrasyon Testleri + Big-O Analizi
+- [x] API ↔ PropertyGraph ↔ Worker arasındaki veri akışını doğrulayan uçtan uca entegrasyon testleri (`IntegrationTests.cs`) yazıldı. **(Isra)**
+- [x] 500, 1000 ve 5000 düğümlü graf yapıları üzerinde performans ölçümleri yapan yük testleri (`LoadTests.cs`) tamamlandı. **(Isra)**
+- [x] Tüm sistemin teorik ve deneysel Big-O analizini içeren kapsamlı teknik rapor (`BigO_Analysis.md`) oluşturuldu. **(Isra)**
+- [x] Sistem performansının 5000+ düğümde bile 10ms altında kaldığı deneysel olarak kanıtlandı. **(Isra)**
+- [x] PR açıldı (`feature/isra-optimization`). **(Isra)**
+
+> [!TIP]
+> **Sprint 3 SONUÇ:** Çok adımlı sorgular, interaktif görselleştirme, dinamik AI simülasyonu ve kapsamlı analiz raporları başarıyla tamamlanmıştır. Sistem tüm teknik gereksinimleri karşılamaktadır.

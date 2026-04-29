@@ -24,7 +24,7 @@ Tüm alt görevler (1.1 - 1.5) başarıyla tamamlandı.
 
 ---
 
-## SPRINT 3: Çok Adımlı Sorgular ve Görselleştirme [DEVAM EDİYOR]
+## SPRINT 3: Çok Adımlı Sorgular ve Görselleştirme [TAMAMLANDI]
 
 ### Sprint 3.1: Batuhan — Thread-Safety ve Eşzamanlılık Yönetimi [TAMAMLANDI]
 > `ReaderWriterLockSlim` optimizasyonu ve eşzamanlılık testleri tamamlandı.
@@ -35,4 +35,5 @@ Tüm alt görevler (1.1 - 1.5) başarıyla tamamlandı.
 > Interaktif graf görselleştirmesi, QueryPanel ve yan panel entegrasyonu tamamlandı.
 ### Sprint 3.4: Muhammed Furkan — AI Simulation Motoru (Faz 2) [TAMAMLANDI]
 > BackgroundService üzerinden dinamik veri akışı ve retry mekanizması sağlandı.
-### Sprint 3.5: Isra — Entegrasyon Testleri + Big-O Analiz Taslağı [SIRADAKİ]
+### Sprint 3.5: Isra — Entegrasyon Testleri + Big-O Analiz Taslağı [TAMAMLANDI]
+> Entegrasyon testleri geçildi, yük testleri yapıldı ve Big-O analiz raporu hazırlandı.

@@ -127,10 +127,10 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 - Ölçülen gerçek süreler ile teorik analiz karşılaştırması.
 
 **Kabul Kriterleri:**
-- [ ] 3+ entegrasyon test senaryosu yazıldı ve geçiyor.
-- [ ] 3 farklı graf boyutuyla yük testi yapıldı, sonuçlar tablo halinde.
-- [ ] Big-O analiz taslağı markdown olarak yazıldı.
-- [ ] PR açıldı (`feature/isra-optimization`).
+- [x] 3+ entegrasyon test senaryosu yazıldı ve geçiyor.
+- [x] 3 farklı graf boyutuyla yük testi yapıldı, sonuçlar tablo halinde.
+- [x] Big-O analiz taslağı markdown olarak yazıldı.
+- [x] PR açıldı (`feature/isra-optimization`).
 
 ---
 
