@@ -1,5 +1,5 @@
 import { fetchApi } from './apiService';
-import type { INode, ISearchResult } from '../types/graph';
+import type { INode, IEdge, ISearchResult } from '../types/graph';
 
 export const nodeService = {
     searchNodes: async (query: string): Promise<ISearchResult[]> => {
@@ -13,5 +13,9 @@ export const nodeService = {
 
     getAllNodes: async (): Promise<INode[]> => {
         return fetchApi<INode[]>('/nodes');
+    },
+
+    getNodeEdges: async (id: string): Promise<IEdge[]> => {
+        return fetchApi<IEdge[]>(`/nodes/${encodeURIComponent(id)}/edges`);
     }
 };
