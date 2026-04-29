@@ -33,4 +33,16 @@ Bu döküman, projenin "Testing & Analysis Specialist" rolünü üstlenen Isra t
 
 ---
 
+## Sprint 3 Katkıları (Entegrasyon Testleri ve Big-O Analizi)
+**Rol Hedefi:** Sistemin uçtan uca doğrulanması, yük altında performans analizi ve veri yapılarının teorik karmaşıklığının kanıtlanması.
+
+### Yapılan İşlemler (Sprint 3.5)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `IntegrationTests.cs`: Worker -> API -> PropertyGraph -> Search/Traversal akışı doğrulandı. | 29.04.2026 |
+| 2 | `LoadTests.cs`: 500, 1000 ve 5000 düğüm senaryolarıyla sistemin ölçeklenebilirliği test edildi. | 29.04.2026 |
+| 3 | `BigO_Analysis.md`: CustomHashTable, CustomTrie ve Graf algoritmaları için teorik ve deneysel analiz raporu hazırlandı. | 29.04.2026 |
+| 4 | Performans Doğrulama: 5000 düğümlü bir zincir graf üzerinde BFS ve Trie aramalarının 10ms altında kaldığı ölçüldü. | 29.04.2026 |
+| 5 | Final Dökümantasyon: Ara Rapor (Interim Report) ve DONE dökümanları projenin son haline göre revize edildi. | 29.04.2026 |
+
 *(Diğer sprintler geldikçe eklenecektir...)*
