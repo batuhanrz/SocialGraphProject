@@ -131,3 +131,10 @@
 - [x] Grafa tıklandığında ilgili düğümün özelliklerini yan panelde gösteren O(1) etkileşim mekanizması kuruldu. **(Sude)**
 - [x] `QueryPanel` bileşeni ile BFS, DFS, En Kısa Yol ve Zincir Sorgu sonuçlarının graf üzerinde vurgulanması (highlight) sağlandı. **(Sude)**
 - [x] Premium Swiss Minimal tasarım diline uygun lejant, floating kontrol panelleri ve responsive layout düzenlemeleri yapıldı. **(Sude)**
+
+### Sprint 3.4: Muhammed Furkan (Architect & Infrastructure) — AI Simulation Motoru (Faz 2)
+- [x] `SocialGraph.AI` projesi, her 15 saniyede bir dinamik veri üreten aktif bir `BackgroundService` motoruna dönüştürüldü. **(Furkan)**
+- [x] `GenerateIncrementalData` metodu ile sistem ayakta olduğu sürece rastgele yeni kullanıcılar, fotoğraflar ve etkinlikler üretilmesi sağlandı. **(Furkan)**
+- [x] API bağlantı hatalarına karşı dayanıklı (resilient) `try-catch` tabanlı retry mekanizması kuruldu. **(Furkan)**
+- [x] Simülasyon hızı ve veri yoğunluğu `appsettings.json` üzerinden konfigüre edilebilir hale getirildi. **(Furkan)**
+- [x] Üretilen verilerin API üzerinden `PropertyGraph`'a anlık akışı loglar üzerinden doğrulandı. **(Furkan)**

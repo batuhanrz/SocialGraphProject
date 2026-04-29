@@ -23,48 +23,74 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("SocialGraph AI Worker baslatildi.");
+        _logger.LogInformation("SocialGraph AI Worker baslatildi. [Muhammed Furkan - Faz 2]");
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (!_isSeedDataPushed)
+            try
             {
-                _logger.LogInformation("Sentetik Seed Data uretiliyor... (Topoloji: Dense)");
-                var (nodes, edges) = _dataGenerator.GenerateDenseGraph();
-                
-                _logger.LogInformation($"Uretilen Dugum: {nodes.Count}, Uretilen Kenar: {edges.Count}. API'ye post ediliyor...");
-
-                try
+                if (!_isSeedDataPushed)
                 {
-                    var nodeResponse = await _httpClient.PostAsJsonAsync("/api/nodes/batch", nodes, stoppingToken);
-                    if (nodeResponse.IsSuccessStatusCode)
-                    {
-                        _logger.LogInformation("Dugumler basariyla API'ye gonderildi.");
-                    }
-                    else 
-                    {
-                        _logger.LogWarning($"Dugum post hatasi: {nodeResponse.StatusCode}");
-                    }
-
-                    var edgeResponse = await _httpClient.PostAsJsonAsync("/api/edges/batch", edges, stoppingToken);
-                    if (edgeResponse.IsSuccessStatusCode)
-                    {
-                        _logger.LogInformation("Kenarlar basariyla API'ye gonderildi.");
-                    }
-
-                    _isSeedDataPushed = true;
+                    await PushSeedData(stoppingToken);
                 }
-                catch (Exception ex)
+                else
                 {
-                    _logger.LogError($"API'ye veri gonderilirken hata olustu: {ex.Message}. (API calisiyor mu?)");
+                    await PushIncrementalData(stoppingToken);
                 }
             }
-            else
+            catch (HttpRequestException ex)
             {
-                _logger.LogInformation("AI Worker Heartbeat. Rutin simulasyon kontrolu: Zaman: {time}", DateTimeOffset.Now);
+                _logger.LogError("API Baglanti Hatasi: {Message}. 10 saniye sonra tekrar denenecek...", ex.Message);
+                await Task.Delay(10000, stoppingToken);
+                continue; // Bir sonraki donguye gec, delay'i burada yaptik
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Beklenmedik Hata: {Message}", ex.Message);
             }
 
-            await Task.Delay(15000, stoppingToken);
+            var interval = _configuration.GetValue<int>("SimulationSettings:SimulationIntervalMs", 15000);
+            await Task.Delay(interval, stoppingToken);
         }
+    }
+
+    private async Task PushSeedData(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation("Sentetik Seed Data uretiliyor... (Topoloji: Dense)");
+        var (nodes, edges) = _dataGenerator.GenerateDenseGraph();
+        
+        _logger.LogInformation("Seed Data gonderiliyor: {NodeCount} dugum, {EdgeCount} kenar.", nodes.Count, edges.Count);
+
+        var nodeResp = await _httpClient.PostAsJsonAsync("/api/nodes/batch", nodes, stoppingToken);
+        nodeResp.EnsureSuccessStatusCode();
+
+        var edgeResp = await _httpClient.PostAsJsonAsync("/api/edges/batch", edges, stoppingToken);
+        edgeResp.EnsureSuccessStatusCode();
+
+        _isSeedDataPushed = true;
+        _logger.LogInformation("Seed Data basariyla API'ye yuklendi.");
+    }
+
+    private async Task PushIncrementalData(CancellationToken stoppingToken)
+    {
+        var nNodes = _configuration.GetValue<int>("SimulationSettings:NewNodesPerCycle", 2);
+        var nEdges = _configuration.GetValue<int>("SimulationSettings:NewEdgesPerCycle", 3);
+
+        _logger.LogInformation("Inkremental veri uretiliyor...");
+        var (nodes, edges) = _dataGenerator.GenerateIncrementalData(nNodes, nEdges);
+
+        if (nodes.Count > 0)
+        {
+            var nodeResp = await _httpClient.PostAsJsonAsync("/api/nodes/batch", nodes, stoppingToken);
+            nodeResp.EnsureSuccessStatusCode();
+        }
+
+        if (edges.Count > 0)
+        {
+            var edgeResp = await _httpClient.PostAsJsonAsync("/api/edges/batch", edges, stoppingToken);
+            edgeResp.EnsureSuccessStatusCode();
+        }
+
+        _logger.LogInformation("Simulasyon Dongusu Tamamlandi: +{NodeCount} dugum, +{EdgeCount} kenar API'ye eklendi.", nodes.Count, edges.Count);
     }
 }

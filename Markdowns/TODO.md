@@ -33,5 +33,6 @@ Tüm alt görevler (1.1 - 1.5) başarıyla tamamlandı.
 > Zincir sorgu motoru (ExecuteChainQuery) ve arkadaş öneri sistemi başarıyla implemente edildi.
 ### Sprint 3.3: Fatma Sude — Vis-network 2D Görselleştirme [TAMAMLANDI]
 > Interaktif graf görselleştirmesi, QueryPanel ve yan panel entegrasyonu tamamlandı.
-### Sprint 3.4: Muhammed Furkan — AI Simulation Motoru (Faz 2) [SIRADAKİ]
+### Sprint 3.4: Muhammed Furkan — AI Simulation Motoru (Faz 2) [TAMAMLANDI]
+> BackgroundService üzerinden dinamik veri akışı ve retry mekanizması sağlandı.
 ### Sprint 3.5: Isra — Entegrasyon Testleri + Big-O Analiz Taslağı [SIRADAKİ]

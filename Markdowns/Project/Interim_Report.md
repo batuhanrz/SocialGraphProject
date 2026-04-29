@@ -44,6 +44,7 @@ Su ana kadar yapilan Sprint 1, Sprint 2 ve Sprint 3.1-3.2 entegrasyonlarinda:
 - **İlişkisel Sorgu Motoru:** `RelationalQueryEngine` ile `User → Friend → Event → Photo` gibi çok adımlı zincir sorgular ve ortak arkadaş sayısına dayalı öneri sistemi sisteme kazandırıldı. (Özcan)
 - **Interaktif Görselleştirme:** `vis-network` kütüphanesi kullanılarak grafın 2D node-link diyagramı oluşturuldu. Düğüm tipleri (renk/şekil) ve kenar tipleri (çizgi stilleri) görsel olarak ayrıştırılarak "Premium Swiss Minimal" tasarım diline uygun bir arayüz geliştirildi. (Sude)
 - **Kullanıcı Deneyimi:** Sorgu paneli ve yan panel etkileşimi ile BFS, DFS ve Zincir Sorgu sonuçlarının anlık olarak graf üzerinde vurgulanması sağlandı. (Sude)
+- **AI Simulation (Faz 2):** AI Worker, sadece statik veri basan bir yapıdan; her 15 saniyede bir dinamik olarak yeni düğümler ve ilişkiler üreten, resilient (hataya dayanıklı) bir simülasyon motoruna dönüştürüldü. (Furkan)
 - **Sentetik Veri:** AI Worker aracılığıyla 100+ düğüm ve ilişkiden oluşan gerçekçi veri akışı API üzerinden graf sistemine bağlandı. (Isra & Furkan)
 - API uçları (Nodes, Search, Traversal) ve Frontend (React + TS) arasındaki iletişim native fetch servisleriyle sağlandı.
 
