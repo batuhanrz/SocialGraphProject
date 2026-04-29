@@ -98,11 +98,11 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 - Başlatma/durdurma kontrolü (graceful shutdown).
 
 **Kabul Kriterleri:**
-- [ ] Worker 15 saniyede bir veri üretip API'ye gönderiyor.
-- [ ] Üretilen veriler PropertyGraph'a başarıyla ekleniyor.
-- [ ] API kapalıyken worker crash etmiyor (retry/log çalışıyor).
-- [ ] Frontend'de graf verisi dinamik olarak güncelleniyor.
-- [ ] PR açıldı (`feature/furkan-infrastructure`).
+- [x] Worker 15 saniyede bir veri üretip API'ye gönderiyor.
+- [x] Üretilen veriler PropertyGraph'a başarıyla ekleniyor.
+- [x] API kapalıyken worker crash etmiyor (retry/log çalışıyor).
+- [x] Frontend'de graf verisi dinamik olarak güncelleniyor.
+- [x] PR açıldı (`feature/furkan-infrastructure`).
 
 ---
 

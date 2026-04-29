@@ -263,6 +263,102 @@ namespace SocialGraph.AI
             }
         }
 
+        public (List<NodeDto> Nodes, List<EdgeDto> Edges) GenerateIncrementalData(int nodeCount, int edgeCount)
+        {
+            var nodes = new List<NodeDto>();
+            var edges = new List<EdgeDto>();
+
+            // Yeni Dugumler Uret
+            for (int i = 0; i < nodeCount; i++)
+            {
+                int typeSelector = _rnd.Next(3);
+                if (typeSelector == 0) // New User
+                {
+                    nodes.Add(new NodeDto
+                    {
+                        Id = $"user_new_{Guid.NewGuid().ToString("N").Substring(0, 4)}",
+                        Type = "User",
+                        Properties = new Dictionary<string, object>
+                        {
+                            { "Name", _userNames[_rnd.Next(_userNames.Length)] + " (Sim)" },
+                            { "Age", _rnd.Next(18, 60).ToString() },
+                            { "Profession", _professions[_rnd.Next(_professions.Length)] }
+                        }
+                    });
+                }
+                else if (typeSelector == 1) // New Photo
+                {
+                    nodes.Add(new NodeDto
+                    {
+                        Id = $"photo_new_{Guid.NewGuid().ToString("N").Substring(0, 4)}",
+                        Type = "Photo",
+                        Properties = new Dictionary<string, object>
+                        {
+                            { "Title", _photoTitles[_rnd.Next(_photoTitles.Length)] },
+                            { "Tag", _photoTags[_rnd.Next(_photoTags.Length)] },
+                            { "CreatedAt", DateTime.Now.ToString("yyyy-MM-dd") }
+                        }
+                    });
+                }
+                else // New Event
+                {
+                    nodes.Add(new NodeDto
+                    {
+                        Id = $"event_new_{Guid.NewGuid().ToString("N").Substring(0, 4)}",
+                        Type = "Event",
+                        Properties = new Dictionary<string, object>
+                        {
+                            { "Name", _eventNames[_rnd.Next(_eventNames.Length)] },
+                            { "Location", _eventLocations[_rnd.Next(_eventLocations.Length)] },
+                            { "Date", DateTime.Now.AddDays(_rnd.Next(1, 30)).ToString("yyyy-MM-dd") }
+                        }
+                    });
+                }
+            }
+
+            // Yeni Iliskiler Uret (Var olan ve yeni dugumler arasinda)
+            // Not: Basitlik icin seed data id araliklarini (user1-50, photo1-30, event1-20) kullaniyoruz
+            for (int i = 0; i < edgeCount; i++)
+            {
+                int relSelector = _rnd.Next(3);
+                string sourceId, targetId, relType;
+                bool isDirected;
+
+                if (relSelector == 0) // FRIEND
+                {
+                    sourceId = $"user{_rnd.Next(1, 51)}";
+                    targetId = nodes.Count > 0 && nodes[0].Type == "User" ? nodes[0].Id : $"user{_rnd.Next(1, 51)}";
+                    relType = "FRIEND";
+                    isDirected = false;
+                }
+                else if (relSelector == 1) // LIKES
+                {
+                    sourceId = $"user{_rnd.Next(1, 51)}";
+                    targetId = nodes.Count > 0 && nodes[0].Type == "Photo" ? nodes[0].Id : $"photo{_rnd.Next(1, 31)}";
+                    relType = "LIKES";
+                    isDirected = true;
+                }
+                else // ATTENDS
+                {
+                    sourceId = $"user{_rnd.Next(1, 51)}";
+                    targetId = nodes.Count > 0 && nodes[0].Type == "Event" ? nodes[0].Id : $"event{_rnd.Next(1, 21)}";
+                    relType = "ATTENDS";
+                    isDirected = true;
+                }
+
+                if (sourceId != targetId)
+                {
+                    edges.Add(CreateEdge(sourceId, targetId, relType, isDirected));
+                    if (!isDirected) // Friend ise karsilikli ekle
+                    {
+                         edges.Add(CreateEdge(targetId, sourceId, relType, isDirected));
+                    }
+                }
+            }
+
+            return (nodes, edges);
+        }
+
         private EdgeDto CreateEdge(string source, string target, string relation, bool isDirected)
         {
             return new EdgeDto

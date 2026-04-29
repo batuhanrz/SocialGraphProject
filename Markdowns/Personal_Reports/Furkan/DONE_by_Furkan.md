@@ -28,4 +28,23 @@
 | 3 | `TraversalController.cs` güncellendi: `BFS`, `DFS` ve `ShortestPath` uçları `POST` yerine frontend dostu `GET` yapısıyla `GraphTraversal` algoritmasına bağlandı. | 26.04.2026 |
 | 4 | `SocialGraph.AI` projesi `.NET Worker Service` formatında oluşturularak her 15 saniyede bir log atan iskelet mekanizması (`BackgroundService`) kuruldu. | 26.04.2026 |
 
+---
++
++## Sprint 3 Katkıları (AI Simulation Motoru - Faz 2)
++
++### Yapılan İşlemler (Sprint 3.4)
++| No | Tamamlanan Görev Özeti | Tarih |
+
+## Sprint 3 Katkıları (AI Simulation Motoru - Faz 2)
+
+### Yapılan İşlemler (Sprint 3.4)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `SocialGraph.AI` projesi, her 15 saniyede bir dinamik veri üreten aktif bir `BackgroundService` motoruna dönüştürüldü. | 29.04.2026 |
+| 2 | `DataGenerator.cs` içerisine `GenerateIncrementalData` metodu eklenerek rastgele yeni kullanıcı, fotoğraf ve etkinlik üretimi sağlandı. | 29.04.2026 |
+| 3 | `Worker.cs` üzerinde `try-catch` tabanlı resilient bir yapı kurularak API bağlantı hatalarına karşı dayanıklılık sağlandı. | 29.04.2026 |
+| 4 | Simülasyon parametreleri (interval, batch size) `appsettings.json` üzerinden yönetilebilir hale getirildi. | 29.04.2026 |
+| 5 | Graceful shutdown desteği ile servisin güvenli durdurulması sağlandı. | 29.04.2026 |
+| 6 | `Context.md` (B.2) gereksinimi olan Dockerfile'lar ve `docker-compose.yml` tüm mikroservisler için oluşturuldu. | 29.04.2026 |
+
 *(Diger sprintler geldikce eklenecektir...)*
