@@ -26,7 +26,7 @@ Düğümlere O(1) ortalama erişim sağlayacak hash tablosu implementasyonu:
 **Kabul Kriterleri:**
 - [x] Node ve Edge modelleri oluşturuldu, her biri en az 3 farklı türle test edildi.
 - [x] Hash Table, standart kütüphane kullanılmadan sıfırdan yazıldı.
-- [x] Hash Table'a 1000+ eleman ekleme/arama işlemi başarıyla gerçekleştirildi.
+- [x] Hash Table'a 1000+ eleman ekleme/arama işlemi gerçekleştirildi.
 - [x] Rehashing mekanizması çalışıyor (load factor aşıldığında kapasite artıyor).
 - [x] Kod `feature/batuhan-core` branch'inde ve PR açıldı.
 

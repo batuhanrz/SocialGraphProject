@@ -10,14 +10,14 @@ Tüm kurulumlar ve GitHub Issues/Discussions resmiyet kazandırma adımları tam
 
 ## SPRINT 1: Altyapı ve Çekirdek Veri Yapıları [TAMAMLANDI]
 
-Tüm alt görevler (1.1 - 1.5) başarıyla tamamlandı.
+Tüm alt görevler (1.1 - 1.5) tamamlandı.
 
 ---
 
 ## SPRINT 2: Property Graph Entegrasyonu ve API Servisleri [TAMAMLANDI]
 
 ### Sprint 2.1 - 2.4: [TAMAMLANDI]
-> PropertyGraph, Algoritmalar, Frontend Servisleri ve API Controller'ları başarıyla entegre edildi.
+> PropertyGraph, Algoritmalar, Frontend Servisleri ve API Controller'ları entegre edildi.
 
 ### Sprint 2.5: Isra — Sentetik Veri Üretimi + Birim Testler [TAMAMLANDI]
 > DataGenerator ve 23 birim test tamamlandı.
@@ -30,7 +30,7 @@ Tüm alt görevler (1.1 - 1.5) başarıyla tamamlandı.
 > `ReaderWriterLockSlim` optimizasyonu ve eşzamanlılık testleri tamamlandı.
 
 ### Sprint 3.2: Özcan — Çok Adımlı İlişkisel Sorgu Motoru [TAMAMLANDI]
-> Zincir sorgu motoru (ExecuteChainQuery) ve arkadaş öneri sistemi başarıyla implemente edildi.
+> Zincir sorgu motoru (ExecuteChainQuery) ve arkadaş öneri sistemi implemente edildi.
 ### Sprint 3.3: Fatma Sude — Vis-network 2D Görselleştirme [TAMAMLANDI]
 > Interaktif graf görselleştirmesi, QueryPanel ve yan panel entegrasyonu tamamlandı.
 ### Sprint 3.4: Muhammed Furkan — AI Simulation Motoru (Faz 2) [TAMAMLANDI]

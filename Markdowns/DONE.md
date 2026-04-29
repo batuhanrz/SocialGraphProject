@@ -51,7 +51,7 @@
 
 ### Sprint 1.3: Fatma Sude (Frontend Lead) — React + TypeScript Proje Kurulumu
 - [x] SocialGraph.UI projesi Vite + React + TypeScript kullanılarak sıfırdan oluşturuldu. (Sude)
-- [x] Premium Swiss Minimal tasarım sistemi index.css üzerinde (Glassmorphism, HSL paleti) kuruldu. (Sude)
+- [x] Swiss-Minimal tasarım sistemi index.css üzerinde (Glassmorphism, HSL paleti) kuruldu. (Sude)
 - [x] AppLayout, SearchBar ve GraphCanvas (placeholder) bileşenleri geliştirildi. (Sude)
 - [x] Backend modelleriyle uyumlu TypeScript interface'leri (INode, IEdge vb.) tanımlandı. (Sude)
 
@@ -71,7 +71,7 @@
 ---
 
 > **SPRINT 1 CHECKPOINT: TAMAMLANDI**
-> Tüm alt görevler (1.1 - 1.5) başarıyla tamamlandı. 10/10 kabul kriteri karşılandı.
+> Tüm alt görevler (1.1 - 1.5) tamamlandı. 10/10 kabul kriteri karşılandı.
 
 ---
 
@@ -97,15 +97,15 @@
 - [x] Seçilen düğümlerin detay özelliklerini göstermek üzere ResultPanel.tsx bileşeni güncellendi. (Sude)
 
 ### Sprint 2.5: Isra (Testing & Analysis Specialist) — Sentetik Veri Üretimi + Birim Testler
-- [x] Gemini 3.1 Pro kullanılarak elde edilen 100+ sofistike veri DataGenerator.cs içerisine entegre edildi. **(Isra)**
+- [x] Gemini 3.1 Pro kullanılarak elde edilen 100+ veri DataGenerator.cs içerisine entegre edildi. **(Isra)**
 - [x] Dense, Sparse, Star ve Chain topolojilerinde programatik graf üretebilen algoritmalar yazıldı. **(Isra)**
 - [x] AI Worker (Worker.cs) üzerinden üretilen verilerin API'ye batch transferi sağlandı. **(Isra)**
-- [x] Toplam birim test sayısı 23'e çıkarıldı ve %100 başarıyla geçti. **(Isra)**
+- [x] Toplam birim test sayısı 23'e çıkarıldı ve %100 geçti. **(Isra)**
 
 ---
 
 > **SPRINT 2 CHECKPOINT: TAMAMLANDI**
-> PropertyGraph entegrasyonu, API servislerinin frontend ile bağlanması, AI Worker veri simülasyonu ve 23 birim test senaryosu %100 başarıyla tamamlandı. Sprint 3'e geçiş onaylandı.
+> PropertyGraph entegrasyonu, API servislerinin frontend ile bağlanması, AI Worker veri simülasyonu ve 23 birim test senaryosu %100 tamamlandı. Sprint 3'e geçiş onaylandı.
 
 ---
 
@@ -130,7 +130,7 @@
 - [x] Düğüm tipleri (User, Photo, Event) farklı şekil ve renklerle, kenar tipleri (Friend, Likes, Attends) farklı çizgi stilleriyle özelleştirildi. **(Sude)**
 - [x] Grafa tıklandığında ilgili düğümün özelliklerini yan panelde gösteren O(1) etkileşim mekanizması kuruldu. **(Sude)**
 - [x] `QueryPanel` bileşeni ile BFS, DFS, En Kısa Yol ve Zincir Sorgu sonuçlarının graf üzerinde vurgulanması (highlight) sağlandı. **(Sude)**
-- [x] Premium Swiss Minimal tasarım diline uygun lejant, floating kontrol panelleri ve responsive layout düzenlemeleri yapıldı. **(Sude)**
+- [x] Swiss-Minimal tasarım diline uygun lejant, floating kontrol panelleri ve responsive layout düzenlemeleri yapıldı. **(Sude)**
 
 ### Sprint 3.4: Muhammed Furkan (Architect & Infrastructure) — AI Simulation Motoru (Faz 2)
 - [x] `SocialGraph.AI` projesi, her 15 saniyede bir dinamik veri üreten aktif bir `BackgroundService` motoruna dönüştürüldü. **(Furkan)**
@@ -146,7 +146,7 @@
 - [x] Sistem performansının 5000+ düğümde bile 10ms altında kaldığı deneysel olarak kanıtlandı. **(Isra)**
 - [x] PR açıldı (`feature/isra-optimization`). **(Isra)**
 
-> **Sprint 3 SONUÇ:** Çok adımlı sorgular, interaktif görselleştirme, dinamik AI simülasyonu ve kapsamlı analiz raporları başarıyla tamamlanmıştır. Sistem tüm teknik gereksinimleri karşılamaktadır.
+> **Sprint 3 SONUÇ:** Çok adımlı sorgular, interaktif görselleştirme, dinamik AI simülasyonu ve kapsamlı analiz raporları tamamlanmıştır. Sistem tüm teknik gereksinimleri karşılamaktadır.
 
 ---
 

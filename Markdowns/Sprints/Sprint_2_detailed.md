@@ -114,7 +114,7 @@
 
 **Kabul Kriterleri:**
 - [x] DataGenerator farklı boyutlarda graf üretebiliyor.
-- [x] Seed data başarıyla yükleniyor.
+- [x] Seed data yüklendi.
 - [x] 20+ birim test yazıldı ve hepsi geçiyor.
 - [x] PR açıldı (`feature/isra-optimization`).
 

@@ -10,7 +10,7 @@
 
 Bu proje, sosyal ağ sistemlerinin (Facebook, LinkedIn vb.) temelini oluşturan **Property Graph** veri modelini, hiçbir standart kütüphane kullanmadan (from scratch) C# ve React ile modellemeyi hedeflemektedir. 
 
-30.04.2026 tarihi itibariyle proje; **Faz 1 (Veri Yapıları)**, **Faz 2 (Algoritmalar)** ve **Faz 3 (Görselleştirme)** aşamalarını başarıyla tamamlamış, entegrasyon testlerinden geçmiş ve Dockerize edilerek final teslimine hazır hale getirilmiştir.
+30.04.2026 tarihi itibariyle proje; **Faz 1 (Veri Yapıları)**, **Faz 2 (Algoritmalar)** ve **Faz 3 (Görselleştirme)** aşamalarını tamamlamış, entegrasyon testlerinden geçmiş ve Dockerize edilerek final teslimine hazır hale getirilmiştir.
 
 ### Proje Durum Göstergeleri:
 - **Çekirdek Veri Yapıları:** %100 (Hash Table, Trie, Queue, Adjacency List)
@@ -42,7 +42,7 @@ Her ekip üyesi projeye kendi uzmanlık alanında ve kendi branch'i üzerinden k
 |-----|-----|-----------------|
 | **Batuhan** | Core Data Engineer | `PropertyGraph`, `CustomHashTable`, `ReaderWriterLockSlim` (Thread-Safety) |
 | **Özcan** | Algorithm Master | `RelationalQueryEngine` (Zincir Sorgular), Arkadaş Önerisi, BFS/DFS |
-| **Fatma Sude** | Frontend Lead | `GraphCanvas` (Vis-network), `QueryPanel`, Premium Swiss-Minimal UI |
+| **Fatma Sude** | Frontend Lead | `GraphCanvas` (Vis-network), `QueryPanel`, Swiss-Minimal Tasarım Arayüzü |
 | **Muhammed Furkan**| Infrastructure | `SocialGraph.AI` (Worker), Docker, API Controller Mimarisi |
 | **Isra** | Testing & Analysis | `CustomTrie`, `DataGenerator`, Big-O Analiz Raporu, Load Tests |
 
@@ -91,7 +91,15 @@ docker-compose up --build
 
 ---
 
+## 7. Gelecek Adımlar ve Final Hazırlığı (Sprint 4)
+
+Projenin final teslimatına (12-13. Hafta) kadar geçecek sürede aşağıdaki adımlar izlenecektir:
+- **Sprint 4:** Sistem genelinde dökümantasyonun nihai hale getirilmesi, tüm modüllerin uctan uca test edilerek çalışılırlığının %100 onaylanması ve sistemin polish (iyileştirme) süreçlerinin tamamlanması sağlanacaktır.
+- **Teknik Rapor:** UML diyagramları ve Big-O analiz tablosu final verileriyle güncellenecektir.
+- **Demo:** Tüm sistemin çalıştığını gösteren final sunum videosu hazırlanacaktır.
+
 **Daha detaylı dökümantasyon için:**
+- [Detaylandırılmış Ara Rapor (Teknik Dökümantasyon)](./Markdowns/Project/Interim_Report.md)
 - [Big-O Analiz Raporu](./Markdowns/Project/BigO_Analysis.md)
 - [Sprint Detayları](./Markdowns/Sprints/Sprint_3_detailed.md)
 - [Kişisel Raporlar](./Markdowns/Personal_Reports/)

@@ -99,7 +99,7 @@ Context.md'deki örnek sorgu akışının implementasyonu:
 
 **Kabul Kriterleri:**
 - [x] Worker 15 saniyede bir veri üretip API'ye gönderiyor.
-- [x] Üretilen veriler PropertyGraph'a başarıyla ekleniyor.
+- [x] Üretilen veriler PropertyGraph'a eklendi.
 - [x] API kapalıyken worker crash etmiyor (retry/log çalışıyor).
 - [x] Frontend'de graf verisi dinamik olarak güncelleniyor.
 - [x] PR açıldı (`feature/furkan-infrastructure`).
