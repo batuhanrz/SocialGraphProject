@@ -120,11 +120,12 @@ services:
 - Port bilgileri ve erişim URL'leri.
 
 **Kabul Kriterleri:**
-- [ ] `docker-compose up --build` ile tüm sistem hatasız ayağa kalkıyor.
-- [ ] API, AI ve UI servisleri container içinde çalışıyor.
-- [ ] Servisler arası iletişim container ağı üzerinden sağlanıyor.
-- [ ] README çalıştırma talimatlarını içeriyor.
-- [ ] PR açıldı (`feature/furkan-infrastructure`).
+- [x] `docker-compose up --build` ile tüm sistem hatasız ayağa kalkıyor.
+- [x] API, AI ve UI servisleri container içinde çalışıyor.
+- [x] Servisler arası iletişim container ağı üzerinden sağlanıyor (Health checks dahil).
+- [x] README çalıştırma talimatlarını içeriyor.
+- [x] Graf veri yoğunluğu optimizasyonu yapıldı (Frontend performansı için).
+- [x] PR açıldı (`feature/furkan-infrastructure`).
 
 ---
 

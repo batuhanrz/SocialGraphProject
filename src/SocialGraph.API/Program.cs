@@ -28,12 +28,12 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// CORS — Frontend (React, port 5173) erisimi icin
+// CORS — Frontend (React, port 5173, 3000 veya Docker 8080) erisimi icin
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "http://localhost:8080")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
