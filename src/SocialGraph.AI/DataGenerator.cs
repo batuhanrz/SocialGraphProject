@@ -93,16 +93,16 @@ namespace SocialGraph.AI
             var nodes = GenerateNodes();
             var edges = new List<EdgeDto>();
             
-            // Dense: Neredeyse herkes herkesle arkadas (Yogunluk %30-%40 arasi)
+            // Dense: İlişki yoğunluğu %15-%20 seviyesine çekildi (Performans optimizasyonu)
             var users = nodes.FindAll(n => n.Type == "User");
             for (int i = 0; i < users.Count; i++)
             {
                 for (int j = i + 1; j < users.Count; j++)
                 {
-                    if (_rnd.NextDouble() < 0.35)
+                    if (_rnd.NextDouble() < 0.15)
                     {
                         edges.Add(CreateEdge(users[i].Id, users[j].Id, "FRIEND", false));
-                        edges.Add(CreateEdge(users[j].Id, users[i].Id, "FRIEND", false)); // Iki yonlu arkadaslik simulasyonu (cunku API'ye tek tek post edilecek)
+                        edges.Add(CreateEdge(users[j].Id, users[i].Id, "FRIEND", false));
                     }
                 }
             }
@@ -229,7 +229,7 @@ namespace SocialGraph.AI
             return nodes;
         }
 
-        private void GenerateCommonInteractions(List<NodeDto> nodes, List<EdgeDto> edges, double likelihood = 0.3)
+        private void GenerateCommonInteractions(List<NodeDto> nodes, List<EdgeDto> edges, double likelihood = 0.1)
         {
             var users = nodes.FindAll(n => n.Type == "User");
             var photos = nodes.FindAll(n => n.Type == "Photo");

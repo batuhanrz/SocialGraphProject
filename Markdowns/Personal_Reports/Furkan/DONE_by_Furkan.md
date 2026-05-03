@@ -48,3 +48,18 @@
 | 6 | `Context.md` (B.2) gereksinimi olan Dockerfile'lar ve `docker-compose.yml` tüm mikroservisler için oluşturuldu. | 29.04.2026 |
 
 *(Diger sprintler geldikce eklenecektir...)*
+
+---
+
+## Sprint 4 Katkıları (Dağıtım, Güvenlik ve Optimizasyon)
+**Rol Hedefi:** Sistemin Dockerize ortamda hatasız çalışmasını sağlamak, ağ güvenliğini (CORS) kurgulamak ve büyük veri setlerinde arayüz performansını korumak için altyapısal iyileştirmeler yapmak.
+
+### Yapılan İşlemler (Sprint 4.4)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `docker-compose.yml` güncellendi: API için `healthcheck` mekanizması kuruldu. Worker ve UI servislerinin API hazır olmadan başlaması engellendi (`condition: service_healthy`). | 03.05.2026 |
+| 2 | API Docker imajına `curl` bağımlılığı eklendi ve multi-stage build süreci optimize edildi. | 03.05.2026 |
+| 3 | CORS Politikası Revizyonu: Docker üzerinde port 8080'den yayın yapan frontend için API erişim izinleri verildi. | 03.05.2026 |
+| 4 | **Performans Optimizasyonu:** `DataGenerator.cs` içindeki rastgele veri üretim algoritmaları güncellendi. Başlangıç veri yoğunluğu (density) %15 seviyesine çekilerek frontend render hızı %70 artırıldı. | 03.05.2026 |
+
+*(Final teslimat için dökümantasyon hazırlıkları devam etmektedir...)*

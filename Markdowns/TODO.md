@@ -37,3 +37,13 @@ Tüm alt görevler (1.1 - 1.5) tamamlandı.
 > BackgroundService üzerinden dinamik veri akışı ve retry mekanizması sağlandı.
 ### Sprint 3.5: Isra — Entegrasyon Testleri + Big-O Analiz Taslağı [TAMAMLANDI]
 > Entegrasyon testleri geçildi, yük testleri yapıldı ve Big-O analiz raporu hazırlandı.
+
+---
+
+## SPRINT 4: DAĞITIM VE FİNALİZASYON [DEVAM EDİYOR]
+
+### Sprint 4.4: Muhammed Furkan — Docker Konfigürasyonları [TAMAMLANDI]
+> Dockerfile'lar, docker-compose (healthchecks) ve CORS optimizasyonları tamamlandı.
+
+### Sprint 4.1 - 4.3 & 4.5: [BEKLEMEDE]
+> UML diyagramları, Demo videosu ve Final rapor hazırlıkları devam ediyor.
