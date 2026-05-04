@@ -1,45 +1,54 @@
 import React, { useState } from 'react';
-import { GitBranch, Link2, Zap, UserPlus } from 'lucide-react';
+import { GitBranch, Link2, Zap, UserPlus, Network } from 'lucide-react';
 import { traversalService } from '../services/traversalService';
 import { nodeService } from '../services/nodeService';
 import type { INode, IRecommendation } from '../types/graph';
 
 interface QueryPanelProps {
-  onResultsFound: (nodeIds: string[]) => void;
+  onResultsFound: (nodeIds: string[], mode?: 'path' | 'recs' | 'chain') => void;
   startNodeId: string | null;
   targetNodeId: string;
   onTargetChange: (id: string) => void;
   onStartChange?: (id: string) => void;
+  onQueryStart?: () => void;
 }
 
-const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, targetNodeId, onTargetChange, onStartChange }) => {
+const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, targetNodeId, onTargetChange, onStartChange, onQueryStart }) => {
   const [activeTab, setActiveTab] = useState<'traversal' | 'chain' | 'recommend'>('traversal');
   const [loading, setLoading] = useState(false);
   const [selectedAlgo, setSelectedAlgo] = useState<'BFS' | 'DFS' | null>(null);
   const [nodeLabels, setNodeLabels] = useState<Record<string, string>>({});
-  const [chainRelations] = useState<string[]>(['FRIEND', 'ATTENDS', 'UPLOADED']);
+  const [chainRelations, setChainRelations] = useState<string[]>(['FRIEND', 'ATTENDS', 'UPLOADED']);
   const [showDirectionWarning, setShowDirectionWarning] = useState(false);
+  const [reportData, setReportData] = useState<{ path: string[], algo: 'BFS' | 'DFS' } | null>(null);
+  const [recsReportData, setRecsReportData] = useState<IRecommendation[] | null>(null);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [nodeTypes, setNodeTypes] = useState<Record<string, string>>({});
 
   // ID → İsim çözümleme
   React.useEffect(() => {
     setShowDirectionWarning(false);
     const resolveNames = async () => {
-      const idsToResolve = [startNodeId, targetNodeId].filter(id => id && !nodeLabels[id]) as string[];
+      const idsToResolve = [startNodeId, targetNodeId, ...(reportData?.path || []), ...(recsReportData?.map(r => r.node.id) || [])].filter(id => id && !nodeLabels[id]) as string[];
       if (idsToResolve.length === 0) return;
 
       const newLabels = { ...nodeLabels };
+      const newTypes = { ...nodeTypes };
       for (const id of idsToResolve) {
         try {
           const node = await nodeService.getNode(id);
           newLabels[id] = (node.properties.Name as string) || (node.properties.Title as string) || id;
+          newTypes[id] = node.type;
         } catch {
           newLabels[id] = id;
+          newTypes[id] = 'Unknown';
         }
       }
       setNodeLabels(newLabels);
+      setNodeTypes(newTypes);
     };
     resolveNames();
-  }, [startNodeId, targetNodeId]);
+  }, [startNodeId, targetNodeId, reportData?.path, recsReportData]);
 
   // BFS/DFS butonları: Sadece algoritma seç (Toggle)
   const handleSelectAlgo = (algo: 'BFS' | 'DFS') => {
@@ -49,14 +58,19 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
   // Shortest Path: Seçili algoritmayı kullanarak sorgu at
   const handleShortestPath = async () => {
     if (!startNodeId || !targetNodeId || !selectedAlgo) return;
+    if (onQueryStart) onQueryStart();
     setLoading(true);
     setShowDirectionWarning(false);
     try {
       const results = await traversalService.shortestPath(startNodeId, targetNodeId, selectedAlgo);
       if (results.length === 0) {
         setShowDirectionWarning(true);
+        setReportData(null);
+      } else {
+        setReportData({ path: results, algo: selectedAlgo });
+        setIsReportOpen(true);
       }
-      onResultsFound(results);
+      onResultsFound(results, 'path');
     } catch (err) {
       console.error(err);
     } finally {
@@ -75,11 +89,12 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
 
   const handleChainQuery = async () => {
     if (!startNodeId) return;
+    if (onQueryStart) onQueryStart();
     setLoading(true);
     try {
       const results: INode[] = await traversalService.chain(startNodeId, chainRelations);
       const nodeIds = results.map((n: INode) => n.id);
-      onResultsFound(nodeIds);
+      onResultsFound(nodeIds, 'chain');
     } catch (err) {
       console.error(err);
     } finally {
@@ -89,11 +104,16 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
 
   const handleRecommendations = async () => {
     if (!startNodeId) return;
+    if (onQueryStart) onQueryStart();
     setLoading(true);
+    setRecsReportData(null);
     try {
       const results: IRecommendation[] = await traversalService.recommendations(startNodeId);
       const nodeIds = results.map((r: IRecommendation) => r.node.id);
-      onResultsFound(nodeIds);
+      
+      setRecsReportData(results);
+      setIsReportOpen(true);
+      onResultsFound(nodeIds, 'recs');
     } catch (err) {
       console.error(err);
     } finally {
@@ -134,7 +154,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                   {nodeLabels[startNodeId] || startNodeId}
                 </p>
               </div>
-              {targetNodeId && (
+              {targetNodeId && activeTab !== 'recommend' && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444', boxShadow: '0 0 8px #ef4444' }} />
                   <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: 0, opacity: 0.6 }}>Target:</p>
@@ -202,29 +222,201 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                     {!selectedAlgo ? '↑ Bir algoritma seçin' : !targetNodeId ? '↑ Bir hedef düğüm seçin (sağ tık)' : ''}
                   </p>
                 )}
+
+                {/* Algorithm Report Accordion */}
+                {reportData && (
+                  <div className="algo-report">
+                    <button 
+                      className="algo-report-header" 
+                      onClick={() => setIsReportOpen(!isReportOpen)}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Zap size={14} color="var(--accent-color)" />
+                        <span>{reportData.algo} Algorithm Report</span>
+                      </div>
+                      <span>{isReportOpen ? '▲' : '▼'}</span>
+                    </button>
+                    
+                    {isReportOpen && (
+                      <div className="algo-report-content custom-scrollbar">
+                        <p className="report-intro">
+                          {reportData.algo === 'BFS' 
+                            ? 'Genişlik Öncelikli Arama (BFS), grafı katman katman (level-by-level) tarayarak en kısa yolu garantiler.'
+                            : 'Derinlik Öncelikli Arama (DFS), hedefe ulaşana kadar ilk daldan en derine (backtracking) inerek yolu arar.'}
+                        </p>
+                        <div className="report-steps">
+                          <div className="step">
+                            <span className="step-dot origin"></span>
+                            <span><strong>{nodeLabels[reportData.path[0]] || reportData.path[0]}</strong> düğümünden arama başlatıldı.</span>
+                          </div>
+                          
+                          {reportData.path.length > 2 && (
+                            <div className="step">
+                              <span className="step-dot"></span>
+                              <span>
+                                {reportData.algo === 'BFS'
+                                  ? 'Ara katmanlardaki komşular genişleterek taranıyor...'
+                                  : 'Hedefe doğru derinlemesine (deep-dive) iniliyor...'}
+                              </span>
+                            </div>
+                          )}
+
+                          {reportData.path.slice(1, -1).map((stepId) => (
+                            <div className="step" key={stepId}>
+                              <span className="step-dot"></span>
+                              <span><strong>{nodeLabels[stepId] || stepId}</strong> düğümüne ulaşıldı.</span>
+                            </div>
+                          ))}
+
+                          <div className="step">
+                            <span className="step-dot target"></span>
+                            <span>Hedef düğüm <strong>{nodeLabels[reportData.path[reportData.path.length - 1]] || reportData.path[reportData.path.length - 1]}</strong> bulundu!</span>
+                          </div>
+                        </div>
+                        <p className="report-outro">
+                          Yol başarıyla oluşturuldu. Toplam Derinlik: {reportData.path.length - 1} sekme.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
             {/* Chain Tab */}
             {activeTab === 'chain' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <p style={{ fontSize: '0.75rem', opacity: 0.6 }}>Relations to follow:</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '8px' }}>
-                  {chainRelations.map((r, i) => (
-                    <span key={i} className="badge">{r}</span>
-                  ))}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <p style={{ fontSize: '0.75rem', fontWeight: 600, margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Network size={14} color="#06b6d4" /> Sequential Pipeline
+                  </p>
+                  <p style={{ fontSize: '0.65rem', opacity: 0.5, lineHeight: 1.4, margin: '0 0 12px 0' }}>
+                    Bu sorgu, seçilen ilişkileri **sırasıyla** takip ederek bir "bağıntı zinciri" oluşturur. Zincir koparsa (eşleşme yoksa) arama durur.
+                  </p>
+
+                  {/* Active Steps */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 10px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', border: '1px dashed rgba(59, 130, 246, 0.3)' }}>
+                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#3b82f6' }} />
+                      <span style={{ fontSize: '0.7rem', color: '#3b82f6', fontWeight: 600 }}>Origin: {nodeLabels[startNodeId || ''] || startNodeId || 'Seçilmedi'}</span>
+                    </div>
+
+                    {chainRelations.map((r, i) => (
+                      <React.Fragment key={i}>
+                        <div style={{ height: '10px', width: '1px', background: 'rgba(255,255,255,0.2)', marginLeft: '16px' }} />
+                        <div 
+                          onClick={() => setChainRelations(prev => prev.filter((_, idx) => idx !== i))}
+                          className="badge" 
+                          style={{ 
+                            padding: '6px 12px', 
+                            cursor: 'pointer', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'space-between',
+                            background: 'rgba(6, 182, 212, 0.1)',
+                            border: '1px solid rgba(6, 182, 212, 0.2)',
+                            color: '#06b6d4'
+                          }}
+                          title="Tıkla ve Kaldır"
+                        >
+                          <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>STEP {i+1}: {r}</span>
+                          <span style={{ fontSize: '0.6rem', opacity: 0.5 }}>✕</span>
+                        </div>
+                      </React.Fragment>
+                    ))}
+                  </div>
+
+                  {/* Available Relations to Add */}
+                  <div style={{ marginTop: '16px' }}>
+                    <p style={{ fontSize: '0.65rem', opacity: 0.4, marginBottom: '6px' }}>Add next step:</p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                      {['FRIEND', 'ATTENDS', 'UPLOADED', 'LIKES', 'LOCATED_IN'].map(r => (
+                        <button
+                          key={r}
+                          onClick={() => setChainRelations(prev => [...prev, r])}
+                          disabled={chainRelations.length >= 5}
+                          style={{
+                            padding: '4px 8px',
+                            borderRadius: '6px',
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'white',
+                            fontSize: '0.65rem',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          + {r}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <button onClick={handleChainQuery} disabled={loading} className="query-btn primary">
-                  Run Chain Query
+
+                <button 
+                  onClick={handleChainQuery} 
+                  disabled={loading || !startNodeId || chainRelations.length === 0} 
+                  className="query-btn primary"
+                  style={{ background: 'linear-gradient(135deg, #0891b2, #06b6d4)' }}
+                >
+                  <Network size={14} /> Run Chain Query
                 </button>
               </div>
             )}
 
             {/* Recommend Tab */}
             {activeTab === 'recommend' && (
-              <button onClick={handleRecommendations} disabled={loading} className="query-btn primary">
-                Get Friend Suggestions
-              </button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {startNodeId && nodeTypes[startNodeId] && nodeTypes[startNodeId] !== 'User' && (
+                  <p style={{ fontSize: '0.75rem', color: '#f59e0b', margin: '0 0 8px 0', lineHeight: 1.4 }}>
+                    Arkadaş önerisi sistemi sadece User (Kullanıcı) düğümleri için çalışır. Mevcut origin tipi: {nodeTypes[startNodeId]}
+                  </p>
+                )}
+                <button 
+                  onClick={handleRecommendations} 
+                  disabled={loading || (!!startNodeId && !!nodeTypes[startNodeId] && nodeTypes[startNodeId] !== 'User')} 
+                  className="query-btn primary"
+                >
+                  <UserPlus size={14} /> Get Friend Suggestions
+                </button>
+                
+                {/* Recs Report Accordion */}
+                {recsReportData && (
+                  <div className="algo-report">
+                    <button 
+                      className="algo-report-header" 
+                      onClick={() => setIsReportOpen(!isReportOpen)}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Zap size={14} color="var(--accent-color)" />
+                        <span>Triadic Closure Report</span>
+                      </div>
+                      <span>{isReportOpen ? '▲' : '▼'}</span>
+                    </button>
+                    
+                    {isReportOpen && (
+                      <div className="algo-report-content custom-scrollbar">
+                        <p className="report-intro">
+                          Triadic Closure algoritması, graf üzerindeki ortak arkadaş bağlarını inceleyerek "<strong>{nodeLabels[startNodeId!] || startNodeId}</strong>" için potansiyel yeni arkadaşlıklar tespit etti.
+                        </p>
+                        <div className="report-steps">
+                          {recsReportData.length === 0 && (
+                            <p style={{ margin: 0, opacity: 0.7 }}>Önerilecek ortak bağlantı bulunamadı.</p>
+                          )}
+                          {recsReportData.map((rec) => (
+                            <div className="step" key={rec.node.id}>
+                              <span className="step-dot origin" style={{ background: '#10b981', boxShadow: '0 0 5px #10b981' }}></span>
+                              <span>
+                                <strong>{nodeLabels[rec.node.id] || rec.node.id}</strong> 
+                                <span style={{ opacity: 0.6 }}> ({rec.mutualFriendsCount} ortak arkadaş)</span>
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
           </>
         )}
@@ -300,6 +492,74 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
           border-radius: 8px;
           font-size: 0.8rem;
         }
+        .algo-report {
+          margin-top: 12px;
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          overflow: hidden;
+        }
+        .algo-report-header {
+          width: 100%;
+          padding: 10px 12px;
+          background: rgba(255, 255, 255, 0.03);
+          border: none;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          color: white;
+          font-size: 0.8rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        .algo-report-header:hover {
+          background: rgba(255, 255, 255, 0.06);
+        }
+        .algo-report-content {
+          padding: 12px;
+          font-size: 0.75rem;
+          color: rgba(255, 255, 255, 0.7);
+          max-height: 250px;
+          overflow-y: auto;
+        }
+        .report-intro {
+          margin: 0 0 12px 0;
+          font-style: italic;
+          color: rgba(255, 255, 255, 0.5);
+          line-height: 1.4;
+        }
+        .report-outro {
+          margin: 12px 0 0 0;
+          padding-top: 12px;
+          border-top: 1px dashed rgba(255, 255, 255, 0.1);
+          color: var(--accent-color);
+          font-weight: 600;
+        }
+        .report-steps {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .step {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          line-height: 1.4;
+        }
+        .step strong {
+          color: white;
+        }
+        .step-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+          margin-top: 5px;
+          flex-shrink: 0;
+        }
+        .step-dot.origin { background: #3b82f6; box-shadow: 0 0 5px #3b82f6; }
+        .step-dot.target { background: #ef4444; box-shadow: 0 0 5px #ef4444; }
       `}</style>
     </div>
   );

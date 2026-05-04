@@ -10,6 +10,7 @@ interface GraphCanvasProps {
   onNodeSelect: (id: string) => void;
   onNodeRightClick?: (id: string) => void;
   highlightNodeIds?: string[];
+  highlightMode?: 'path' | 'recs' | 'chain';
 }
 
 const GraphCanvas: React.FC<GraphCanvasProps> = ({
@@ -17,7 +18,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   targetNodeId,
   onNodeSelect,
   onNodeRightClick,
-  highlightNodeIds = []
+  highlightNodeIds = [],
+  highlightMode = 'path'
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const networkRef = useRef<Network | null>(null);
@@ -33,6 +35,17 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   const selectedNodeIdRef = useRef<string | null>(null);
   useEffect(() => { selectedNodeIdRef.current = selectedNodeId; }, [selectedNodeId]);
 
+  // highlightNodeIds'yi ref'te tut — afterDrawing animasyonu için
+  const highlightNodeIdsRef = useRef<string[]>([]);
+  useEffect(() => { highlightNodeIdsRef.current = highlightNodeIds; }, [highlightNodeIds]);
+
+  const highlightModeRef = useRef<'path' | 'recs' | 'chain'>('path');
+  useEffect(() => { highlightModeRef.current = highlightMode; }, [highlightMode]);
+
+  // Kullanıcının kendi tıkladığı/sürüklediği düğümlere tekrar focus atmayı önlemek için
+  const lastInteractedNodeIdRef = useRef<string | null>(null);
+  const isDraggingRef = useRef(false);
+
   // --- Global Shift: Pin/Unpin Toggle ---
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -44,13 +57,27 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         const wasPinned = node?.fixed === true || node?.fixed?.x === true;
         const nowPinned = !wasPinned;
 
+        // O anki koordinatları al ki "zınk" diye orada kalsın
+        const positions = networkRef.current?.getPositions([nodeId]);
+        const pos = positions ? positions[nodeId] : null;
+
         nodesDataSetRef.current.update({
           id: nodeId,
-          fixed: nowPinned ? { x: true, y: true } : { x: false, y: false },
-          borderWidth: nowPinned ? 5 : 5, // origin zaten 5
+          x: pos?.x,
+          y: pos?.y,
+          fixed: nowPinned ? { x: true, y: true } : false,
+          borderWidth: 5,
           color: { ...(node.color || {}), border: nowPinned ? '#a855f7' : '#3b82f6' },
           title: nowPinned ? '📌 Sabitlendi (Shift ile serbest bırakın)' : undefined
         });
+
+        // Eğer o an sürükleniyorsa, sürüklemeyi "kırmak" için etkileşimi anlık kapat-aç
+        if (isDraggingRef.current && nowPinned) {
+          networkRef.current?.setOptions({ interaction: { dragNodes: false } });
+          setTimeout(() => {
+            networkRef.current?.setOptions({ interaction: { dragNodes: true } });
+          }, 50);
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -149,7 +176,10 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       interaction: {
         hover: true,
         tooltipDelay: 200,
-        hideEdgesOnDrag: false
+        hideEdgesOnDrag: false,
+        multiselect: false, // Shift+Drag (box selection) iptal ederek pinleme çakışmasını giderir
+        selectable: true,
+        dragNodes: true
       }
     };
 
@@ -158,12 +188,34 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       { nodes: nodesDataSetRef.current, edges: edgesDataSetRef.current },
       options
     );
+    
+    // Senkronizasyon sorunlarını (lag) önlemek için ref'i anında güncelleyen yardımcı
+    const selectNodeImmediate = (id: string) => {
+      selectedNodeIdRef.current = id;
+      onNodeSelect(id);
+    };
 
     // Sol tık: Current Node seç
     networkRef.current.on('click', (params) => {
       if (params.nodes.length > 0) {
-        onNodeSelect(params.nodes[0]);
+        const id = params.nodes[0];
+        lastInteractedNodeIdRef.current = id;
+        selectNodeImmediate(id);
       }
+    });
+
+    // Sürükleme başlangıcı (Drag): Sürüklenen düğümü otomatik olarak seç
+    networkRef.current.on('dragStart', (params) => {
+      isDraggingRef.current = true;
+      if (params.nodes.length > 0) {
+        const id = params.nodes[0];
+        lastInteractedNodeIdRef.current = id;
+        selectNodeImmediate(id);
+      }
+    });
+
+    networkRef.current.on('dragEnd', () => {
+      isDraggingRef.current = false;
     });
 
     // Sağ tık: Target Node seç
@@ -183,10 +235,10 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         edgesDataSetRef.current.update({
           id: edgeId,
           label: edge.relationType,
-          font: { 
-            size: 10, 
-            align: 'top', 
-            color: 'rgba(255,255,255,0.8)', 
+          font: {
+            size: 10,
+            align: 'top',
+            color: 'rgba(255,255,255,0.8)',
             background: 'rgba(10,10,10,0.8)',
             strokeWidth: 0, // Bolding/stroke efektini engeller
             face: 'Inter'
@@ -203,18 +255,62 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       });
     });
 
-    // --- Akış Nefesi: durduktan hemen sonra sessizce yeniden başlat ---
+    // --- Animasyonlu Yol (Akış Efekti) ---
+    networkRef.current.on('afterDrawing', (ctx) => {
+      // Arkadaş önerisi (recs) modunda kan akışı (blood flow) animasyonunu iptal et
+      if (highlightModeRef.current === 'recs') return;
+
+      const pathIds = highlightNodeIdsRef.current;
+      if (!pathIds || pathIds.length < 2) return;
+
+      const time = Date.now() / 1000; // Saniye cinsinden zaman
+
+      for (let i = 0; i < pathIds.length - 1; i++) {
+        const fromId = pathIds[i];
+        const toId = pathIds[i + 1];
+
+        const positions = networkRef.current?.getPositions([fromId, toId]);
+        if (!positions) continue;
+
+        const fromPos = positions[fromId];
+        const toPos = positions[toId];
+        if (!fromPos || !toPos) continue;
+
+        // İki düğüm arasında hareket eden 3 parçacık (ışık hüzmesi)
+        for (let j = 0; j < 3; j++) {
+          // Parçacıklar arasında mesafe bırak
+          let progress = (time * 1.5 - j * 0.15) % 1;
+          if (progress < 0) progress += 1;
+
+          const x = fromPos.x + (toPos.x - fromPos.x) * progress;
+          const y = fromPos.y + (toPos.y - fromPos.y) * progress;
+
+          // Parçacık çizimi
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, 2 * Math.PI, false);
+
+          // Baştaki parçacık daha parlak, arkadakiler sönük
+          const opacity = 1 - (j * 0.3);
+          ctx.fillStyle = `rgba(16, 185, 129, ${opacity})`;
+          ctx.shadowColor = '#34d399';
+          ctx.shadowBlur = 10;
+          ctx.fill();
+          ctx.closePath();
+          ctx.shadowBlur = 0; // diğer çizimleri etkilemesin
+        }
+      }
+    });
+
+    // --- Akış Nefesi: durduğu an beklemeden yeniden başlat ---
     networkRef.current.on('stabilized', () => {
       if (!networkRef.current || !physicsSlowedRef.current) return;
-      setTimeout(() => networkRef.current?.startSimulation(), 100);
+      networkRef.current.startSimulation();
     });
 
     // --- Floating Keeper + Otomatik Fit ---
     const floatingKeeper = setInterval(() => {
-      if (!networkRef.current) return;
-
-      networkRef.current.startSimulation();
-
+      if (!networkRef.current || isDraggingRef.current) return;
+      
       // İlk fit: veri yüklendikten hemen sonra
       if (!isFirstFitDoneRef.current && nodesDataSetRef.current.length > 0) {
         networkRef.current.fit({
@@ -226,15 +322,32 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       // Yavaş süzülme moduna geç (1 kere)
       if (!physicsSlowedRef.current && isFirstFitDoneRef.current) {
         networkRef.current.setOptions({
-          physics: { maxVelocity: 5, timestep: 0.15 }
+          physics: { 
+            maxVelocity: 2, 
+            timestep: 0.2,
+            minVelocity: 0.001 // Neredeyse hiç durma seviyesi
+          }
         });
         physicsSlowedRef.current = true;
       }
     }, 1000);
 
+    // --- Akış Canlılığı (Render Loop) ---
+    // Vis.js stabilized olduğunda (düğümler durduğunda) render durur, bu da akış animasyonunun donmasına neden olur.
+    // Eğer bir path veya vurgu varsa, render'ı manuel tetikleyerek akışı sürekli kılıyoruz.
+    let animationFrameId: number;
+    const renderLoop = () => {
+      if (networkRef.current && highlightNodeIdsRef.current.length > 0) {
+        networkRef.current.redraw();
+      }
+      animationFrameId = requestAnimationFrame(renderLoop);
+    };
+    animationFrameId = requestAnimationFrame(renderLoop);
+
     initData();
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       clearInterval(floatingKeeper);
       networkRef.current?.destroy();
       networkRef.current = null;
@@ -251,9 +364,13 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   useEffect(() => {
     if (networkRef.current && selectedNodeId) {
       networkRef.current.selectNodes([selectedNodeId]);
-      networkRef.current.focus(selectedNodeId, {
-        animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
-      });
+      
+      // Sadece dışarıdan (örn: arama kutusundan) seçildiyse kamera odaklansın
+      if (!isDraggingRef.current && lastInteractedNodeIdRef.current !== selectedNodeId) {
+        networkRef.current.focus(selectedNodeId, {
+          animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
+        });
+      }
     }
   }, [selectedNodeId]);
 
@@ -272,6 +389,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       let borderColor = '#ffffff';
       let bw = 2;
       let fontSize = 14;
+      let shadow: any = { enabled: false };
 
       if (isOrigin && isPinned) {
         borderColor = '#6366f1'; bw = 6; fontSize = 16;
@@ -284,19 +402,30 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       } else if (isPinned) {
         borderColor = '#a855f7'; bw = 5;
       } else if (isPath) {
-        borderColor = '#10b981'; bw = 4; fontSize = 15;
+        if (highlightMode === 'recs') {
+          // Önerilen düğümler güçlü bir şekilde parlasın (Yeşil)
+          borderColor = '#10b981'; bw = 5; fontSize = 16;
+          shadow = { enabled: true, color: '#10b981', size: 25 };
+        } else if (highlightMode === 'chain') {
+          // Zincir/Bağıntı sorgusu: Elektrik mavisi (Siyan) parlasın - Daha opak ve net
+          borderColor = '#06b6d4'; bw = 5; fontSize = 16;
+          shadow = { enabled: true, color: '#06b6d4', size: 30 };
+        } else {
+          borderColor = '#10b981'; bw = 4; fontSize = 15;
+        }
       }
 
       return {
         ...node,
         borderWidth: bw,
+        shadow: shadow,
         color: { ...(node.color as any), border: borderColor },
         font: { ...(node.font as any), size: fontSize }
       };
     });
 
     nodesDataSetRef.current.update(updatedNodes);
-  }, [selectedNodeId, targetNodeId, highlightNodeIds, dataVersion]);
+  }, [selectedNodeId, targetNodeId, highlightNodeIds, highlightMode, dataVersion]);
 
   // --- Kenar Glow Efekti ---
   useEffect(() => {
@@ -306,16 +435,29 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     const updatedEdges = allEdges.map(edge => {
       const fromIdx = highlightNodeIds.indexOf(edge.from as string);
       const toIdx = highlightNodeIds.indexOf(edge.to as string);
-      const isPathEdge = highlightNodeIds.length >= 2
+      const isPathEdge = highlightMode !== 'recs' && highlightMode !== 'chain'
+        && highlightNodeIds.length >= 2
         && fromIdx !== -1 && toIdx !== -1
         && Math.abs(fromIdx - toIdx) === 1;
+
+      const isChainEdge = highlightMode === 'chain'
+        && highlightNodeIds.includes(edge.from as string)
+        && highlightNodeIds.includes(edge.to as string);
 
       if (isPathEdge) {
         return {
           ...edge,
-          color: { color: '#10b981', highlight: '#10b981' },
+          color: { color: 'rgba(16, 185, 129, 0.25)', highlight: 'rgba(16, 185, 129, 0.5)' },
           width: 4,
-          shadow: { enabled: true, color: 'rgba(16, 185, 129, 0.6)', size: 15 }
+          smooth: false, // Animasyonun düz çizgi üzerinde doğru çalışması için
+          shadow: false
+        };
+      } else if (isChainEdge) {
+        return {
+          ...edge,
+          color: { color: 'rgba(6, 182, 212, 0.15)', highlight: 'rgba(6, 182, 212, 0.4)' },
+          width: 2,
+          shadow: { enabled: true, color: 'rgba(6, 182, 212, 0.3)', size: 5 }
         };
       }
 
@@ -328,7 +470,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     });
 
     edgesDataSetRef.current.update(updatedEdges);
-  }, [highlightNodeIds, dataVersion]);
+  }, [highlightNodeIds, highlightMode, dataVersion]);
 
   return (
     <div

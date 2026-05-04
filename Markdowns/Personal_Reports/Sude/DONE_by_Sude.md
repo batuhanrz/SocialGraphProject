@@ -67,9 +67,10 @@
 | 2 | **Akıllı Pinleme (Shift Toggle):** Seçili düğümde Shift tuşuna basıldığında pin/unpin toggle sağlandı. Pinlenen düğümler Mor (#a855f7) çerçeveyle ayırt ediliyor. | 03.05.2026 |
 | 3 | **7 Renkli Durum Paleti:** Origin (Mavi), Target (Kırmızı), Pinned (Mor), Origin+Pinned (İndigo), Target+Pinned (Fuşya), Path (Yeşil) ve Normal (Beyaz) durumları için ayrı çerçeve renkleri tanımlandı. | 03.05.2026 |
 | 4 | **Sağ Tık ile Hedef Seçimi:** Düğüme sağ tıklandığında "Target Node" olarak otomatik atanması sağlandı. Elle ID girme zorunluluğu kaldırıldı. | 03.05.2026 |
-| 5 | **BFS/DFS Algoritma Seçici:** BFS ve DFS butonları anında API çağrısı yapmak yerine sadece algoritma seçici olarak çalışacak şekilde yeniden tasarlandı. Sorgu yalnızca "Shortest Path" butonuyla tetikleniyor. | 03.05.2026 |
-| 6 | **Path Edge Glow:** En kısa yol sonuçları kenarlar üzerinde yeşil renk, 4px kalınlık ve glow efekti ile görselleştirildi. | 03.05.2026 |
-| 7 | **İsim Çözümleme (Name Resolution):** Panel üzerinde ham ID'ler (photo19) yerine düğümlerin gerçek isimleri (Sabah Koşusu) gösterilmesi sağlandı. | 03.05.2026 |
-| 8 | **Gelişmiş Lejant:** Düğüm tiplerine ek olarak Origin, Target ve Pinned durumlarını açıklayan etkileşim rehberi lejanta eklendi. | 03.05.2026 |
+| 13 | **Sürükle-Bırak ve Kamera Senkronizasyonu:** Sürükleme esnasında kameranın düğüme odaklanmaya çalışarak titreme yapması engellendi. `lastInteractedNodeIdRef` ile kullanıcı etkileşimi ve sistem odağı birbirinden ayrıldı. | 04.05.2026 |
+| 14 | **Simulation Node List Paneli:** Sağ üst köşeye, sistemdeki tüm (Sim) etiketli verileri listeleyen, genişletilebilir ve scroll edilebilir bir "Sim Nodes" yüzer paneli eklendi. | 04.05.2026 |
+| 15 | **İnstant Pinleme (Shift Fix):** Vis.js'in Shift+Drag çakışması (box selection) iptal edilerek, sürükleme esnasında tek tuşla anında koordinat kilitleme (Hard Pin) özelliği getirildi. | 04.05.2026 |
+| 16 | **Chain Query (Bağıntı) Görselleştirmesi:** Çok adımlı ilişkisel sorgular için "Electric Blue" temalı ağ görselleştirmesi sisteme entegre edildi. | 04.05.2026 |
+| 17 | **Sürekli Akış (Smooth Loop):** Fizik motoru durduğunda (stabilized) animasyonun donması, recursive simülasyon döngüsüyle çözülerek kesintisiz akış sağlandı. | 04.05.2026 |
 
-*(Tüm frontend geliştirmeleri ve optimizasyon çalışmaları başarıyla tamamlanmıştır.)*
+*(Tüm frontend geliştirmeleri ve optimizasyon çalışmaları başarıyla tamamlanmıştır. Sistem jüri sunumuna hazırdır.)*
