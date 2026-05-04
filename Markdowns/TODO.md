@@ -45,14 +45,11 @@ Tüm alt görevler (1.1 - 1.5) tamamlandı.
 ### Sprint 4.4: Muhammed Furkan — Docker Konfigürasyonları [TAMAMLANDI]
 > Dockerfile'lar, docker-compose (healthchecks) ve CORS optimizasyonları tamamlandı.
 
-### Sprint 4.3: Fatma Sude — UI Son Rötuşlar [TAMAMLANDI]
-> Render optimizasyonu, loading states ve demo senaryosu finalize edildi.
+### Sprint 4.2: Özcan — Algoritma Analizleri & Robust Query [TAMAMLANDI]
+> Big-O karmaşıklık analizi detaylandırıldı ve algoritmaların (BFS/DFS vb.) çalışma mantıkları pseudocode ile belgelendirildi. Zincir sorgusu (Robust Chain Query) partial result desteğiyle güçlendirildi.
 
-### Sprint 4.3-B: Fatma Sude — Graf Etkileşim Sistemi Yeniden Tasarımı [TAMAMLANDI]
-> Canlı süzülme (floating motion), Shift ile pin/unpin, 7 renkli durum paleti, sağ tık hedef seçimi, BFS/DFS algoritma seçici, path edge glow efekti ve isim çözümleme tamamlandı.
-
-### Sprint 4.2: Özcan — Big-O Analiz Tablosu + Algoritma Dokümantasyonu [TAMAMLANDI]
-> Big-O karmaşıklık analizi detaylandırıldı ve algoritmaların (BFS/DFS vb.) çalışma mantıkları pseudocode ile belgelendirildi.
+### Sprint 4.3: Fatma Sude — UI Finalizasyonu & Pipeline UI [TAMAMLANDI]
+> Render optimizasyonu, loading states ve demo senaryosu finalize edildi. Canlı süzülme, akıllı pinleme ve yepyeni bir "Sequential Chain Pipeline" arayüzü sisteme kazandırıldı.
 
 ### Sprint 4.1 & 4.5: [BEKLEMEDE]
 > UML diyagramları, Demo videosu ve Final rapor hazırlıkları devam ediyor.

@@ -59,10 +59,11 @@ namespace SocialGraph.API.Algorithms
                     }
                 }
 
-                currentNodes = nextNodes;
+                // Eğer bu adımda hiç sonuç bulunamadıysa, zinciri burada kes ama 
+                // elimizdeki mevcut (bir önceki adımdan kalan) düğümleri koru.
+                if (nextNodes.Count == 0) break;
 
-                // Eğer bir adımda sonuç kalmadıysa zinciri kır
-                if (currentNodes.Count == 0) break;
+                currentNodes = nextNodes;
             }
 
             // Sonuç kümesini diziye çevir

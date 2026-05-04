@@ -192,3 +192,11 @@
 - [x] Yük testi sonuçlarıyla teorik sonuçların karşılaştırması belgelendirildi. **(Özcan)**
 - [x] Temel algoritmaların (BFS, DFS, ShortestPath) Pseudocode karşılıkları ve çalışma mantıkları dokümante edildi. **(Özcan)**
 - [x] Standart kütüphane yerine Custom Data Structures kullanım gerekçeleri jüri sunumu standartlarında açıklandı. **(Özcan)**
+- [x] **Robust Chain Query:** Zincir sorgusu sırasında herhangi bir adımda veri kesilirse (eşleşme yoksa), algoritmanın boş dönmek yerine ulaşılan son başarılı katmandaki düğümleri döndürmesi sağlandı (Partial Result Support). **(Özcan)**
+
+### Sprint 4.3-C: Fatma Sude (Frontend Lead) — Chain Pipeline UI & Görsel Polish [TAMAMLANDI]
+- [x] **Sequential Pipeline UI:** Chain sekmesi, ilişkilerin sırasıyla takip edildiğini hissettiren adım-adım (step-by-step) bir boru hattı arayüzü ile yeniden tasarlandı. **(Sude)**
+- [x] **Dinamik Zincir Oluşturucu:** Kullanıcıların ilişkileri istediği sırada ekleyip çıkarabileceği interaktif bir "Chain Builder" mekanizması eklendi. **(Sude)**
+- [x] **Gelişmiş Zincir Görselleştirmesi:** Zincir sorgu sonuçları için "Electric Blue" temalı, opak parlamalı ve saydam kenarlı (web-like) yeni bir `highlightMode` tasarlandı. **(Sude)**
+- [x] **Simulation Node List:** Graf üzerindeki tüm sentetik verileri (Sim) listeleyen, scroll edilebilir yüzer bir panel sisteme entegre edildi. **(Sude)**
+
