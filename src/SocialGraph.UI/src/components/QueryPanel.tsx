@@ -1,57 +1,75 @@
 import React, { useState } from 'react';
 import { GitBranch, Link2, Zap, UserPlus } from 'lucide-react';
 import { traversalService } from '../services/traversalService';
+import { nodeService } from '../services/nodeService';
 import type { INode, IRecommendation } from '../types/graph';
 
 interface QueryPanelProps {
   onResultsFound: (nodeIds: string[]) => void;
   startNodeId: string | null;
+  targetNodeId: string;
+  onTargetChange: (id: string) => void;
+  onStartChange?: (id: string) => void;
 }
 
-const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId }) => {
+const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, targetNodeId, onTargetChange, onStartChange }) => {
   const [activeTab, setActiveTab] = useState<'traversal' | 'chain' | 'recommend'>('traversal');
   const [loading, setLoading] = useState(false);
-  
-  // States for inputs
-  const [targetNodeId, setTargetNodeId] = useState('');
+  const [selectedAlgo, setSelectedAlgo] = useState<'BFS' | 'DFS' | null>(null);
+  const [nodeLabels, setNodeLabels] = useState<Record<string, string>>({});
   const [chainRelations] = useState<string[]>(['FRIEND', 'ATTENDS', 'UPLOADED']);
+  const [showDirectionWarning, setShowDirectionWarning] = useState(false);
 
-  const handleBfs = async () => {
-    if (!startNodeId) return;
-    setLoading(true);
-    try {
-      const results = await traversalService.bfs(startNodeId);
-      onResultsFound(results);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  // ID → İsim çözümleme
+  React.useEffect(() => {
+    setShowDirectionWarning(false);
+    const resolveNames = async () => {
+      const idsToResolve = [startNodeId, targetNodeId].filter(id => id && !nodeLabels[id]) as string[];
+      if (idsToResolve.length === 0) return;
+
+      const newLabels = { ...nodeLabels };
+      for (const id of idsToResolve) {
+        try {
+          const node = await nodeService.getNode(id);
+          newLabels[id] = (node.properties.Name as string) || (node.properties.Title as string) || id;
+        } catch {
+          newLabels[id] = id;
+        }
+      }
+      setNodeLabels(newLabels);
+    };
+    resolveNames();
+  }, [startNodeId, targetNodeId]);
+
+  // BFS/DFS butonları: Sadece algoritma seç (Toggle)
+  const handleSelectAlgo = (algo: 'BFS' | 'DFS') => {
+    setSelectedAlgo(prev => prev === algo ? null : algo);
   };
 
-  const handleDfs = async () => {
-    if (!startNodeId) return;
-    setLoading(true);
-    try {
-      const results = await traversalService.dfs(startNodeId);
-      onResultsFound(results);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Shortest Path: Seçili algoritmayı kullanarak sorgu at
   const handleShortestPath = async () => {
-    if (!startNodeId || !targetNodeId) return;
+    if (!startNodeId || !targetNodeId || !selectedAlgo) return;
     setLoading(true);
+    setShowDirectionWarning(false);
     try {
-      const results = await traversalService.shortestPath(startNodeId, targetNodeId);
+      const results = await traversalService.shortestPath(startNodeId, targetNodeId, selectedAlgo);
+      if (results.length === 0) {
+        setShowDirectionWarning(true);
+      }
       onResultsFound(results);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSwap = () => {
+    if (startNodeId && targetNodeId && onStartChange) {
+      const temp = startNodeId;
+      onStartChange(targetNodeId);
+      onTargetChange(temp);
+      setShowDirectionWarning(false);
     }
   };
 
@@ -83,25 +101,19 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId }) 
     }
   };
 
+  const canRunQuery = !!startNodeId && !!targetNodeId && !!selectedAlgo;
+
   return (
     <div className="query-panel" style={{ marginTop: '24px' }}>
+      {/* Tab Seçiciler */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', overflowX: 'auto' }}>
-        <button 
-          onClick={() => setActiveTab('traversal')}
-          className={`tab-btn ${activeTab === 'traversal' ? 'active' : ''}`}
-        >
+        <button onClick={() => setActiveTab('traversal')} className={`tab-btn ${activeTab === 'traversal' ? 'active' : ''}`}>
           <GitBranch size={14} /> Traversal
         </button>
-        <button 
-          onClick={() => setActiveTab('chain')}
-          className={`tab-btn ${activeTab === 'chain' ? 'active' : ''}`}
-        >
+        <button onClick={() => setActiveTab('chain')} className={`tab-btn ${activeTab === 'chain' ? 'active' : ''}`}>
           <Link2 size={14} /> Chain
         </button>
-        <button 
-          onClick={() => setActiveTab('recommend')}
-          className={`tab-btn ${activeTab === 'recommend' ? 'active' : ''}`}
-        >
+        <button onClick={() => setActiveTab('recommend')} className={`tab-btn ${activeTab === 'recommend' ? 'active' : ''}`}>
           <UserPlus size={14} /> Recs
         </button>
       </div>
@@ -113,31 +125,87 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId }) 
           </p>
         ) : (
           <>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>
-              Current Node: <span style={{ color: 'var(--accent-color)' }}>{startNodeId}</span>
-            </p>
-
-            {activeTab === 'traversal' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button onClick={handleBfs} disabled={loading} className="query-btn">BFS</button>
-                  <button onClick={handleDfs} disabled={loading} className="query-btn">DFS</button>
+            {/* Current + Target Node Bilgisi */}
+            <div style={{ marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6', boxShadow: '0 0 8px #3b82f6' }} />
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: 0, opacity: 0.6 }}>Origin:</p>
+                <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#3b82f6', margin: 0 }}>
+                  {nodeLabels[startNodeId] || startNodeId}
+                </p>
+              </div>
+              {targetNodeId && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444', boxShadow: '0 0 8px #ef4444' }} />
+                  <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: 0, opacity: 0.6 }}>Target:</p>
+                  <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#ef4444', margin: 0 }}>
+                    {nodeLabels[targetNodeId] || targetNodeId}
+                  </p>
                 </div>
-                <div style={{ marginTop: '8px' }}>
-                  <input 
-                    type="text" 
-                    placeholder="Target Node ID..."
-                    value={targetNodeId}
-                    onChange={(e) => setTargetNodeId(e.target.value)}
-                    style={{ width: '100%', marginBottom: '8px' }}
-                  />
-                  <button onClick={handleShortestPath} disabled={loading || !targetNodeId} className="query-btn primary">
-                    <Zap size={14} /> Shortest Path
+              )}
+            </div>
+
+            {/* Traversal Tab */}
+            {activeTab === 'traversal' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {/* Algoritma Seçicileri */}
+                <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', opacity: 0.6, margin: 0 }}>Algorithm:</p>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button
+                    onClick={() => handleSelectAlgo('BFS')}
+                    className={`query-btn ${selectedAlgo === 'BFS' ? 'algo-active' : ''}`}
+                  >
+                    BFS
+                  </button>
+                  <button
+                    onClick={() => handleSelectAlgo('DFS')}
+                    className={`query-btn ${selectedAlgo === 'DFS' ? 'algo-active' : ''}`}
+                  >
+                    DFS
                   </button>
                 </div>
+
+                {/* Target input — isim veya ID göster */}
+                <input
+                  type="text"
+                  placeholder="Target Node ID (or right-click a node)..."
+                  value={nodeLabels[targetNodeId] || targetNodeId}
+                  onChange={(e) => onTargetChange(e.target.value)}
+                  style={{ width: '100%' }}
+                />
+
+                {/* Shortest Path Butonu */}
+                <button
+                  onClick={handleShortestPath}
+                  disabled={loading || !canRunQuery}
+                  className="query-btn primary"
+                  title={!canRunQuery ? 'Origin, Target ve Algoritma seçilmeli' : ''}
+                >
+                  <Zap size={14} /> {selectedAlgo ? `Run ${selectedAlgo} Path` : 'Find Path'}
+                </button>
+
+                {showDirectionWarning && (
+                  <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '10px', borderRadius: '8px', marginTop: '8px' }}>
+                    <p style={{ fontSize: '0.75rem', color: '#f59e0b', margin: '0 0 8px 0', lineHeight: 1.4 }}>
+                      Sonuç bulunamadı. LIKES ve ATTENDS gibi ilişkiler tek yönlüdür. Hedef ve Başlangıç düğümlerini yer değiştirip tekrar deneyin.
+                    </p>
+                    {onStartChange && (
+                      <button onClick={handleSwap} className="query-btn" style={{ width: '100%', borderColor: '#f59e0b', color: '#f59e0b' }}>
+                        Swap Origin & Target
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {!canRunQuery && startNodeId && !showDirectionWarning && (
+                  <p style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', opacity: 0.5, textAlign: 'center', margin: 0 }}>
+                    {!selectedAlgo ? '↑ Bir algoritma seçin' : !targetNodeId ? '↑ Bir hedef düğüm seçin (sağ tık)' : ''}
+                  </p>
+                )}
               </div>
             )}
 
+            {/* Chain Tab */}
             {activeTab === 'chain' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <p style={{ fontSize: '0.75rem', opacity: 0.6 }}>Relations to follow:</p>
@@ -152,6 +220,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId }) 
               </div>
             )}
 
+            {/* Recommend Tab */}
             {activeTab === 'recommend' && (
               <button onClick={handleRecommendations} disabled={loading} className="query-btn primary">
                 Get Friend Suggestions
@@ -199,9 +268,19 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId }) 
         .query-btn:hover:not(:disabled) {
           background: rgba(255,255,255,0.1);
         }
+        .query-btn.algo-active {
+          background: rgba(59, 130, 246, 0.2);
+          border-color: #3b82f6;
+          color: white;
+          box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
         .query-btn.primary {
           background: var(--accent-color);
           border: none;
+        }
+        .query-btn.primary:disabled {
+          background: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.05);
         }
         .query-btn:disabled {
           opacity: 0.4;
