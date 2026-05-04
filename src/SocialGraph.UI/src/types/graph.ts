@@ -32,3 +32,13 @@ export interface IRecommendation {
     node: INode;
     mutualFriendsCount: number;
 }
+
+export interface IChainStep {
+    relation: string;
+    count: number;
+}
+
+export interface IChainResponse {
+    nodes: INode[];
+    steps: IChainStep[];
+}

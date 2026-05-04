@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GitBranch, Link2, Zap, UserPlus, Network } from 'lucide-react';
 import { traversalService } from '../services/traversalService';
 import { nodeService } from '../services/nodeService';
-import type { INode, IRecommendation } from '../types/graph';
+import type { INode, IRecommendation, IChainResponse } from '../types/graph';
 
 interface QueryPanelProps {
   onResultsFound: (nodeIds: string[], mode?: 'path' | 'recs' | 'chain') => void;
@@ -22,14 +22,20 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
   const [showDirectionWarning, setShowDirectionWarning] = useState(false);
   const [reportData, setReportData] = useState<{ path: string[], algo: 'BFS' | 'DFS' } | null>(null);
   const [recsReportData, setRecsReportData] = useState<IRecommendation[] | null>(null);
+  const [chainReportData, setChainReportData] = useState<IChainResponse | null>(null);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [nodeTypes, setNodeTypes] = useState<Record<string, string>>({});
 
   // ID → İsim çözümleme
   React.useEffect(() => {
-    setShowDirectionWarning(false);
     const resolveNames = async () => {
-      const idsToResolve = [startNodeId, targetNodeId, ...(reportData?.path || []), ...(recsReportData?.map(r => r.node.id) || [])].filter(id => id && !nodeLabels[id]) as string[];
+      const idsToResolve = [
+        startNodeId, 
+        targetNodeId, 
+        ...(reportData?.path || []), 
+        ...(recsReportData?.map(r => r.node.id) || [])
+      ].filter(id => id && !nodeLabels[id]) as string[];
+      
       if (idsToResolve.length === 0) return;
 
       const newLabels = { ...nodeLabels };
@@ -53,6 +59,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
   // BFS/DFS butonları: Sadece algoritma seç (Toggle)
   const handleSelectAlgo = (algo: 'BFS' | 'DFS') => {
     setSelectedAlgo(prev => prev === algo ? null : algo);
+    setShowDirectionWarning(false);
   };
 
   // Shortest Path: Seçili algoritmayı kullanarak sorgu at
@@ -92,8 +99,9 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
     if (onQueryStart) onQueryStart();
     setLoading(true);
     try {
-      const results: INode[] = await traversalService.chain(startNodeId, chainRelations);
-      const nodeIds = results.map((n: INode) => n.id);
+      const response: IChainResponse = await traversalService.chain(startNodeId, chainRelations);
+      const nodeIds = response.nodes.map((n: INode) => n.id);
+      setChainReportData(response);
       onResultsFound(nodeIds, 'chain');
     } catch (err) {
       console.error(err);
@@ -154,7 +162,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                   {nodeLabels[startNodeId] || startNodeId}
                 </p>
               </div>
-              {targetNodeId && activeTab !== 'recommend' && (
+              {targetNodeId && activeTab === 'traversal' && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444', boxShadow: '0 0 8px #ef4444' }} />
                   <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: 0, opacity: 0.6 }}>Target:</p>
@@ -334,15 +342,15 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                         <button
                           key={r}
                           onClick={() => setChainRelations(prev => [...prev, r])}
-                          disabled={chainRelations.length >= 5}
+                          disabled={chainRelations.length >= 5 || chainRelations.includes(r)}
                           style={{
                             padding: '4px 8px',
                             borderRadius: '6px',
                             background: 'rgba(255,255,255,0.05)',
                             border: '1px solid rgba(255,255,255,0.1)',
-                            color: 'white',
+                            color: chainRelations.includes(r) ? 'rgba(255,255,255,0.2)' : 'white',
                             fontSize: '0.65rem',
-                            cursor: 'pointer'
+                            cursor: chainRelations.includes(r) ? 'not-allowed' : 'pointer'
                           }}
                         >
                           + {r}
@@ -360,6 +368,69 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                 >
                   <Network size={14} /> Run Chain Query
                 </button>
+
+                {/* Chain Algorithm Report */}
+                {chainReportData && (
+                  <div className="algo-report" style={{ marginTop: '12px', borderLeft: '3px solid #06b6d4' }}>
+                    <button 
+                      className="algo-report-header" 
+                      onClick={() => setIsReportOpen(!isReportOpen)}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Network size={14} color="#06b6d4" />
+                        <span>Chain Pipeline Report</span>
+                      </div>
+                      <span>{isReportOpen ? '▲' : '▼'}</span>
+                    </button>
+                    
+                    {isReportOpen && (
+                      <div className="algo-report-content custom-scrollbar">
+                        <p className="report-intro">
+                          Bu rapor, seçtiğiniz ilişkilerin (Sequential Follow) katman katman nasıl işlendiğini gösterir.
+                        </p>
+                        <div className="report-steps">
+                          <div className="step">
+                            <span className="step-dot origin" style={{ background: '#3b82f6' }}></span>
+                            <span><strong>{nodeLabels[startNodeId || ''] || startNodeId}</strong> üzerinden zincir başlatıldı.</span>
+                          </div>
+                          
+                          {chainReportData.steps.map((step, idx) => (
+                            <div className="step" key={idx}>
+                              <span className="step-dot" style={{ background: '#06b6d4' }}></span>
+                              <span>
+                                <strong>{step.relation}</strong> ilişkisi takip edildi: 
+                                <span style={{ color: step.count > 0 ? '#06b6d4' : '#ef4444', fontWeight: 600, marginLeft: '4px' }}>
+                                  {step.count} düğüm bulundu.
+                                </span>
+                              </span>
+                            </div>
+                          ))}
+
+                          {/* Skipped Steps */}
+                          {chainReportData.steps.length < chainRelations.length && chainRelations.slice(chainReportData.steps.length).map((rel, idx) => (
+                            <div className="step" key={`skipped-${idx}`} style={{ opacity: 0.4 }}>
+                              <span className="step-dot" style={{ background: '#666' }}></span>
+                              <span>
+                                <strong>{rel}</strong> adımı <span style={{ fontStyle: 'italic' }}>atlandı</span>. 
+                                (Önceki adımda 0 sonuç bulunduğu için zincir koptu.)
+                              </span>
+                            </div>
+                          ))}
+
+                          <div className="step">
+                            <span className="step-dot target" style={{ background: '#10b981' }}></span>
+                            <span>İşlem tamamlandı. Toplam <strong>{chainReportData.nodes.length}</strong> bağıntılı düğümden oluşan bir ağ keşfedildi.</span>
+                          </div>
+                        </div>
+                        {chainReportData.nodes.length === 0 && (
+                          <div style={{ marginTop: '8px', padding: '8px', background: 'rgba(239, 68, 68, 0.1)', borderRadius: '6px', fontSize: '0.65rem', color: '#ef4444' }}>
+                            DİKKAT: Zincir herhangi bir adımda koptuğu için sonuç boş döndü. (Sequential Break)
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
