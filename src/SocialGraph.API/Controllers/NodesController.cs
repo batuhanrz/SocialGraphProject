@@ -168,6 +168,18 @@ namespace SocialGraph.API.Controllers
             return Ok(new { Message = "Kenar basariyla silindi." });
         }
 
+        /// <summary>
+        /// Tum sistemi (Graf ve Trie) sifirlar. Benchmark icin kullanilir.
+        /// DELETE /api/nodes/reset
+        /// </summary>
+        [HttpDelete("reset")]
+        public ActionResult Reset()
+        {
+            _graph.Reset();
+            _trie.Clear();
+            return Ok(new { Message = "Tum sistem basariyla sifirlandi." });
+        }
+
         private static NodeDto MapToDto(Node node)
         {
             var props = new Dictionary<string, object>();

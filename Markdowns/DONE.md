@@ -211,5 +211,11 @@
 - [x] Gereksiz `using` direktifleri temizlendi ve kodun okunabilirliği artırıldı. **(Batuhan)**
 - [x] PR açıldı ve `feature/batuhan-core` üzerinden ana branch ile senkronize edildi. **(Batuhan)**
 
----
+### Sprint 4.5: Isra (Testing & Analysis) — Sistem Performans Denetimi (System Audit) [TAMAMLANDI]
+- [x] **System Performance Audit:** 100, 500, 1000 ve 5000 düğüm ölçeklerinde sistemin (Ingestion, BFS, DFS, Trie) performansını otomatik ölçen benchmark motoru geliştirildi. **(Isra)**
+- [x] **Benchmark UI & Reporting:** Performans sonuçlarını canlı "Throughput" (Veri Akışı) metrikleriyle gösteren ve Markdown raporu üreten Glassmorphism modal paneli eklendi. **(Isra)**
+- [x] **Reset Logic:** Benchmarkların izole ve tutarlı bir ortamda çalışabilmesi için `DELETE /api/nodes/reset` endpoint'i ve temizleme metodları eklendi. **(Isra)**
+- [x] **B.3 Final Audit:** Projenin tüm kod tabanı ve dökümantasyonu jüri öncesi final ASCII (B.3) uyumluluğu için tarandı ve sanitize edildi. **(Isra)**
+- [x] **AI Prompt Documentation:** Sentetik veri üretiminde kullanılan sofistike prompt stratejileri ve AI kullanım gerekçeleri belgelendi. **(Isra)**
 
+---

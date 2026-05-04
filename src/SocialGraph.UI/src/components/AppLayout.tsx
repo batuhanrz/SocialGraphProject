@@ -4,6 +4,7 @@ import GraphCanvas from './GraphCanvas';
 import ResultPanel from './ResultPanel';
 import QueryPanel from './QueryPanel';
 import { SimNodeList } from './SimNodeList';
+import BenchmarkModal from './BenchmarkModal';
 
 const AppLayout: React.FC = () => {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -12,6 +13,7 @@ const AppLayout: React.FC = () => {
   const [highlightEdgeIds, setHighlightEdgeIds] = useState<string[]>([]);
   const [highlightMode, setHighlightMode] = useState<'path' | 'recs' | 'chain'>('path');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isBenchmarkOpen, setIsBenchmarkOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleNodeSelect = useCallback((id: string) => {
@@ -101,10 +103,58 @@ const AppLayout: React.FC = () => {
           <ResultPanel selectedNodeId={selectedNodeId} />
         </div>
 
-        <footer style={{ marginTop: '24px', fontSize: '0.7rem', color: 'var(--text-secondary)', opacity: 0.4 }}>
-          &copy; 2026 SocialGraph Project
-        </footer>
+        <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
+          <button
+            onClick={() => setIsBenchmarkOpen(true)}
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'rgba(0, 242, 255, 0.05)',
+              border: '1px solid rgba(0, 242, 255, 0.15)',
+              borderRadius: '10px',
+              color: 'var(--accent-color)',
+              fontSize: '0.7rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              transition: 'all 0.2s ease',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(0, 242, 255, 0.12)';
+              e.currentTarget.style.borderColor = 'rgba(0, 242, 255, 0.4)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(0, 242, 255, 0.05)';
+              e.currentTarget.style.borderColor = 'rgba(0, 242, 255, 0.15)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            <div style={{ 
+              width: '6px', 
+              height: '6px', 
+              borderRadius: '50%', 
+              background: 'var(--accent-color)', 
+              boxShadow: '0 0 8px var(--accent-color)' 
+            }} />
+            RUN PERFORMANCE AUDIT
+          </button>
+          
+          <footer style={{ marginTop: '16px', fontSize: '0.7rem', color: 'var(--text-secondary)', opacity: 0.4 }}>
+            &copy; 2026 SocialGraph Project
+          </footer>
+        </div>
       </aside>
+
+      <BenchmarkModal 
+        isOpen={isBenchmarkOpen} 
+        onClose={() => setIsBenchmarkOpen(false)} 
+      />
 
       {/* Main Content Area */}
       <main style={{ flex: 1, position: 'relative', display: 'flex' }}>

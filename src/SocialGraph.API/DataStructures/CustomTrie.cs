@@ -161,5 +161,15 @@ namespace SocialGraph.API.DataStructures
                 CollectWords(kvp.Value, currentWord + kvp.Key, results, maxResults);
             }
         }
+
+        /// <summary>
+        /// Trie'deki tum verileri temizler.
+        /// </summary>
+        public void Clear()
+        {
+            _root.Children.Clear();
+            _root.NodeIds.Clear();
+            _wordCount = 0;
+        }
     }
 }
