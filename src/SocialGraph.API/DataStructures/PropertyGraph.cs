@@ -478,7 +478,7 @@ namespace SocialGraph.API.DataStructures
 
         /// <summary>
         /// Graftaki tum kenarlari dizi olarak dondurur.
-        /// Yonsuz kenarlarda sadece tek yondeki kaydı dondurur (reverse haric).
+        /// Yonsuz kenarlarda sadece tek yondeki kaydi dondurur (reverse haric).
         /// Karmasiklik: O(V + E)
         /// Uzay: O(E)
         /// </summary>

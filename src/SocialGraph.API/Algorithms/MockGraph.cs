@@ -4,7 +4,7 @@ using SocialGraph.API.DataStructures;
 namespace SocialGraph.API.Algorithms
 {
     /// <summary>
-    /// BFS ve DFS testleri için Mock Adjacency List.
+    /// BFS ve DFS testleri icin Mock Adjacency List.
     /// </summary>
     public class MockGraph
     {

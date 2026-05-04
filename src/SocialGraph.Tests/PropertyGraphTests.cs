@@ -39,7 +39,7 @@ namespace SocialGraph.Tests
             Assert.Equal("B", neighborsOfA[0].Id);
             
             var neighborsOfB = graph.GetNeighbors("B");
-            Assert.Empty(neighborsOfB); // Yönlü olduğu için B'nin komşusu A değildir
+            Assert.Empty(neighborsOfB); // Yonlu oldugu icin B'nin komsusu A degildir
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace SocialGraph.Tests
             Assert.Null(nodeA);
             
             var neighborsOfB = graph.GetNeighbors("B");
-            Assert.Empty(neighborsOfB); // A silindiği için B'nin komşusu kalmadı
+            Assert.Empty(neighborsOfB); // A silindigi icin B'nin komsusu kalmadi
         }
 
         [Fact]

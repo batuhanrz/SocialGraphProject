@@ -45,16 +45,16 @@ namespace SocialGraph.AI
 
         // Gemini 3.1 Pro tarafindan uretilmis statik User listesi (Ornek 50 Kisi)
         private static readonly string[] _userNames = {
-            "Batuhan Yılmaz", "Fatma Sude Kaya", "Muhammed Furkan Çelik", "İsra Nur Demir", "Özcan Şahin",
-            "Ahmet Yılmaz", "Ayşe Demir", "Mehmet Kaya", "Fatma Çelik", "Mustafa Şahin",
-            "Zeynep Koç", "Ali Öztürk", "Elif Aydın", "Hüseyin Özdemir", "Merve Arslan",
-            "Hasan Doğan", "Esra Kılıç", "İbrahim Çetin", "Büşra Gürbüz", "Halil Gök",
-            "Burcu Tekin", "Kemal Polat", "Selin Tarhan", "Caner Bulut", "Eda Yıldırım",
-            "Tolga Çoban", "Cemre Yıldız", "Emre Karaca", "Derya Çakır", "Sinan Taş",
-            "Gözde Akın", "Turgut Aslan", "Işıl Erdoğan", "Oğuzhan Güneş", "Tuğçe Yavuz",
-            "Gökhan Kaplan", "Müge Çelik", "Serkan Yücel", "Deniz Özer", "Umut Ekinci",
-            "Aslıhan Kara", "Koray Avcı", "Zehra Başar", "Orhan Veli", "Nazlı Çam",
-            "Eren Yalçın", "Yasemin Kurt", "Volkan Türk", "Ceren Yılmaz", "Kerem Koca"
+            "Batuhan Yilmaz", "Fatma Sude Kaya", "Muhammed Furkan Celik", "Isra Nur Demir", "Ozcan Sahin",
+            "Ahmet Yilmaz", "Ayse Demir", "Mehmet Kaya", "Fatma Celik", "Mustafa Sahin",
+            "Zeynep Koc", "Ali Ozturk", "Elif Aydin", "Huseyin Ozdemir", "Merve Arslan",
+            "Hasan Dogan", "Esra Kilic", "Ibrahim Cetin", "Busra Gurbuz", "Halil Gok",
+            "Burcu Tekin", "Kemal Polat", "Selin Tarhan", "Caner Bulut", "Eda Yildirim",
+            "Tolga Coban", "Cemre Yildiz", "Emre Karaca", "Derya Cakir", "Sinan Tas",
+            "Gozde Akin", "Turgut Aslan", "Isil Erdogan", "Oguzhan Gunes", "Tugce Yavuz",
+            "Gokhan Kaplan", "Muge Celik", "Serkan Yucel", "Deniz Ozer", "Umut Ekinci",
+            "Aslihan Kara", "Koray Avci", "Zehra Basar", "Orhan Veli", "Nazli Cam",
+            "Eren Yalcin", "Yasemin Kurt", "Volkan Turk", "Ceren Yilmaz", "Kerem Koca"
         };
 
         private static readonly string[] _professions = {
@@ -64,12 +64,12 @@ namespace SocialGraph.AI
 
         // Gemini 3.1 Pro tarafindan uretilmis statik Photo listesi (Ornek 30 Fotograf)
         private static readonly string[] _photoTitles = {
-            "Hackathon Hatırası", "Ofiste İlk Gün", "Yapay Zeka Zirvesi", "Kahve Molası", "Yeni Proje Toplantısı",
-            "Kodlama Gecesi", "Bahar Şenliği", "Mezuniyet Töreni", "Takım Yemeği", "Haftasonu Kaçamağı",
-            "Doğa Yürüyüşü", "Konferans Sunumu", "Sertifika Töreni", "Design Thinking Workshop", "Ofis Manzarası",
-            "Evden Çalışma Modu", "Yaz Kampı", "Kış Tatili", "Sabah Koşusu", "Kitap ve Kahve",
-            "Konser Coşkusu", "Gala Gecesi", "Kod İnceleme (Code Review)", "Proje Lansmanı", "Müşteri Ziyareti",
-            "Agile Sprint Planning", "Server Odası", "Yeni Ofis Masam", "Kedim ve Kod", "Gün Batımı"
+            "Hackathon Hatirasi", "Ofiste Ilk Gun", "Yapay Zeka Zirvesi", "Kahve Molasi", "Yeni Proje Toplantisi",
+            "Kodlama Gecesi", "Bahar Senligi", "Mezuniyet Toreni", "Takim Yemegi", "Haftasonu Kacamagi",
+            "Doga Yuruyusu", "Konferans Sunumu", "Sertifika Toreni", "Design Thinking Workshop", "Ofis Manzarasi",
+            "Evden Calisma Modu", "Yaz Kampi", "Kis Tatili", "Sabah Kosusu", "Kitap ve Kahve",
+            "Konser Coskusu", "Gala Gecesi", "Kod Inceleme (Code Review)", "Proje Lansmani", "Musteri Ziyareti",
+            "Agile Sprint Planning", "Server Odasi", "Yeni Ofis Masam", "Kedim ve Kod", "Gun Batimi"
         };
 
         private static readonly string[] _photoTags = {
@@ -93,7 +93,7 @@ namespace SocialGraph.AI
             var nodes = GenerateNodes();
             var edges = new List<EdgeDto>();
             
-            // Dense: İlişki yoğunluğu %15-%20 seviyesine çekildi (Performans optimizasyonu)
+            // Dense: Iliski yogunlugu %15-%20 seviyesine cekildi (Performans optimizasyonu)
             var users = nodes.FindAll(n => n.Type == "User");
             for (int i = 0; i < users.Count; i++)
             {
@@ -268,13 +268,14 @@ namespace SocialGraph.AI
             var nodes = new List<NodeDto>();
             var edges = new List<EdgeDto>();
 
-            // Yeni Dugumler Uret
+            // 1. Yeni Dugumlerin Uretilmesi
             for (int i = 0; i < nodeCount; i++)
             {
                 int typeSelector = _rnd.Next(3);
+                NodeDto newNode;
                 if (typeSelector == 0) // New User
                 {
-                    nodes.Add(new NodeDto
+                    newNode = new NodeDto
                     {
                         Id = $"user_new_{Guid.NewGuid().ToString("N").Substring(0, 4)}",
                         Type = "User",
@@ -284,82 +285,112 @@ namespace SocialGraph.AI
                             { "Age", _rnd.Next(18, 60).ToString() },
                             { "Profession", _professions[_rnd.Next(_professions.Length)] }
                         }
-                    });
+                    };
                 }
                 else if (typeSelector == 1) // New Photo
                 {
-                    nodes.Add(new NodeDto
+                    newNode = new NodeDto
                     {
                         Id = $"photo_new_{Guid.NewGuid().ToString("N").Substring(0, 4)}",
                         Type = "Photo",
                         Properties = new Dictionary<string, object>
                         {
-                            { "Title", _photoTitles[_rnd.Next(_photoTitles.Length)] },
+                            { "Title", _photoTitles[_rnd.Next(_photoTitles.Length)] + " (Sim)" },
                             { "Tag", _photoTags[_rnd.Next(_photoTags.Length)] },
                             { "CreatedAt", DateTime.Now.ToString("yyyy-MM-dd") }
                         }
-                    });
+                    };
                 }
                 else // New Event
                 {
-                    nodes.Add(new NodeDto
+                    newNode = new NodeDto
                     {
                         Id = $"event_new_{Guid.NewGuid().ToString("N").Substring(0, 4)}",
                         Type = "Event",
                         Properties = new Dictionary<string, object>
                         {
-                            { "Name", _eventNames[_rnd.Next(_eventNames.Length)] },
+                            { "Name", _eventNames[_rnd.Next(_eventNames.Length)] + " (Sim)" },
                             { "Location", _eventLocations[_rnd.Next(_eventLocations.Length)] },
                             { "Date", DateTime.Now.AddDays(_rnd.Next(1, 30)).ToString("yyyy-MM-dd") }
                         }
-                    });
+                    };
+                }
+                nodes.Add(newNode);
+
+                // 2. Yeni Dugum Iliskilerinin Kurulmasi
+                int newRelCount = _rnd.Next(1, 3);
+                for (int j = 0; j < newRelCount; j++)
+                {
+                    string targetId, relType;
+                    bool isDirected;
+
+                    if (newNode.Type == "User")
+                    {
+                        targetId = $"user{_rnd.Next(1, 51)}";
+                        relType = "FRIEND";
+                        isDirected = false;
+                    }
+                    else if (newNode.Type == "Photo")
+                    {
+                        targetId = $"user{_rnd.Next(1, 51)}"; // Foto sahibi
+                        relType = "POSTED";
+                        isDirected = true;
+                        // Yer degistir: User -> Photo
+                        edges.Add(CreateEdge(targetId, newNode.Id, relType, isDirected, true));
+                        continue;
+                    }
+                    else // Event
+                    {
+                        targetId = $"user{_rnd.Next(1, 51)}"; // Katilimci
+                        relType = "ATTENDS";
+                        isDirected = true;
+                        // Yer degistir: User -> Event
+                        edges.Add(CreateEdge(targetId, newNode.Id, relType, isDirected, true));
+                        continue;
+                    }
+
+                    if (newNode.Id != targetId)
+                    {
+                        edges.Add(CreateEdge(newNode.Id, targetId, relType, isDirected, true));
+                        if (!isDirected) edges.Add(CreateEdge(targetId, newNode.Id, relType, isDirected, true));
+                    }
                 }
             }
 
-            // Yeni Iliskiler Uret (Var olan ve yeni dugumler arasinda)
-            // Not: Basitlik icin seed data id araliklarini (user1-50, photo1-30, event1-20) kullaniyoruz
-            for (int i = 0; i < edgeCount; i++)
+            // 3. Mevcut Dugumler Arasi Iliskiler
+            int existingRelCount = _rnd.Next(1, 5);
+            for (int i = 0; i < existingRelCount; i++)
             {
-                int relSelector = _rnd.Next(3);
+                int relSelector = _rnd.Next(2); // Sadece FRIEND veya LIKES (Daha dogal artis)
                 string sourceId, targetId, relType;
                 bool isDirected;
 
                 if (relSelector == 0) // FRIEND
                 {
                     sourceId = $"user{_rnd.Next(1, 51)}";
-                    targetId = nodes.Count > 0 && nodes[0].Type == "User" ? nodes[0].Id : $"user{_rnd.Next(1, 51)}";
+                    targetId = $"user{_rnd.Next(1, 51)}";
                     relType = "FRIEND";
                     isDirected = false;
                 }
-                else if (relSelector == 1) // LIKES
+                else // LIKES
                 {
                     sourceId = $"user{_rnd.Next(1, 51)}";
-                    targetId = nodes.Count > 0 && nodes[0].Type == "Photo" ? nodes[0].Id : $"photo{_rnd.Next(1, 31)}";
+                    targetId = $"photo{_rnd.Next(1, 31)}";
                     relType = "LIKES";
-                    isDirected = true;
-                }
-                else // ATTENDS
-                {
-                    sourceId = $"user{_rnd.Next(1, 51)}";
-                    targetId = nodes.Count > 0 && nodes[0].Type == "Event" ? nodes[0].Id : $"event{_rnd.Next(1, 21)}";
-                    relType = "ATTENDS";
                     isDirected = true;
                 }
 
                 if (sourceId != targetId)
                 {
-                    edges.Add(CreateEdge(sourceId, targetId, relType, isDirected));
-                    if (!isDirected) // Friend ise karsilikli ekle
-                    {
-                         edges.Add(CreateEdge(targetId, sourceId, relType, isDirected));
-                    }
+                    edges.Add(CreateEdge(sourceId, targetId, relType, isDirected, true));
+                    if (!isDirected) edges.Add(CreateEdge(targetId, sourceId, relType, isDirected, true));
                 }
             }
 
             return (nodes, edges);
         }
 
-        private EdgeDto CreateEdge(string source, string target, string relation, bool isDirected)
+        private EdgeDto CreateEdge(string source, string target, string relation, bool isDirected, bool isSimulated = false)
         {
             return new EdgeDto
             {
@@ -370,7 +401,8 @@ namespace SocialGraph.AI
                 IsDirected = isDirected,
                 Properties = new Dictionary<string, object>
                 {
-                    { "Timestamp", DateTime.UtcNow.ToString("O") }
+                    { "Timestamp", DateTime.UtcNow.ToString("O") },
+                    { "isSimulated", isSimulated }
                 }
             };
         }

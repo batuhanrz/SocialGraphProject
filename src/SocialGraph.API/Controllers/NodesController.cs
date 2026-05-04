@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using SocialGraph.API.DTOs;
 using SocialGraph.API.DataStructures;
 using SocialGraph.API.Models;
@@ -8,6 +9,7 @@ namespace SocialGraph.API.Controllers
     /// <summary>
     /// Dugum (Node) ve Kenar (Edge) islemleri icin API endpoint'leri.
     /// PropertyGraph kullanilarak gercek verilere erisilir.
+    /// Gelistiren: Batuhan (Core Logic)
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -134,6 +136,36 @@ namespace SocialGraph.API.Controllers
             }
 
             return Ok(new { Message = $"{addedCount} kenar basariyla eklendi." });
+        }
+
+        /// <summary>
+        /// Tum kenarlari listeler.
+        /// GET /api/edges
+        /// </summary>
+        [HttpGet("~/api/edges")]
+        public ActionResult<List<EdgeDto>> GetAllEdges()
+        {
+            var edges = _graph.GetAllEdges();
+            var result = new List<EdgeDto>(edges.Length);
+
+            foreach (var edge in edges)
+            {
+                result.Add(MapToEdgeDto(edge));
+            }
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Belirli bir kenari siler.
+        /// DELETE /api/edges/{sourceId}/{targetId}
+        /// </summary>
+        [HttpDelete("~/api/edges/{sourceId}/{targetId}")]
+        public ActionResult DeleteEdge(string sourceId, string targetId)
+        {
+            bool removed = _graph.RemoveEdge(sourceId, targetId);
+            if (!removed) return NotFound("Kenar bulunamadi veya silinemedi.");
+            return Ok(new { Message = "Kenar basariyla silindi." });
         }
 
         private static NodeDto MapToDto(Node node)

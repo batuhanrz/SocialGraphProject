@@ -22,10 +22,10 @@
 - Naming convention kontrolü (Türkçe karakter yok — B.3).
 
 **Kabul Kriterleri:**
-- [ ] En az 3 UML diyagramı (class, component, sequence) çizildi ve rapora eklendi.
-- [ ] Tüm public metotlarda açıklama/dokümantasyon mevcut.
-- [ ] B.3 isimlendirme şartı tüm kodda sağlanıyor.
-- [ ] PR açıldı (`feature/batuhan-core`).
+- [x] En az 3 UML diyagramı (class, component, sequence) çizildi ve rapora eklendi.
+- [x] Tüm public metotlarda açıklama/dokümantasyon mevcut.
+- [x] B.3 isimlendirme şartı tüm kodda sağlanıyor.
+- [x] PR açıldı (`feature/batuhan-core`).
 
 ---
 

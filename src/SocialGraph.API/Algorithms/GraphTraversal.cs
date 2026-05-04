@@ -5,17 +5,17 @@ using SocialGraph.API.Models;
 namespace SocialGraph.API.Algorithms
 {
     /// <summary>
-    /// Graf arama algoritmaları (BFS, DFS ve ShortestPath).
-    /// Geliştiren: Özcan (Algorithm Master)
-    /// Tamamen CustomQueue ve CustomHashTable kullanılarak PropertyGraph'a uyarlanmıştır.
+    /// Graf arama algoritmalari (BFS, DFS ve ShortestPath).
+    /// Gelistiren: Ozcan (Algorithm Master)
+    /// Tamamen CustomQueue ve CustomHashTable kullanilarak PropertyGraph'a uyarlanmistir.
     /// </summary>
     public static class GraphTraversal
     {
         /// <summary>
-        /// Genişlik Öncelikli Arama (Katmanlı Gezinme)
-        /// Özellikler: Düğüm ve kenar bazlı filtreleme destekler.
-        /// Karmaşıklık: O(V + E) (V: Düğüm, E: Kenar)
-        /// Uzay Karmaşıklığı: O(V)
+        /// Genislik Oncelikli Arama (Katmanli Gezinme)
+        /// Ozellikler: Dugum ve kenar bazli filtreleme destekler.
+        /// Karmasiklik: O(V + E) (V: Dugum, E: Kenar)
+        /// Uzay Karmasikligi: O(V)
         /// </summary>
         public static void BFS(
             PropertyGraph graph, 
@@ -42,7 +42,7 @@ namespace SocialGraph.API.Algorithms
 
                 if (currentNode != null)
                 {
-                    // Düğüm filtresi varsa uygula, yoksa direkt ziyaret et
+                    // Dugum filtresi varsa uygula, yoksa direkt ziyaret et
                     if (nodeFilter == null || nodeFilter(currentNode))
                     {
                         onVisit(currentNode);
@@ -68,9 +68,9 @@ namespace SocialGraph.API.Algorithms
         }
 
         /// <summary>
-        /// Derinlik Öncelikli Arama (Özyinelemeli)
-        /// Özellikler: Düğüm ve kenar bazlı filtreleme destekler.
-        /// Karmaşıklık: O(V + E) (V: Düğüm, E: Kenar)
+        /// Derinlik Oncelikli Arama (Ozyinelemeli)
+        /// Ozellikler: Dugum ve kenar bazli filtreleme destekler.
+        /// Karmasiklik: O(V + E) (V: Dugum, E: Kenar)
         /// </summary>
         public static void DFS(
             PropertyGraph graph, 
@@ -120,10 +120,10 @@ namespace SocialGraph.API.Algorithms
         }
 
         /// <summary>
-        /// İki düğüm arasındaki en kısa yolu (kenar sayısı bazında) bulan BFS algoritması.
-        /// Filtreleme kullanılarak belirli ilişkiler (örn. sadece LIKES) üzerinden yol aranabilir.
-        /// Karmaşıklık: O(V + E)
-        /// Uzay Karmaşıklığı: O(V)
+        /// Iki dugum arasindaki en kisa yolu (kenar sayisi bazinda) bulan BFS algoritmasi.
+        /// Filtreleme kullanilarak belirli iliskiler (orn. sadece LIKES) uzerinden yol aranabilir.
+        /// Karmasiklik: O(V + E)
+        /// Uzay Karmasikligi: O(V)
         /// </summary>
         public static string[] ShortestPath(
             PropertyGraph graph, 
@@ -143,7 +143,7 @@ namespace SocialGraph.API.Algorithms
             var queue = new CustomQueue<string>();
             var visited = new CustomHashTable<string, bool>();
             
-            // Yol takibi için (ChildId -> ParentId)
+            // Yol takibi icin (ChildId -> ParentId)
             var parents = new CustomHashTable<string, string>();
 
             queue.Enqueue(startNodeId);
@@ -180,7 +180,7 @@ namespace SocialGraph.API.Algorithms
 
             if (!found) return Array.Empty<string>();
 
-            // Hedef bulundu, geriye doğru (backtrack) yolu inşa et
+            // Hedef bulundu, geriye dogru (backtrack) yolu insa et
             int pathLength = 1;
             string curr = targetNodeId;
             while (parents.ContainsKey(curr))
@@ -200,10 +200,10 @@ namespace SocialGraph.API.Algorithms
             return path;
         }
         /// <summary>
-        /// İki düğüm arasındaki herhangi bir yolu (DFS algoritmasıyla) bulan metot.
-        /// Filtreleme kullanılarak belirli ilişkiler (örn. sadece LIKES) üzerinden yol aranabilir.
-        /// Karmaşıklık: O(V + E)
-        /// Uzay Karmaşıklığı: O(V)
+        /// Iki dugum arasindaki herhangi bir yolu (DFS algoritmasiyla) bulan metot.
+        /// Filtreleme kullanilarak belirli iliskiler (orn. sadece LIKES) uzerinden yol aranabilir.
+        /// Karmasiklik: O(V + E)
+        /// Uzay Karmasikligi: O(V)
         /// </summary>
         public static string[] DFS_Path(
             PropertyGraph graph, 
@@ -227,7 +227,7 @@ namespace SocialGraph.API.Algorithms
 
             if (!found) return Array.Empty<string>();
 
-            // Hedef bulundu, geriye doğru (backtrack) yolu inşa et
+            // Hedef bulundu, geriye dogru (backtrack) yolu insa et
             int pathLength = 1;
             string curr = targetNodeId;
             while (parents.ContainsKey(curr))

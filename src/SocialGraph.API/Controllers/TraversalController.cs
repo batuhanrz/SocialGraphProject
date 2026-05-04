@@ -7,8 +7,8 @@ using SocialGraph.API.Models;
 namespace SocialGraph.API.Controllers
 {
     /// <summary>
-    /// Graf traversal (BFS/DFS/ShortestPath) ve ilişkisel sorgu işlemleri için API endpoint'leri.
-    /// Geliştiren: Özcan (Algorithm Master)
+    /// Graf traversal (BFS/DFS/ShortestPath) ve iliski tabanli sorgu islemleri icin API endpoint'leri.
+    /// Gelistiren: Ozcan (Algorithm Master)
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -24,7 +24,7 @@ namespace SocialGraph.API.Controllers
         }
 
         /// <summary>
-        /// BFS (Genişlik Öncelikli Arama) çalıştırır.
+        /// BFS (Genislik Oncelikli Arama) calistirir.
         /// GET /api/traversal/bfs?startNodeId=...
         /// </summary>
         [HttpGet("bfs")]
@@ -34,7 +34,7 @@ namespace SocialGraph.API.Controllers
                 return BadRequest("startNodeId gereklidir.");
 
             if (_graph.GetNode(startNodeId) == null)
-                return NotFound($"Düğüm bulunamadı: {startNodeId}");
+                return NotFound($"Dugum bulunamadi: {startNodeId}");
 
             var visitedIds = new List<string>();
             GraphTraversal.BFS(_graph, startNodeId, node => visitedIds.Add(node.Id));
@@ -43,7 +43,7 @@ namespace SocialGraph.API.Controllers
         }
 
         /// <summary>
-        /// DFS (Derinlik Öncelikli Arama) çalıştırır.
+        /// DFS (Derinlik Oncelikli Arama) calistirir.
         /// GET /api/traversal/dfs?startNodeId=...
         /// </summary>
         [HttpGet("dfs")]
@@ -53,7 +53,7 @@ namespace SocialGraph.API.Controllers
                 return BadRequest("startNodeId gereklidir.");
 
             if (_graph.GetNode(startNodeId) == null)
-                return NotFound($"Düğüm bulunamadı: {startNodeId}");
+                return NotFound($"Dugum bulunamadi: {startNodeId}");
 
             var visitedIds = new List<string>();
             GraphTraversal.DFS(_graph, startNodeId, node => visitedIds.Add(node.Id));
@@ -62,7 +62,7 @@ namespace SocialGraph.API.Controllers
         }
 
         /// <summary>
-        /// İki düğüm arası yolu bulur. BFS ile en kısa yol, DFS ile herhangi bir yol bulunur.
+        /// Iki dugum arasi yolu bulur. BFS ile en kisa yol, DFS ile herhangi bir yol bulunur.
         /// GET /api/traversal/shortestpath?startNodeId=...&targetNodeId=...&algorithm=BFS
         /// </summary>
         [HttpGet("shortestpath")]
@@ -72,7 +72,7 @@ namespace SocialGraph.API.Controllers
                 return BadRequest("startNodeId ve targetNodeId gereklidir.");
 
             if (_graph.GetNode(startNodeId) == null || _graph.GetNode(targetNodeId) == null)
-                return NotFound("Kaynak veya hedef düğüm bulunamadı.");
+                return NotFound("Kaynak veya hedef dugum bulunamadi.");
 
             string[] path;
             if (string.Equals(algorithm, "DFS", StringComparison.OrdinalIgnoreCase))
@@ -87,14 +87,14 @@ namespace SocialGraph.API.Controllers
         }
 
         /// <summary>
-        /// Çok adımlı ilişkisel zincir sorgusu çalıştırır.
+        /// Cok adimli iliskisel zincir sorgusu calistirir.
         /// GET /api/traversal/chain?startNodeId=...&relations=FRIEND&relations=ATTENDS
         /// </summary>
         [HttpGet("chain")]
         public ActionResult<ChainResponseDto> RunChainQuery([FromQuery] string startNodeId, [FromQuery] string[] relations)
         {
             if (string.IsNullOrWhiteSpace(startNodeId) || relations == null || relations.Length == 0)
-                return BadRequest("startNodeId ve en az bir ilişki türü gereklidir.");
+                return BadRequest("startNodeId ve en az bir iliski turu gereklidir.");
 
             var chainResult = _queryEngine.ExecuteChainQuery(startNodeId, relations);
             
@@ -118,7 +118,7 @@ namespace SocialGraph.API.Controllers
         }
 
         /// <summary>
-        /// Belirli bir kullanıcı için arkadaş önerileri sunar (Ortak arkadaş sayısına göre).
+        /// Belirli bir kullanici icin arkadas onerileri sunar (Ortak arkadas sayisina gore).
         /// GET /api/traversal/recommendations?userId=...
         /// </summary>
         [HttpGet("recommendations")]

@@ -26,7 +26,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [nodeTypes, setNodeTypes] = useState<Record<string, string>>({});
 
-  // ID → İsim çözümleme
+  // ID -> Isim cozumleme
   React.useEffect(() => {
     const resolveNames = async () => {
       const idsToResolve = [
@@ -56,13 +56,13 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
     resolveNames();
   }, [startNodeId, targetNodeId, reportData?.path, recsReportData]);
 
-  // BFS/DFS butonları: Sadece algoritma seç (Toggle)
+  // BFS/DFS butonlari: Sadece algoritma sec (Toggle)
   const handleSelectAlgo = (algo: 'BFS' | 'DFS') => {
     setSelectedAlgo(prev => prev === algo ? null : algo);
     setShowDirectionWarning(false);
   };
 
-  // Shortest Path: Seçili algoritmayı kullanarak sorgu at
+  // Shortest Path: Secili algoritmayi kullanarak sorgu at
   const handleShortestPath = async () => {
     if (!startNodeId || !targetNodeId || !selectedAlgo) return;
     if (onQueryStart) onQueryStart();
@@ -102,6 +102,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
       const response: IChainResponse = await traversalService.chain(startNodeId, chainRelations);
       const nodeIds = response.nodes.map((n: INode) => n.id);
       setChainReportData(response);
+      setIsReportOpen(true);
       onResultsFound(nodeIds, 'chain');
     } catch (err) {
       console.error(err);
@@ -133,7 +134,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
 
   return (
     <div className="query-panel" style={{ marginTop: '24px' }}>
-      {/* Tab Seçiciler */}
+      {/* Tab Seciciler */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', overflowX: 'auto' }}>
         <button onClick={() => setActiveTab('traversal')} className={`tab-btn ${activeTab === 'traversal' ? 'active' : ''}`}>
           <GitBranch size={14} /> Traversal
@@ -176,7 +177,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
             {/* Traversal Tab */}
             {activeTab === 'traversal' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {/* Algoritma Seçicileri */}
+                {/* Algoritma Secicileri */}
                 <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', opacity: 0.6, margin: 0 }}>Algorithm:</p>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <button
@@ -193,7 +194,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                   </button>
                 </div>
 
-                {/* Target input — isim veya ID göster */}
+                {/* Target input — isim veya ID goster */}
                 <input
                   type="text"
                   placeholder="Target Node ID (or right-click a node)..."
@@ -207,7 +208,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                   onClick={handleShortestPath}
                   disabled={loading || !canRunQuery}
                   className="query-btn primary"
-                  title={!canRunQuery ? 'Origin, Target ve Algoritma seçilmeli' : ''}
+                  title={!canRunQuery ? 'Origin, Target ve Algoritma secilmeli' : ''}
                 >
                   <Zap size={14} /> {selectedAlgo ? `Run ${selectedAlgo} Path` : 'Find Path'}
                 </button>
@@ -215,7 +216,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                 {showDirectionWarning && (
                   <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '10px', borderRadius: '8px', marginTop: '8px' }}>
                     <p style={{ fontSize: '0.75rem', color: '#f59e0b', margin: '0 0 8px 0', lineHeight: 1.4 }}>
-                      Sonuç bulunamadı. LIKES ve ATTENDS gibi ilişkiler tek yönlüdür. Hedef ve Başlangıç düğümlerini yer değiştirip tekrar deneyin.
+                      Sonuc bulunamadi. LIKES ve ATTENDS gibi iliskiler tek yonludur. Hedef ve Baslangic dugumlerini yer degistirip tekrar deneyin.
                     </p>
                     {onStartChange && (
                       <button onClick={handleSwap} className="query-btn" style={{ width: '100%', borderColor: '#f59e0b', color: '#f59e0b' }}>
@@ -227,7 +228,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
 
                 {!canRunQuery && startNodeId && !showDirectionWarning && (
                   <p style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', opacity: 0.5, textAlign: 'center', margin: 0 }}>
-                    {!selectedAlgo ? '↑ Bir algoritma seçin' : !targetNodeId ? '↑ Bir hedef düğüm seçin (sağ tık)' : ''}
+                    {!selectedAlgo ? '^ Bir algoritma secin' : !targetNodeId ? '^ Bir hedef dugum secin (sag tik)' : ''}
                   </p>
                 )}
 
@@ -249,13 +250,13 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                       <div className="algo-report-content custom-scrollbar">
                         <p className="report-intro">
                           {reportData.algo === 'BFS' 
-                            ? 'Genişlik Öncelikli Arama (BFS), grafı katman katman (level-by-level) tarayarak en kısa yolu garantiler.'
-                            : 'Derinlik Öncelikli Arama (DFS), hedefe ulaşana kadar ilk daldan en derine (backtracking) inerek yolu arar.'}
+                            ? 'Genislik Oncelikli Arama (BFS), grafi katman katman (level-by-level) tarayarak en kisa yolu garantiler.'
+                            : 'Derinlik Oncelikli Arama (DFS), hedefe ulasana kadar ilk daldan en derine (backtracking) inerek yolu arar.'}
                         </p>
                         <div className="report-steps">
                           <div className="step">
                             <span className="step-dot origin"></span>
-                            <span><strong>{nodeLabels[reportData.path[0]] || reportData.path[0]}</strong> düğümünden arama başlatıldı.</span>
+                            <span><strong>{nodeLabels[reportData.path[0]] || reportData.path[0]}</strong> dugumunden arama baslatildi.</span>
                           </div>
                           
                           {reportData.path.length > 2 && (
@@ -263,8 +264,8 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                               <span className="step-dot"></span>
                               <span>
                                 {reportData.algo === 'BFS'
-                                  ? 'Ara katmanlardaki komşular genişleterek taranıyor...'
-                                  : 'Hedefe doğru derinlemesine (deep-dive) iniliyor...'}
+                                  ? 'Ara katmanlardaki komsular genisleterek taraniyor...'
+                                  : 'Hedefe dogru derinlemesine (deep-dive) iniliyor...'}
                               </span>
                             </div>
                           )}
@@ -272,17 +273,17 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                           {reportData.path.slice(1, -1).map((stepId) => (
                             <div className="step" key={stepId}>
                               <span className="step-dot"></span>
-                              <span><strong>{nodeLabels[stepId] || stepId}</strong> düğümüne ulaşıldı.</span>
+                              <span><strong>{nodeLabels[stepId] || stepId}</strong> dugumune ulasildi.</span>
                             </div>
                           ))}
 
                           <div className="step">
                             <span className="step-dot target"></span>
-                            <span>Hedef düğüm <strong>{nodeLabels[reportData.path[reportData.path.length - 1]] || reportData.path[reportData.path.length - 1]}</strong> bulundu!</span>
+                            <span>Hedef dugum <strong>{nodeLabels[reportData.path[reportData.path.length - 1]] || reportData.path[reportData.path.length - 1]}</strong> bulundu!</span>
                           </div>
                         </div>
                         <p className="report-outro">
-                          Yol başarıyla oluşturuldu. Toplam Derinlik: {reportData.path.length - 1} sekme.
+                          Yol basariyla olusturuldu. Toplam Derinlik: {reportData.path.length - 1} sekme.
                         </p>
                       </div>
                     )}
@@ -299,14 +300,14 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                     <Network size={14} color="#06b6d4" /> Sequential Pipeline
                   </p>
                   <p style={{ fontSize: '0.65rem', opacity: 0.5, lineHeight: 1.4, margin: '0 0 12px 0' }}>
-                    Bu sorgu, seçilen ilişkileri **sırasıyla** takip ederek bir "bağıntı zinciri" oluşturur. Zincir koparsa (eşleşme yoksa) arama durur.
+                    Bu sorgu, secilen iliskileri **sirasiyla** takip ederek bir "baginti zinciri" olusturur. Zincir koparsa (eslesme yoksa) arama durur.
                   </p>
 
                   {/* Active Steps */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 10px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', border: '1px dashed rgba(59, 130, 246, 0.3)' }}>
                       <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#3b82f6' }} />
-                      <span style={{ fontSize: '0.7rem', color: '#3b82f6', fontWeight: 600 }}>Origin: {nodeLabels[startNodeId || ''] || startNodeId || 'Seçilmedi'}</span>
+                      <span style={{ fontSize: '0.7rem', color: '#3b82f6', fontWeight: 600 }}>Origin: {nodeLabels[startNodeId || ''] || startNodeId || 'Secilmedi'}</span>
                     </div>
 
                     {chainRelations.map((r, i) => (
@@ -325,7 +326,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                             border: '1px solid rgba(6, 182, 212, 0.2)',
                             color: '#06b6d4'
                           }}
-                          title="Tıkla ve Kaldır"
+                          title="Tikla ve Kaldir"
                         >
                           <span style={{ fontSize: '0.7rem', fontWeight: 700 }}>STEP {i+1}: {r}</span>
                           <span style={{ fontSize: '0.6rem', opacity: 0.5 }}>✕</span>
@@ -386,21 +387,21 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                     {isReportOpen && (
                       <div className="algo-report-content custom-scrollbar">
                         <p className="report-intro">
-                          Bu rapor, seçtiğiniz ilişkilerin (Sequential Follow) katman katman nasıl işlendiğini gösterir.
+                          Bu rapor, sectiginiz iliskilerin (Sequential Follow) katman katman nasil islendigini gosterir.
                         </p>
                         <div className="report-steps">
                           <div className="step">
                             <span className="step-dot origin" style={{ background: '#3b82f6' }}></span>
-                            <span><strong>{nodeLabels[startNodeId || ''] || startNodeId}</strong> üzerinden zincir başlatıldı.</span>
+                            <span><strong>{nodeLabels[startNodeId || ''] || startNodeId}</strong> uzerinden zincir baslatildi.</span>
                           </div>
                           
                           {chainReportData.steps.map((step, idx) => (
                             <div className="step" key={idx}>
                               <span className="step-dot" style={{ background: '#06b6d4' }}></span>
                               <span>
-                                <strong>{step.relation}</strong> ilişkisi takip edildi: 
+                                <strong>{step.relation}</strong> iliskisi takip edildi: 
                                 <span style={{ color: step.count > 0 ? '#06b6d4' : '#ef4444', fontWeight: 600, marginLeft: '4px' }}>
-                                  {step.count} düğüm bulundu.
+                                  {step.count} dugum bulundu.
                                 </span>
                               </span>
                             </div>
@@ -411,20 +412,20 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                             <div className="step" key={`skipped-${idx}`} style={{ opacity: 0.4 }}>
                               <span className="step-dot" style={{ background: '#666' }}></span>
                               <span>
-                                <strong>{rel}</strong> adımı <span style={{ fontStyle: 'italic' }}>atlandı</span>. 
-                                (Önceki adımda 0 sonuç bulunduğu için zincir koptu.)
+                                <strong>{rel}</strong> adimi <span style={{ fontStyle: 'italic' }}>atlandi</span>. 
+                                (Onceki adimda 0 sonuc bulundugu icin zincir koptu.)
                               </span>
                             </div>
                           ))}
 
                           <div className="step">
                             <span className="step-dot target" style={{ background: '#10b981' }}></span>
-                            <span>İşlem tamamlandı. Toplam <strong>{chainReportData.nodes.length}</strong> bağıntılı düğümden oluşan bir ağ keşfedildi.</span>
+                            <span>Islem tamamlandi. Toplam <strong>{chainReportData.nodes.length}</strong> bagintili dugumden olusan bir ag kesfedildi.</span>
                           </div>
                         </div>
                         {chainReportData.nodes.length === 0 && (
                           <div style={{ marginTop: '8px', padding: '8px', background: 'rgba(239, 68, 68, 0.1)', borderRadius: '6px', fontSize: '0.65rem', color: '#ef4444' }}>
-                            DİKKAT: Zincir herhangi bir adımda koptuğu için sonuç boş döndü. (Sequential Break)
+                            DIKKAT: Zincir herhangi bir adimda koptugu icin sonuc bos dondu. (Sequential Break)
                           </div>
                         )}
                       </div>
@@ -439,7 +440,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {startNodeId && nodeTypes[startNodeId] && nodeTypes[startNodeId] !== 'User' && (
                   <p style={{ fontSize: '0.75rem', color: '#f59e0b', margin: '0 0 8px 0', lineHeight: 1.4 }}>
-                    Arkadaş önerisi sistemi sadece User (Kullanıcı) düğümleri için çalışır. Mevcut origin tipi: {nodeTypes[startNodeId]}
+                    Arkadas onerisi sistemi sadece User (Kullanici) dugumleri icin calisir. Mevcut origin tipi: {nodeTypes[startNodeId]}
                   </p>
                 )}
                 <button 
@@ -467,18 +468,18 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                     {isReportOpen && (
                       <div className="algo-report-content custom-scrollbar">
                         <p className="report-intro">
-                          Triadic Closure algoritması, graf üzerindeki ortak arkadaş bağlarını inceleyerek "<strong>{nodeLabels[startNodeId!] || startNodeId}</strong>" için potansiyel yeni arkadaşlıklar tespit etti.
+                          Triadic Closure algoritmasi, graf uzerindeki ortak arkadas baglarini inceleyerek "<strong>{nodeLabels[startNodeId!] || startNodeId}</strong>" icin potansiyel yeni arkadasliklar tespit etti.
                         </p>
                         <div className="report-steps">
                           {recsReportData.length === 0 && (
-                            <p style={{ margin: 0, opacity: 0.7 }}>Önerilecek ortak bağlantı bulunamadı.</p>
+                            <p style={{ margin: 0, opacity: 0.7 }}>Onerilecek ortak baglanti bulunamadi.</p>
                           )}
                           {recsReportData.map((rec) => (
                             <div className="step" key={rec.node.id}>
                               <span className="step-dot origin" style={{ background: '#10b981', boxShadow: '0 0 5px #10b981' }}></span>
                               <span>
                                 <strong>{nodeLabels[rec.node.id] || rec.node.id}</strong> 
-                                <span style={{ opacity: 0.6 }}> ({rec.mutualFriendsCount} ortak arkadaş)</span>
+                                <span style={{ opacity: 0.6 }}> ({rec.mutualFriendsCount} ortak arkadas)</span>
                               </span>
                             </div>
                           ))}

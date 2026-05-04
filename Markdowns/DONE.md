@@ -158,7 +158,7 @@
 
 ---
 
-## SPRINT 4: DAĞITIM VE FİNALİZASYON [DEVAM EDİYOR]
+## SPRINT 4: DAĞITIM VE FİNALİZASYON [TAMAMLANDI]
 
 ### Sprint 4.4: Muhammed Furkan (Infrastructure) — Docker & Sistem Finalizasyonu [TAMAMLANDI]
 - [x] Tüm mikroservisler (API, AI, UI) için optimize edilmiş multi-stage Dockerfile'lar hazırlandı. **(Furkan)**
@@ -187,6 +187,7 @@
 - [x] **Genişletilebilir Algoritma Raporu (Algorithm Report):** BFS/DFS sonuçları bulunduğunda yan panelde açılan, graf üzerindeki görselleştirmeyi isim çözümlemesi yaparak adım adım anlatan Glassmorphism tasarımlı bir rapor akordeonu entegre edildi. **(Sude)**
 - [x] **Arkadaş Önerisi (Recs) Görselleştirme ve Raporu:** Triadic Closure algoritması için Origin düğümünün tipi (User) denetlenerek güvenli sorgu yapısı kuruldu. Önerilen kişiler graf üzerinde özel "Glow" parlama efekti ile işaretlendi (çizgilerde akış iptal edildi). Yan panelde ortak arkadaş sayılarını detaylandıran yepyeni bir Triadic Closure rapor şablonu eklendi. **(Sude)**
 - [x] **Simulation Bilgi Notu:** Node Details (Sonuç Paneli) kısmında, backend tarafından otomatik üretilen (Sim) etiketli veriler için kullanıcıya bilgi veren açıklayıcı bir badge/not eklendi. **(Sude)**
+
 ### Sprint 4.2: Özcan (Algorithm Master) — Big-O Analiz Tablosu + Algoritma Dokümantasyonu [TAMAMLANDI]
 - [x] Zaman ve uzay karmaşıklığı analiz tablosu tüm Custom veri yapılarını kapsayacak şekilde detaylandırıldı. **(Özcan)**
 - [x] Yük testi sonuçlarıyla teorik sonuçların karşılaştırması belgelendirildi. **(Özcan)**
@@ -199,4 +200,16 @@
 - [x] **Dinamik Zincir Oluşturucu:** Kullanıcıların ilişkileri istediği sırada ekleyip çıkarabileceği interaktif bir "Chain Builder" mekanizması eklendi. **(Sude)**
 - [x] **Gelişmiş Zincir Görselleştirmesi:** Zincir sorgu sonuçları için "Electric Blue" temalı, opak parlamalı ve saydam kenarlı (web-like) yeni bir `highlightMode` tasarlandı. **(Sude)**
 - [x] **Simulation Node List:** Graf üzerindeki tüm sentetik verileri (Sim) listeleyen, scroll edilebilir yüzer bir panel sisteme entegre edildi. **(Sude)**
+- [x] **Sim Dashboard Interactivity:** Sim Node List panelindeki aksiyonlara tıklanarak ilgili düğüme graf üzerinde otomatik odaklanma (onNodeSelect) sağlandı. **(Sude)**
+
+### Sprint 4.1: Batuhan (Core Data Engineer) — UML Diyagramları + B.3 Compliance Audit [TAMAMLANDI]
+- [x] Projenin mimari yapısını gösteren **Class, Component ve Sequence** diyagramları Mermaid formatında oluşturuldu. **(Batuhan)**
+- [x] **B.3 Compliance Audit:** Tüm kod tabanı (API, Data Structures, UI) ve yorum satırları taranarak İngilizce karakter seti dışındaki tüm ifadeler temizlendi. Jüri savunması için 100% karakter seti uyumluluğu sağlandı. **(Batuhan)**
+- [x] **Professional Sanitization:** Kod içerisindeki tüm "saçma" meta-metinler, AI sızıntıları ve teknik standart dışı yorumlar profesyonel İngilizce açıklamalarla değiştirildi. **(Batuhan)**
+- [x] `DataGenerator.cs` içerisindeki mock veri kümesi B.3 standartlarına göre güncellenerek isimlendirme bütünlüğü sağlandı. **(Batuhan)**
+- [x] `PropertyGraph.cs` ve `CustomHashTable.cs` üzerindeki tüm public metotlar için 100% XML dokümantasyon kapsamı sağlandı. **(Batuhan)**
+- [x] Gereksiz `using` direktifleri temizlendi ve kodun okunabilirliği artırıldı. **(Batuhan)**
+- [x] PR açıldı ve `feature/batuhan-core` üzerinden ana branch ile senkronize edildi. **(Batuhan)**
+
+---
 

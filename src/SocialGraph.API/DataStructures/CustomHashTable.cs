@@ -4,7 +4,12 @@ using System.Collections;
 
 namespace SocialGraph.API.DataStructures
 {
-    // Custom Linear Probing Hash Table. (0=Bos, 1=Dolu, 2=Silinmis)
+    /// <summary>
+    /// Sifirdan implemente edilmis Linear Probing Hash Table yapisi.
+    /// (0=Bos, 1=Dolu, 2=Silinmis) durum yonetimi ile cakisma (collision) cozer.
+    /// </summary>
+    /// <typeparam name="TKey">Anahtar tipi</typeparam>
+    /// <typeparam name="TValue">Deger tipi</typeparam>
     public class CustomHashTable<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
         private const int DefaultCapacity = 16;
@@ -16,6 +21,9 @@ namespace SocialGraph.API.DataStructures
         private int _count;
         private int _capacity;
 
+        /// <summary>
+        /// Tablodaki toplam eleman sayisi.
+        /// </summary>
         public int Count => _count;
 
         public CustomHashTable() : this(DefaultCapacity) { }
@@ -33,6 +41,10 @@ namespace SocialGraph.API.DataStructures
             return (Math.Abs(key.GetHashCode()) % _capacity);
         }
 
+        /// <summary>
+        /// Verilen anahtari ve degeri tabloya ekler. Anahtar varsa degeri gunceller.
+        /// Karmasiklik: O(1) amortized
+        /// </summary>
         public void Put(TKey key, TValue value)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
@@ -70,6 +82,10 @@ namespace SocialGraph.API.DataStructures
             }
         }
 
+        /// <summary>
+        /// Verilen anahtara karsilik gelen degeri dondurur.
+        /// Anahtar bulunamazsa KeyNotFoundException firlatir.
+        /// </summary>
         public TValue Get(TKey key)
         {
             if (TryGetValue(key, out TValue val))
@@ -79,6 +95,9 @@ namespace SocialGraph.API.DataStructures
             throw new KeyNotFoundException($"Key '{key}' not found in custom hash table.");
         }
 
+        /// <summary>
+        /// Verilen anahtari guvenli bir sekilde dondurmeye calisir.
+        /// </summary>
         public bool TryGetValue(TKey key, out TValue value)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
@@ -104,11 +123,17 @@ namespace SocialGraph.API.DataStructures
             return false;
         }
 
+        /// <summary>
+        /// Anahtarin tabloda olup olmadigini kontrol eder.
+        /// </summary>
         public bool ContainsKey(TKey key)
         {
             return TryGetValue(key, out _);
         }
 
+        /// <summary>
+        /// Verilen anahtari tablodan siler.
+        /// </summary>
         public bool Remove(TKey key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
@@ -154,6 +179,9 @@ namespace SocialGraph.API.DataStructures
             }
         }
 
+        /// <summary>
+        /// Tablodaki tum gecerli anahtarlari dondurur.
+        /// </summary>
         public IEnumerable<TKey> Keys()
         {
             for (int i = 0; i < _capacity; i++)
@@ -181,7 +209,9 @@ namespace SocialGraph.API.DataStructures
             return GetEnumerator();
         }
 
-        // Test amaclidir
+        /// <summary>
+        /// Mevcut tablo kapasitesini dondurur (Test amaclidir).
+        /// </summary>
         public int GetCapacity() => _capacity;
     }
 }

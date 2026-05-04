@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { Network, type Node as VisNode, type Edge as VisEdge, type Options } from 'vis-network';
 import { DataSet } from 'vis-data';
 import { nodeService } from '../services/nodeService';
-import type { IEdge } from '../types/graph';
 
 interface GraphCanvasProps {
   selectedNodeId: string | null;
@@ -10,6 +9,7 @@ interface GraphCanvasProps {
   onNodeSelect: (id: string) => void;
   onNodeRightClick?: (id: string) => void;
   highlightNodeIds?: string[];
+  highlightEdgeIds?: string[];
   highlightMode?: 'path' | 'recs' | 'chain';
 }
 
@@ -19,6 +19,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   onNodeSelect,
   onNodeRightClick,
   highlightNodeIds = [],
+  highlightEdgeIds = [],
   highlightMode = 'path'
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -28,21 +29,21 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   const isFirstFitDoneRef = useRef(false);
   const physicsSlowedRef = useRef(false);
 
-  // dataVersion: initData her çalıştığında artar → highlighting effect'i tetikler
+  // dataVersion: initData her calistiginda artar -> highlighting effect'i tetikler
   const [dataVersion, setDataVersion] = useState(0);
 
-  // selectedNodeId'yi ref'te tut — closure sorunu
+  // selectedNodeId'yi ref'te tut - closure sorunu
   const selectedNodeIdRef = useRef<string | null>(null);
   useEffect(() => { selectedNodeIdRef.current = selectedNodeId; }, [selectedNodeId]);
 
-  // highlightNodeIds'yi ref'te tut — afterDrawing animasyonu için
+  // highlightNodeIds'yi ref'te tut - afterDrawing animasyonu icin
   const highlightNodeIdsRef = useRef<string[]>([]);
   useEffect(() => { highlightNodeIdsRef.current = highlightNodeIds; }, [highlightNodeIds]);
 
   const highlightModeRef = useRef<'path' | 'recs' | 'chain'>('path');
   useEffect(() => { highlightModeRef.current = highlightMode; }, [highlightMode]);
 
-  // Kullanıcının kendi tıkladığı/sürüklediği düğümlere tekrar focus atmayı önlemek için
+  // Kullanicinin kendi tikladigi/surukledigi dugumlere tekrar focus atmayi onlemek icin
   const lastInteractedNodeIdRef = useRef<string | null>(null);
   const isDraggingRef = useRef(false);
 
@@ -57,7 +58,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         const wasPinned = node?.fixed === true || node?.fixed?.x === true;
         const nowPinned = !wasPinned;
 
-        // O anki koordinatları al ki "zınk" diye orada kalsın
+        // O anki koordinatlari al ki "zink" diye orada kalsin
         const positions = networkRef.current?.getPositions([nodeId]);
         const pos = positions ? positions[nodeId] : null;
 
@@ -68,10 +69,10 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
           fixed: nowPinned ? { x: true, y: true } : false,
           borderWidth: 5,
           color: { ...(node.color || {}), border: nowPinned ? '#a855f7' : '#3b82f6' },
-          title: nowPinned ? '📌 Sabitlendi (Shift ile serbest bırakın)' : undefined
+          title: nowPinned ? 'PIN: Sabitlendi (Shift ile serbest birakin)' : undefined
         });
 
-        // Eğer o an sürükleniyorsa, sürüklemeyi "kırmak" için etkileşimi anlık kapat-aç
+        // Eger o an surukleniyorsa, suruklemeyi "kirmak" icin etkilesimi anlik kapat-ac
         if (isDraggingRef.current && nowPinned) {
           networkRef.current?.setOptions({ interaction: { dragNodes: false } });
           setTimeout(() => {
@@ -84,10 +85,18 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // --- Veri Yükleme ---
+  // --- Veri Yukleme ---
   const initData = useCallback(async () => {
     try {
-      const allNodes = await nodeService.getAllNodes();
+      const [allNodes, allEdges] = await Promise.all([
+        nodeService.getAllNodes(),
+        nodeService.getAllEdges()
+      ]);
+
+      // 1. Silinen Dugumleri Temizle
+      const currentNodeIds = new Set(allNodes.map(n => n.id));
+      const nodesToRemove = nodesDataSetRef.current.getIds().filter(id => !currentNodeIds.has(id as string));
+      if (nodesToRemove.length > 0) nodesDataSetRef.current.remove(nodesToRemove);
 
       const formattedNodes: VisNode[] = allNodes.map(node => {
         const existing = nodesDataSetRef.current.get(node.id) as any;
@@ -98,11 +107,11 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
           shape: getNodeShape(node.type),
           color: {
             background: getNodeColor(node.type),
-            border: existing?.color?.border || '#ffffff', // MEVCUT çerçeveyi koru
+            border: existing?.color?.border || '#ffffff', // MEVCUT cerceveyi koru
             highlight: { background: '#ffffff', border: existing?.color?.border || getNodeColor(node.type) }
           },
           font: { color: '#ffffff', size: existing?.font?.size || 14, face: 'Inter' },
-          borderWidth: existing?.borderWidth || 2, // MEVCUT kalınlığı koru
+          borderWidth: existing?.borderWidth || 2, // MEVCUT kalinligi koru
           shadow: true,
           title: existing?.title,
           fixed: existing?.fixed
@@ -111,20 +120,22 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
 
       nodesDataSetRef.current.update(formattedNodes);
 
-      const edgesList: VisEdge[] = [];
+      // 2. Silinen Kenarlari Temizle
+      const currentEdgeIds = new Set(allEdges.map(e => e.id));
+      const edgesToRemove = edgesDataSetRef.current.getIds().filter(id => !currentEdgeIds.has(id as string));
+      if (edgesToRemove.length > 0) edgesDataSetRef.current.remove(edgesToRemove);
+
       const processedEdges = new Set<string>();
-
-      for (const node of allNodes) {
-        const nodeEdges = await nodeService.getNodeEdges(node.id);
-        nodeEdges.forEach((edge: IEdge) => {
+      const edgesList: VisEdge[] = allEdges
+        .filter(edge => {
           const edgeKey = [edge.sourceId, edge.targetId].sort().join('-');
-          if (edge.relationType === 'FRIEND' && processedEdges.has(edgeKey)) return;
+          if (edge.relationType === 'FRIEND' && processedEdges.has(edgeKey)) return false;
           processedEdges.add(edgeKey);
-
-          // Mevcut edge stilini koru
+          return true;
+        })
+        .map(edge => {
           const existingEdge = edgesDataSetRef.current.get(edge.id) as any;
-
-          edgesList.push({
+          return {
             id: edge.id,
             from: edge.sourceId,
             to: edge.targetId,
@@ -135,9 +146,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
             width: existingEdge?.width || 1,
             shadow: existingEdge?.shadow || false,
             smooth: { enabled: true, type: 'continuous', roundness: 0.5 }
-          } as any);
+          };
         });
-      }
 
       edgesDataSetRef.current.update(edgesList);
 
@@ -149,7 +159,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     }
   }, []);
 
-  // --- Network Oluşturma (Tek Sefer) ---
+  // --- Network Olusturma (Tek Sefer) ---
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -171,13 +181,13 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         maxVelocity: 20,
         solver: 'forceAtlas2Based',
         timestep: 0.25,
-        stabilization: false // Hemen başla, bekleme yok
+        stabilization: false // Hemen basla, bekleme yok
       },
       interaction: {
         hover: true,
         tooltipDelay: 200,
         hideEdgesOnDrag: false,
-        multiselect: false, // Shift+Drag (box selection) iptal ederek pinleme çakışmasını giderir
+        multiselect: false, // Shift+Drag (box selection) iptal ederek pinleme cakismasini giderir
         selectable: true,
         dragNodes: true
       }
@@ -189,13 +199,13 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       options
     );
     
-    // Senkronizasyon sorunlarını (lag) önlemek için ref'i anında güncelleyen yardımcı
+    // Senkronizasyon sorunlarini (lag) onlemek icin ref'i aninda guncelleyen yardimci
     const selectNodeImmediate = (id: string) => {
       selectedNodeIdRef.current = id;
       onNodeSelect(id);
     };
 
-    // Sol tık: Current Node seç
+    // Sol tik: Current Node sec
     networkRef.current.on('click', (params) => {
       if (params.nodes.length > 0) {
         const id = params.nodes[0];
@@ -204,7 +214,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       }
     });
 
-    // Sürükleme başlangıcı (Drag): Sürüklenen düğümü otomatik olarak seç
+    // Surukleme baslangici (Drag): Suruklenen dugumu otomatik olarak sec
     networkRef.current.on('dragStart', (params) => {
       isDraggingRef.current = true;
       if (params.nodes.length > 0) {
@@ -218,7 +228,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       isDraggingRef.current = false;
     });
 
-    // Sağ tık: Target Node seç
+    // Sag tik: Target Node sec
     networkRef.current.on('oncontext', (params) => {
       params.event.preventDefault();
       const nodeId = networkRef.current?.getNodeAt(params.pointer.DOM);
@@ -227,7 +237,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       }
     });
 
-    // Hover Edge: Sadece hover yapılan çizginin label'ını göster
+    // Hover Edge: Sadece hover yapilan cizginin label'ini goster
     networkRef.current.on('hoverEdge', (params) => {
       const edgeId = params.edge;
       const edge = edgesDataSetRef.current.get(edgeId) as any;
@@ -251,13 +261,13 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       const edgeId = params.edge;
       edgesDataSetRef.current.update({
         id: edgeId,
-        label: " " // undefined yerine boşluk karakteri kullanıyoruz
+        label: " " // undefined yerine bosluk karakteri kullaniyoruz
       });
     });
 
-    // --- Animasyonlu Yol (Akış Efekti) ---
+    // --- Animasyonlu Yol (Akis Efekti) ---
     networkRef.current.on('afterDrawing', (ctx) => {
-      // Arkadaş önerisi (recs) veya Zincir (chain) modunda kan akışı (blood flow) animasyonunu iptal et
+      // Arkadas onerisi (recs) veya Zincir (chain) modunda kan akisi (blood flow) animasyonunu iptal et
       if (highlightModeRef.current === 'recs' || highlightModeRef.current === 'chain') return;
 
       const pathIds = highlightNodeIdsRef.current;
@@ -276,32 +286,32 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         const toPos = positions[toId];
         if (!fromPos || !toPos) continue;
 
-        // İki düğüm arasında hareket eden 3 parçacık (ışık hüzmesi)
+        // Iki dugum arasinda hareket eden 3 parcacik (isik huzmesi)
         for (let j = 0; j < 3; j++) {
-          // Parçacıklar arasında mesafe bırak
+          // Parcaciklar arasinda mesafe birak
           let progress = (time * 1.5 - j * 0.15) % 1;
           if (progress < 0) progress += 1;
 
           const x = fromPos.x + (toPos.x - fromPos.x) * progress;
           const y = fromPos.y + (toPos.y - fromPos.y) * progress;
 
-          // Parçacık çizimi
+          // Parcacik cizimi
           ctx.beginPath();
           ctx.arc(x, y, 4, 0, 2 * Math.PI, false);
 
-          // Baştaki parçacık daha parlak, arkadakiler sönük
+          // Bastaki parcacik daha parlak, arkadakiler sonuk
           const opacity = 1 - (j * 0.3);
           ctx.fillStyle = `rgba(16, 185, 129, ${opacity})`;
           ctx.shadowColor = '#34d399';
           ctx.shadowBlur = 10;
           ctx.fill();
           ctx.closePath();
-          ctx.shadowBlur = 0; // diğer çizimleri etkilemesin
+          ctx.shadowBlur = 0; // diger cizimleri etkilemesin
         }
       }
     });
 
-    // --- Akış Nefesi: durduğu an beklemeden yeniden başlat ---
+    // --- Akis Nefesi: durdugu an beklemeden yeniden baslat ---
     networkRef.current.on('stabilized', () => {
       if (!networkRef.current || !physicsSlowedRef.current) return;
       networkRef.current.startSimulation();
@@ -311,7 +321,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     const floatingKeeper = setInterval(() => {
       if (!networkRef.current || isDraggingRef.current) return;
       
-      // İlk fit: veri yüklendikten hemen sonra
+      // Ilk fit: veri yuklendikten hemen sonra
       if (!isFirstFitDoneRef.current && nodesDataSetRef.current.length > 0) {
         networkRef.current.fit({
           animation: { duration: 400, easingFunction: 'easeInOutQuad' }
@@ -319,22 +329,22 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         isFirstFitDoneRef.current = true;
       }
 
-      // Yavaş süzülme moduna geç (1 kere)
+      // Yavas suzulme moduna gec (1 kere)
       if (!physicsSlowedRef.current && isFirstFitDoneRef.current) {
         networkRef.current.setOptions({
           physics: { 
             maxVelocity: 2, 
             timestep: 0.2,
-            minVelocity: 0.001 // Neredeyse hiç durma seviyesi
+            minVelocity: 0.001 // Neredeyse hic durma seviyesi
           }
         });
         physicsSlowedRef.current = true;
       }
     }, 1000);
 
-    // --- Akış Canlılığı (Render Loop) ---
-    // Vis.js stabilized olduğunda (düğümler durduğunda) render durur, bu da akış animasyonunun donmasına neden olur.
-    // Eğer bir path veya vurgu varsa, render'ı manuel tetikleyerek akışı sürekli kılıyoruz.
+    // --- Akis Canliligi (Render Loop) ---
+    // Vis.js stabilized oldugunda (dugumler durdugunda) render durur, bu da akis animasyonunun donmasina neden olur.
+    // Eger bir path veya vurgu varsa, render'i manuel tetikleyerek akisi surekli kiliyoruz.
     let animationFrameId: number;
     const renderLoop = () => {
       if (networkRef.current && highlightNodeIdsRef.current.length > 0) {
@@ -354,18 +364,18 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     };
   }, []);
 
-  // --- Periyodik Veri Güncelleme ---
+  // --- Periyodik Veri Guncelleme ---
   useEffect(() => {
-    const interval = setInterval(initData, 30000);
+    const interval = setInterval(initData, 15000);
     return () => clearInterval(interval);
   }, [initData]);
 
-  // --- Seçim Güncellemesi ---
+  // --- Secim Guncellemesi ---
   useEffect(() => {
     if (networkRef.current && selectedNodeId) {
       networkRef.current.selectNodes([selectedNodeId]);
       
-      // Sadece dışarıdan (örn: arama kutusundan) seçildiyse kamera odaklansın
+      // Sadece disaridan (orn: arama kutusundan) secildiyse kamera odaklansin
       if (!isDraggingRef.current && lastInteractedNodeIdRef.current !== selectedNodeId) {
         networkRef.current.focus(selectedNodeId, {
           animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
@@ -374,7 +384,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     }
   }, [selectedNodeId]);
 
-  // --- Düğüm Renklendirme (HER ZAMAN doğru renkleri uygula) ---
+  // --- Dugum Renklendirme (HER ZAMAN dogru renkleri uygula) ---
   useEffect(() => {
     if (!networkRef.current) return;
 
@@ -407,11 +417,11 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         borderColor = '#a855f7'; bw = 5;
       } else if (isPath) {
         if (highlightMode === 'recs') {
-          // Önerilen düğümler güçlü bir şekilde parlasın (Yeşil)
+          // Onerilen dugumler guclu bir sekilde parlasin (Yesil)
           borderColor = '#10b981'; bw = 5; fontSize = 16;
           shadow = { enabled: true, color: '#10b981', size: 25 };
         } else if (highlightMode === 'chain') {
-          // Zincir/Bağıntı sorgusu: Elektrik mavisi (Siyan) parlasın - Daha opak ve net
+          // Zincir/Baginti sorgusu: Elektrik mavisi (Siyan) parlasin - Daha opak ve net
           borderColor = '#06b6d4'; bw = 5; fontSize = 16;
           shadow = { enabled: true, color: '#06b6d4', size: 30 };
         } else {
@@ -453,7 +463,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
           ...edge,
           color: { color: 'rgba(16, 185, 129, 0.25)', highlight: 'rgba(16, 185, 129, 0.5)' },
           width: 4,
-          smooth: false, // Animasyonun düz çizgi üzerinde doğru çalışması için
+          smooth: false, // Animasyonun duz cizgi uzerinde dogru calismasi icin
           shadow: false
         };
       } else if (isChainEdge) {
@@ -475,6 +485,30 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
 
     edgesDataSetRef.current.update(updatedEdges);
   }, [highlightNodeIds, highlightMode, dataVersion]);
+
+  // --- Edge Highlighting (Direct Selection) ---
+  useEffect(() => {
+    if (!networkRef.current) return;
+
+    const allEdges = edgesDataSetRef.current.get();
+    const updatedEdges = allEdges.map(edge => {
+      const isHighlighted = highlightEdgeIds.includes(edge.id as string);
+
+      if (isHighlighted) {
+        return {
+          ...edge,
+          color: { color: '#f59e0b', highlight: '#f59e0b' },
+          width: 5,
+          shadow: { enabled: true, color: '#f59e0b', size: 15 }
+        };
+      }
+
+      // Default state reset (already handled in the effect above, but we ensure it matches)
+      return edge;
+    });
+
+    edgesDataSetRef.current.update(updatedEdges);
+  }, [highlightEdgeIds]);
 
   return (
     <div

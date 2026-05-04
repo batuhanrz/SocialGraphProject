@@ -6,8 +6,8 @@ using SocialGraph.API.Models;
 namespace SocialGraph.API.Algorithms
 {
     /// <summary>
-    /// Çok adımlı ilişkisel sorgular ve öneri sisteminden sorumlu motor.
-    /// Geliştiren: Özcan (Algorithm Master)
+    /// Cok adimli iliskisel sorgular ve oneri sisteminden sorumlu motor.
+    /// Gelistiren: Ozcan (Algorithm Master)
     /// </summary>
     public class ChainStepResult
     {
@@ -31,19 +31,19 @@ namespace SocialGraph.API.Algorithms
         }
 
         /// <summary>
-        /// Belirli bir düğümden başlayarak verilen ilişki zincirini takip eder.
-        /// Örn: User -> FRIEND -> User -> ATTENDS -> Event -> UPLOADED -> Photo
-        /// Karmaşıklık: O(StepCount * AvgNodesPerStep * AvgEdgesPerNode)
+        /// Belirli bir dugumden baslayarak verilen iliski zincirini takip eder.
+        /// Orn: User -> FRIEND -> User -> ATTENDS -> Event -> UPLOADED -> Photo
+        /// Karmasiklik: O(StepCount * AvgNodesPerStep * AvgEdgesPerNode)
         /// </summary>
-        /// <param name="startNodeId">Başlangıç düğüm ID'si</param>
-        /// <param name="relations">Takip edilecek ilişki türleri (örn: ["FRIEND", "ATTENDS"])</param>
-        /// <returns>Zincirin sonundaki benzersiz düğümler</returns>
+        /// <param name="startNodeId">Baslangic dugum ID'si</param>
+        /// <param name="relations">Takip edilecek iliski turleri (orn: ["FRIEND", "ATTENDS"])</param>
+        /// <returns>Zincirin sonundaki benzersiz dugumler</returns>
         public ChainQueryResult ExecuteChainQuery(string startNodeId, string[] relations)
         {
             if (string.IsNullOrEmpty(startNodeId) || relations == null || relations.Length == 0)
                 return new ChainQueryResult { AllNodes = Array.Empty<Node>(), Steps = Array.Empty<ChainStepResult>() };
 
-            // Örümcek Ağı (Spider Web) görselleştirmesi için tüm yolu takip eden bir küme
+            // Orumcek Agi (Spider Web) gorsellestirmesi icin tum yolu takip eden bir kume
             var allVisitedNodes = new CustomHashTable<string, Node>();
             var currentNodes = new CustomHashTable<string, Node>();
             var steps = new List<ChainStepResult>();
@@ -54,7 +54,7 @@ namespace SocialGraph.API.Algorithms
             currentNodes.Put(startNodeId, startNode);
             allVisitedNodes.Put(startNodeId, startNode);
 
-            // Her bir ilişki adımı için genişleme yap
+            // Her bir iliski adimi icin genisleme yap
             foreach (string relation in relations)
             {
                 var nextNodes = new CustomHashTable<string, Node>();
@@ -75,17 +75,17 @@ namespace SocialGraph.API.Algorithms
                     }
                 }
 
-                // Adım sonucunu kaydet
+                // Adim sonucunu kaydet
                 steps.Add(new ChainStepResult { Relation = relation, Count = nextNodes.Count });
 
-                // Eğer bu adımda hiç sonuç bulunamadıysa, zinciri burada kes ama 
-                // elimizdeki mevcut (bir önceki adımdan kalan) düğümleri koru.
+                // Eger bu adimda hic sonuc bulunamadiysa, zinciri burada kes ama 
+                // elimizdeki mevcut (bir onceki adimdan kalan) dugumleri koru.
                 if (nextNodes.Count == 0) break;
 
                 currentNodes = nextNodes;
             }
 
-            // Sonuç kümesini (tüm zinciri) diziye çevir
+            // Sonuc kumesini (tum zinciri) diziye cevir
             Node[] result = new Node[allVisitedNodes.Count];
             int index = 0;
             foreach (var kvp in allVisitedNodes)
@@ -101,11 +101,11 @@ namespace SocialGraph.API.Algorithms
         }
 
         /// <summary>
-        /// Arkadaşın arkadaşı (Friend-of-a-Friend) mantığıyla öneri sunar.
-        /// Skorlama: Ortak arkadaş sayısı (Mutual Friends).
+        /// Arkadasin arkadasi (Friend-of-a-Friend) mantigiyla oneri sunar.
+        /// Skorlama: Ortak arkadas sayisi (Mutual Friends).
         /// </summary>
-        /// <param name="userId">Öneri yapılacak kullanıcı ID'si</param>
-        /// <returns>Önerilen düğümler ve ortak arkadaş skorları (Node, Score)</returns>
+        /// <param name="userId">Oneri yapilacak kullanici ID'si</param>
+        /// <returns>Onerilen dugumler ve ortak arkadas skorlari (Node, Score)</returns>
         public (Node RecommendedNode, int Score)[] GetRecommendations(string userId)
         {
             if (string.IsNullOrEmpty(userId)) return Array.Empty<(Node, int)>();
@@ -114,7 +114,7 @@ namespace SocialGraph.API.Algorithms
             if (userNode == null || !string.Equals(userNode.Type, "User", StringComparison.OrdinalIgnoreCase))
                 return Array.Empty<(Node, int)>();
 
-            // Mevcut arkadaşları belirle (öneriden çıkarmak için)
+            // Mevcut arkadaslari belirle (oneriden cikarmak icin)
             var currentFriends = new CustomHashTable<string, bool>();
             Edge[] friendEdges = _graph.GetEdgesByType(userId, "FRIEND");
             foreach (Edge edge in friendEdges)
@@ -122,10 +122,10 @@ namespace SocialGraph.API.Algorithms
                 currentFriends.Put(edge.DestinationId, true);
             }
 
-            // Aday önerileri ve ortak arkadaş sayılarını tut (TargetUserId -> Score)
+            // Aday onerileri ve ortak arkadas sayilarini tut (TargetUserId -> Score)
             var candidateScores = new CustomHashTable<string, int>();
 
-            // Arkadaşların arkadaşlarına bak
+            // Arkadaslarin arkadaslarina bak
             foreach (Edge edge in friendEdges)
             {
                 string friendId = edge.DestinationId;
@@ -135,17 +135,17 @@ namespace SocialGraph.API.Algorithms
                 {
                     string fofId = fofEdge.DestinationId;
 
-                    // Kendisi veya zaten arkadaşıysa atla
+                    // Kendisi veya zaten arkadasiysa atla
                     if (fofId == userId || currentFriends.ContainsKey(fofId))
                         continue;
 
-                    // Ortak arkadaş skorunu artır
+                    // Ortak arkadas skorunu artir
                     int currentScore = candidateScores.ContainsKey(fofId) ? candidateScores.Get(fofId) : 0;
                     candidateScores.Put(fofId, currentScore + 1);
                 }
             }
 
-            // Sonuçları topla
+            // Sonuclari topla
             var result = new (Node RecommendedNode, int Score)[candidateScores.Count];
             int index = 0;
             foreach (var kvp in candidateScores)
@@ -157,8 +157,8 @@ namespace SocialGraph.API.Algorithms
                 }
             }
 
-            // Basit bir sıralama (Skora göre azalan) - Manuel Sort (Standard Library yasak ama Array.Sort kullanılabilir mi?)
-            // Not: Array.Sort kullanılabilir ancak daha güvenli olması için Özcan stili basit bir Selection Sort yapalım.
+            // Basit bir siralama (Skora gore azalan) - Manuel Sort (Standard Library yasak ama Array.Sort kullanilabilir mi?)
+            // Not: Array.Sort kullanilabilir ancak daha guvenli olmasi icin Ozcan stili basit bir Selection Sort yapalim.
             for (int i = 0; i < result.Length - 1; i++)
             {
                 for (int j = i + 1; j < result.Length; j++)
