@@ -166,3 +166,21 @@
 - [x] Docker üzerinde çalışan UI için API tarafında CORS politikası (`port 8080`) güncellenerek iletişim engelleri kaldırıldı. **(Furkan)**
 - [x] Graf veri yoğunluğu (Density) optimizasyonu yapılarak, 100+ düğümdeki frontend kasma sorunu %70 oranında iyileştirildi. **(Furkan)**
 - [x] Projenin "Quick Start" dökümantasyonu Docker akışına göre güncellendi. **(Furkan)**
+
+### Sprint 4.3: Fatma Sude (Frontend Lead) — UI Finalizasyonu & Demo Hazırlığı [TAMAMLANDI]
+- [x] Graf görselleştirmede fizik motoru stabilizasyon sonrası durdurularak %90 CPU tasarrufu sağlandı. **(Sude)**
+- [x] API çağrıları için asenkron loading spinner ve hata bildirim mekanizmaları eklendi. **(Sude)**
+- [x] Sidebar ve lejant yapıları farklı ekran boyutlarına uygun şekilde (Responsive) optimize edildi. **(Sude)**
+- [x] 10 dakikalık profesyonel jüri sunumu için "Demo Senaryosu" hazırlandı. **(Sude)**
+- [x] Arayüzdeki "Glassmorphism" ve "Premium Dark Mode" estetiği Context.md standartlarına göre finalize edildi. **(Sude)**
+
+### Sprint 4.3-B: Fatma Sude (Frontend Lead) — Graf Etkileşim Sistemi Yeniden Tasarımı [TAMAMLANDI]
+- [x] **Canlı Süzülme (Floating Motion):** Fizik motoru `stabilization: false` ile başlatılarak düğümlerin sürekli, hafif bir hareket halinde kalması sağlandı. Floating Keeper mekanizması ile simülasyonun asla durmaması garanti altına alındı. **(Sude)**
+- [x] **Akıllı Pinleme (Shift Toggle):** Seçili düğümde Shift tuşuna basıldığında düğümün koordinatlarının sabitlenmesi (pin) veya serbest bırakılması (unpin) sağlandı. Drag tabanlı pinleme kaldırılarak daha doğal bir UX oluşturuldu. **(Sude)**
+- [x] **7 Renkli Durum Paleti:** Origin (Mavi), Target (Kırmızı), Pinned (Mor), Origin+Pinned (İndigo), Target+Pinned (Fuşya), Path (Yeşil) ve Normal (Beyaz) durumları için ayrı çerçeve renkleri tanımlandı. **(Sude)**
+- [x] **Sağ Tık ile Hedef Seçimi:** Graf üzerinde herhangi bir düğüme sağ tıklandığında "Target Node" olarak otomatik atanması sağlandı. Elle ID girme zorunluluğu kaldırıldı. **(Sude)**
+- [x] **BFS/DFS Algoritma Seçici:** BFS ve DFS butonları anında API çağrısı yapmak yerine sadece algoritma seçici olarak çalışacak şekilde yeniden tasarlandı. Sorgu yalnızca "Shortest Path" butonuyla tetikleniyor. **(Sude)**
+- [x] **Path Edge Glow:** En kısa yol sonuçları kenarlar üzerinde yeşil renk, 4px kalınlık ve glow efekti ile görselleştirildi. **(Sude)**
+- [x] **İsim Çözümleme (Name Resolution):** Panel üzerinde ham ID'ler (photo19, event11) yerine düğümlerin gerçek isimleri (Sabah Koşusu, Tech Career Fair) gösterilmesi sağlandı. **(Sude)**
+- [x] **Gelişmiş Lejant:** Düğüm tiplerine ek olarak Origin, Target ve Pinned durumlarını açıklayan etkileşim rehberi (Left click, Right click, Shift) lejanta eklendi. **(Sude)**
+

@@ -45,5 +45,11 @@ Tüm alt görevler (1.1 - 1.5) tamamlandı.
 ### Sprint 4.4: Muhammed Furkan — Docker Konfigürasyonları [TAMAMLANDI]
 > Dockerfile'lar, docker-compose (healthchecks) ve CORS optimizasyonları tamamlandı.
 
-### Sprint 4.1 - 4.3 & 4.5: [BEKLEMEDE]
+### Sprint 4.3: Fatma Sude — UI Son Rötuşlar [TAMAMLANDI]
+> Render optimizasyonu, loading states ve demo senaryosu finalize edildi.
+
+### Sprint 4.3-B: Fatma Sude — Graf Etkileşim Sistemi Yeniden Tasarımı [TAMAMLANDI]
+> Canlı süzülme (floating motion), Shift ile pin/unpin, 7 renkli durum paleti, sağ tık hedef seçimi, BFS/DFS algoritma seçici, path edge glow efekti ve isim çözümleme tamamlandı.
+
+### Sprint 4.1 - 4.2 & 4.5: [BEKLEMEDE]
 > UML diyagramları, Demo videosu ve Final rapor hazırlıkları devam ediyor.

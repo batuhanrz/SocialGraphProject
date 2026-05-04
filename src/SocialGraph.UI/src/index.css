@@ -44,3 +44,23 @@ body {
 #root {
   height: 100vh;
 }
+
+/* Vis Network Tooltip Styling */
+div.vis-tooltip {
+  position: absolute;
+  color: #ffffff;
+  background-color: rgba(20, 20, 25, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transform: translate(-50%, -100%);
+  margin-top: -10px;
+}

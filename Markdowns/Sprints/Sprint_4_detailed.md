@@ -80,10 +80,41 @@
 - UI ekran kaydı ve demo rehearsal.
 
 **Kabul Kriterleri:**
-- [ ] UI responsive çalışıyor (en az 2 farklı ekran boyutunda test).
-- [ ] Loading göstergeleri ve hata mesajları mevcut.
-- [ ] Demo senaryosu yazıldı ve en az 1 kez prova yapıldı.
-- [ ] PR açıldı (`feature/sude-frontend`).
+- [x] UI responsive çalışıyor (en az 2 farklı ekran boyutunda test).
+- [x] Loading göstergeleri ve hata mesajları mevcut.
+- [x] Demo senaryosu yazıldı ve en az 1 kez prova yapıldı.
+- [x] Graf render optimizasyonu (physics stabilization) yapıldı.
+- [x] PR açıldı (`feature/sude-frontend`).
+
+---
+
+### Sprint 4.3-B: Fatma Sude — Graf Etkileşim Sistemi Yeniden Tasarımı
+
+**Görev 1: Sürekli Süzülme (Floating Motion)**
+- Fizik motoru `stabilization: false` ile başlatılarak düğümlerin sürekli doğal bir hareket halinde kalması sağlandı.
+- Floating Keeper mekanizması ile simülasyonun asla durmaması garanti altına alındı.
+
+**Görev 2: Akıllı Pinleme Sistemi (Shift Toggle)**
+- Seçili düğümde Shift tuşuna basıldığında pin/unpin toggle yapılması sağlandı.
+- Drag tabanlı pinleme kaldırılarak daha doğal bir UX oluşturuldu.
+- Pinlenmiş düğümler Mor (#a855f7) çerçeveyle ayırt ediliyor.
+
+**Görev 3: Çoklu Durum Renk Paleti**
+- Origin (Mavi), Target (Kırmızı), Pinned (Mor), kombinasyonlar (İndigo, Fuşya) ve Path (Yeşil) için 7 farklı çerçeve rengi tanımlandı.
+- Sağ tık ile Target Node otomatik seçimi ve kırmızı işaretleme eklendi.
+
+**Görev 4: Sorgu Akışı Optimizasyonu**
+- BFS/DFS butonları algoritmayı seçer, sorgu sadece "Shortest Path" butonuyla gider.
+- Yol üzerindeki kenarlar yeşil glow efekti ile vurgulanıyor.
+- Panel üzerinde ham ID'ler yerine gerçek isimler (Name Resolution) gösteriliyor.
+
+**Kabul Kriterleri:**
+- [x] Düğümler sürekli süzülüyor, asla tamamen durmuyor.
+- [x] Shift ile pin/unpin toggle çalışıyor, görsel geri bildirim anında oluşuyor.
+- [x] Origin, Target ve Pinned durumları farklı renklerle ayrışıyor.
+- [x] BFS/DFS sadece algoritma seçiyor, Shortest Path butonu sorguyu tetikliyor.
+- [x] Yol kenarlarında yeşil glow efekti görünüyor.
+- [x] Panel'de düğüm isimleri (Name/Title) doğru çözümleniyor.
 
 ---
 

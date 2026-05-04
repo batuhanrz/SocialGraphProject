@@ -10,9 +10,9 @@ export const traversalService = {
         return fetchApi<string[]>(`/traversal/dfs?startNodeId=${encodeURIComponent(startNodeId)}`);
     },
 
-    shortestPath: async (startNodeId: string, targetNodeId: string): Promise<string[]> => {
+    shortestPath: async (startNodeId: string, targetNodeId: string, algorithm: string): Promise<string[]> => {
         return fetchApi<string[]>(
-            `/traversal/shortestpath?startNodeId=${encodeURIComponent(startNodeId)}&targetNodeId=${encodeURIComponent(targetNodeId)}`
+            `/traversal/shortestpath?startNodeId=${encodeURIComponent(startNodeId)}&targetNodeId=${encodeURIComponent(targetNodeId)}&algorithm=${encodeURIComponent(algorithm)}`
         );
     },
 
