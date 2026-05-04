@@ -1,5 +1,5 @@
 import { fetchApi } from './apiService';
-import type { INode, IRecommendation } from '../types/graph';
+import type { IRecommendation, IChainResponse } from '../types/graph';
 
 export const traversalService = {
     bfs: async (startNodeId: string): Promise<string[]> => {
@@ -16,9 +16,9 @@ export const traversalService = {
         );
     },
 
-    chain: async (startNodeId: string, relations: string[]): Promise<INode[]> => {
+    chain: async (startNodeId: string, relations: string[]): Promise<IChainResponse> => {
         const queryParams = relations.map(r => `relations=${encodeURIComponent(r)}`).join('&');
-        return fetchApi<INode[]>(`/traversal/chain?startNodeId=${encodeURIComponent(startNodeId)}&${queryParams}`);
+        return fetchApi<IChainResponse>(`/traversal/chain?startNodeId=${encodeURIComponent(startNodeId)}&${queryParams}`);
     },
 
     recommendations: async (userId: string): Promise<IRecommendation[]> => {

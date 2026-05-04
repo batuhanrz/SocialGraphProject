@@ -257,8 +257,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
 
     // --- Animasyonlu Yol (Akış Efekti) ---
     networkRef.current.on('afterDrawing', (ctx) => {
-      // Arkadaş önerisi (recs) modunda kan akışı (blood flow) animasyonunu iptal et
-      if (highlightModeRef.current === 'recs') return;
+      // Arkadaş önerisi (recs) veya Zincir (chain) modunda kan akışı (blood flow) animasyonunu iptal et
+      if (highlightModeRef.current === 'recs' || highlightModeRef.current === 'chain') return;
 
       const pathIds = highlightNodeIdsRef.current;
       if (!pathIds || pathIds.length < 2) return;
@@ -393,12 +393,16 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
 
       if (isOrigin && isPinned) {
         borderColor = '#6366f1'; bw = 6; fontSize = 16;
+        if (highlightMode) shadow = { enabled: true, color: '#3b82f6', size: 25 };
       } else if (isTarget && isPinned) {
         borderColor = '#c026d3'; bw = 6; fontSize = 16;
+        if (highlightMode) shadow = { enabled: true, color: '#ef4444', size: 25 };
       } else if (isOrigin) {
         borderColor = '#3b82f6'; bw = 5; fontSize = 16;
+        if (highlightMode) shadow = { enabled: true, color: '#3b82f6', size: 30 };
       } else if (isTarget) {
         borderColor = '#ef4444'; bw = 5; fontSize = 16;
+        if (highlightMode) shadow = { enabled: true, color: '#ef4444', size: 30 };
       } else if (isPinned) {
         borderColor = '#a855f7'; bw = 5;
       } else if (isPath) {
@@ -455,9 +459,9 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       } else if (isChainEdge) {
         return {
           ...edge,
-          color: { color: 'rgba(6, 182, 212, 0.15)', highlight: 'rgba(6, 182, 212, 0.4)' },
-          width: 2,
-          shadow: { enabled: true, color: 'rgba(6, 182, 212, 0.3)', size: 5 }
+          color: { color: 'rgba(6, 182, 212, 0.25)', highlight: 'rgba(6, 182, 212, 0.5)' },
+          width: 3,
+          shadow: { enabled: true, color: 'rgba(6, 182, 212, 0.4)', size: 10 }
         };
       }
 

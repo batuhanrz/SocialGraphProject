@@ -9,6 +9,18 @@ namespace SocialGraph.API.Algorithms
     /// Çok adımlı ilişkisel sorgular ve öneri sisteminden sorumlu motor.
     /// Geliştiren: Özcan (Algorithm Master)
     /// </summary>
+    public class ChainStepResult
+    {
+        public string Relation { get; set; }
+        public int Count { get; set; }
+    }
+
+    public class ChainQueryResult
+    {
+        public Node[] AllNodes { get; set; }
+        public ChainStepResult[] Steps { get; set; }
+    }
+
     public class RelationalQueryEngine
     {
         private readonly PropertyGraph _graph;
@@ -26,17 +38,21 @@ namespace SocialGraph.API.Algorithms
         /// <param name="startNodeId">Başlangıç düğüm ID'si</param>
         /// <param name="relations">Takip edilecek ilişki türleri (örn: ["FRIEND", "ATTENDS"])</param>
         /// <returns>Zincirin sonundaki benzersiz düğümler</returns>
-        public Node[] ExecuteChainQuery(string startNodeId, string[] relations)
+        public ChainQueryResult ExecuteChainQuery(string startNodeId, string[] relations)
         {
             if (string.IsNullOrEmpty(startNodeId) || relations == null || relations.Length == 0)
-                return Array.Empty<Node>();
+                return new ChainQueryResult { AllNodes = Array.Empty<Node>(), Steps = Array.Empty<ChainStepResult>() };
 
-            // İlk adım: Başlangıç düğümünü sete ekle
+            // Örümcek Ağı (Spider Web) görselleştirmesi için tüm yolu takip eden bir küme
+            var allVisitedNodes = new CustomHashTable<string, Node>();
             var currentNodes = new CustomHashTable<string, Node>();
+            var steps = new List<ChainStepResult>();
+
             Node startNode = _graph.GetNode(startNodeId);
-            if (startNode == null) return Array.Empty<Node>();
+            if (startNode == null) return new ChainQueryResult { AllNodes = Array.Empty<Node>(), Steps = Array.Empty<ChainStepResult>() };
             
             currentNodes.Put(startNodeId, startNode);
+            allVisitedNodes.Put(startNodeId, startNode);
 
             // Her bir ilişki adımı için genişleme yap
             foreach (string relation in relations)
@@ -53,11 +69,14 @@ namespace SocialGraph.API.Algorithms
                         Node targetNode = _graph.GetNode(edge.DestinationId);
                         if (targetNode != null)
                         {
-                            // Tekilleştirme CustomHashTable tarafından otomatik sağlanır
                             nextNodes.Put(targetNode.Id, targetNode);
+                            allVisitedNodes.Put(targetNode.Id, targetNode);
                         }
                     }
                 }
+
+                // Adım sonucunu kaydet
+                steps.Add(new ChainStepResult { Relation = relation, Count = nextNodes.Count });
 
                 // Eğer bu adımda hiç sonuç bulunamadıysa, zinciri burada kes ama 
                 // elimizdeki mevcut (bir önceki adımdan kalan) düğümleri koru.
@@ -66,15 +85,19 @@ namespace SocialGraph.API.Algorithms
                 currentNodes = nextNodes;
             }
 
-            // Sonuç kümesini diziye çevir
-            Node[] result = new Node[currentNodes.Count];
+            // Sonuç kümesini (tüm zinciri) diziye çevir
+            Node[] result = new Node[allVisitedNodes.Count];
             int index = 0;
-            foreach (var kvp in currentNodes)
+            foreach (var kvp in allVisitedNodes)
             {
                 result[index++] = kvp.Value;
             }
 
-            return result;
+            return new ChainQueryResult 
+            { 
+                AllNodes = result, 
+                Steps = steps.ToArray() 
+            };
         }
 
         /// <summary>

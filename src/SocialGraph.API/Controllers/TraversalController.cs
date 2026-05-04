@@ -91,20 +91,30 @@ namespace SocialGraph.API.Controllers
         /// GET /api/traversal/chain?startNodeId=...&relations=FRIEND&relations=ATTENDS
         /// </summary>
         [HttpGet("chain")]
-        public ActionResult<List<NodeDto>> RunChainQuery([FromQuery] string startNodeId, [FromQuery] string[] relations)
+        public ActionResult<ChainResponseDto> RunChainQuery([FromQuery] string startNodeId, [FromQuery] string[] relations)
         {
             if (string.IsNullOrWhiteSpace(startNodeId) || relations == null || relations.Length == 0)
                 return BadRequest("startNodeId ve en az bir ilişki türü gereklidir.");
 
-            var nodes = _queryEngine.ExecuteChainQuery(startNodeId, relations);
-            var result = new List<NodeDto>(nodes.Length);
-
-            foreach (var node in nodes)
+            var chainResult = _queryEngine.ExecuteChainQuery(startNodeId, relations);
+            
+            var response = new ChainResponseDto
             {
-                result.Add(MapToDto(node));
+                Nodes = new List<NodeDto>(),
+                Steps = new List<ChainStepDto>()
+            };
+
+            foreach (var node in chainResult.AllNodes)
+            {
+                response.Nodes.Add(MapToDto(node));
             }
 
-            return Ok(result);
+            foreach (var step in chainResult.Steps)
+            {
+                response.Steps.Add(new ChainStepDto { Relation = step.Relation, Count = step.Count });
+            }
+
+            return Ok(response);
         }
 
         /// <summary>
