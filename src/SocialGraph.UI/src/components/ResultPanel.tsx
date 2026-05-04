@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Info } from 'lucide-react';
 import { nodeService } from '../services/nodeService';
 import type { INode } from '../types/graph';
 
@@ -63,6 +64,25 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ selectedNodeId }) => {
               <h2 style={{ fontSize: '1.4rem', color: 'white', margin: 0 }}>
                 {nodeData.id}
               </h2>
+              
+              {Object.values(nodeData.properties || {}).some(val => typeof val === 'string' && val.includes('(Sim)')) && (
+                <div style={{ 
+                  marginTop: '12px', 
+                  padding: '8px 12px', 
+                  borderRadius: '8px', 
+                  background: 'rgba(59, 130, 246, 0.05)', 
+                  border: '1px solid rgba(59, 130, 246, 0.2)',
+                  fontSize: '0.7rem',
+                  color: '#60a5fa',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  lineHeight: 1.4
+                }}>
+                  <Info size={14} style={{ flexShrink: 0 }} />
+                  <span>Bu veri backend simülasyon motoru tarafından otomatik olarak üretilmiştir.</span>
+                </div>
+              )}
             </div>
             
             <div>

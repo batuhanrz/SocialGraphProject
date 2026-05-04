@@ -183,7 +183,10 @@
 - [x] **Path Edge Glow:** En kısa yol sonuçları kenarlar üzerinde yeşil renk, 4px kalınlık ve glow efekti ile görselleştirildi. **(Sude)**
 - [x] **İsim Çözümleme (Name Resolution):** Panel üzerinde ham ID'ler (photo19, event11) yerine düğümlerin gerçek isimleri (Sabah Koşusu, Tech Career Fair) gösterilmesi sağlandı. **(Sude)**
 - [x] **Gelişmiş Lejant:** Düğüm tiplerine ek olarak Origin, Target ve Pinned durumlarını açıklayan etkileşim rehberi (Left click, Right click, Shift) lejanta eklendi. **(Sude)**
-
+- [x] **Animasyonlu Path Görselleştirmesi (Akış Efekti):** BFS/DFS ile bulunan rotanın kenarları yarı saydam yapılarak `afterDrawing` event'i ile başlangıçtan hedefe doğru akan parlak yeşil ışık parçacıkları eklendi. Yönelim gösterimi jüri sunumu kalitesine getirildi. **(Sude)**
+- [x] **Genişletilebilir Algoritma Raporu (Algorithm Report):** BFS/DFS sonuçları bulunduğunda yan panelde açılan, graf üzerindeki görselleştirmeyi isim çözümlemesi yaparak adım adım anlatan Glassmorphism tasarımlı bir rapor akordeonu entegre edildi. **(Sude)**
+- [x] **Arkadaş Önerisi (Recs) Görselleştirme ve Raporu:** Triadic Closure algoritması için Origin düğümünün tipi (User) denetlenerek güvenli sorgu yapısı kuruldu. Önerilen kişiler graf üzerinde özel "Glow" parlama efekti ile işaretlendi (çizgilerde akış iptal edildi). Yan panelde ortak arkadaş sayılarını detaylandıran yepyeni bir Triadic Closure rapor şablonu eklendi. **(Sude)**
+- [x] **Simulation Bilgi Notu:** Node Details (Sonuç Paneli) kısmında, backend tarafından otomatik üretilen (Sim) etiketli veriler için kullanıcıya bilgi veren açıklayıcı bir badge/not eklendi. **(Sude)**
 ### Sprint 4.2: Özcan (Algorithm Master) — Big-O Analiz Tablosu + Algoritma Dokümantasyonu [TAMAMLANDI]
 - [x] Zaman ve uzay karmaşıklığı analiz tablosu tüm Custom veri yapılarını kapsayacak şekilde detaylandırıldı. **(Özcan)**
 - [x] Yük testi sonuçlarıyla teorik sonuçların karşılaştırması belgelendirildi. **(Özcan)**

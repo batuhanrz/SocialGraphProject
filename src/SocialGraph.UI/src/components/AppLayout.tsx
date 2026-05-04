@@ -3,11 +3,13 @@ import SearchBar from './SearchBar';
 import GraphCanvas from './GraphCanvas';
 import ResultPanel from './ResultPanel';
 import QueryPanel from './QueryPanel';
+import { SimNodeList } from './SimNodeList';
 
 const AppLayout: React.FC = () => {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [targetNodeId, setTargetNodeId] = useState<string>('');
   const [highlightNodeIds, setHighlightNodeIds] = useState<string[]>([]);
+  const [highlightMode, setHighlightMode] = useState<'path' | 'recs' | 'chain'>('path');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,12 +22,18 @@ const AppLayout: React.FC = () => {
   }, []);
 
   const handleNodeRightClick = useCallback((id: string) => {
-    setTargetNodeId(id);
+    setTargetNodeId(prev => prev === id ? "" : id);
   }, []);
 
-  const handleQueryResults = useCallback((nodeIds: string[]) => {
+  const handleQueryStart = useCallback(() => {
+    setHighlightNodeIds([]); // Önceki aramanın / recs glow'larının kalıntılarını hemen temizle
+    setHighlightMode('path'); // Varsayılan moda dön
+  }, []);
+
+  const handleQueryResults = useCallback((nodeIds: string[], mode: 'path' | 'recs' | 'chain' = 'path') => {
     setIsLoading(true);
     setError(null);
+    setHighlightMode(mode);
     
     setTimeout(() => {
       setHighlightNodeIds(nodeIds);
@@ -85,6 +93,7 @@ const AppLayout: React.FC = () => {
             onStartChange={handleNodeSelect}
             onTargetChange={setTargetNodeId}
             onResultsFound={handleQueryResults} 
+            onQueryStart={handleQueryStart}
           />
 
           <ResultPanel selectedNodeId={selectedNodeId} />
@@ -103,7 +112,10 @@ const AppLayout: React.FC = () => {
           onNodeSelect={handleNodeSelect}
           onNodeRightClick={handleNodeRightClick}
           highlightNodeIds={highlightNodeIds}
+          highlightMode={highlightMode}
         />
+
+        <SimNodeList onNodeSelect={handleNodeSelect} />
         
         {/* Floating Legend */}
         <div className="legend-box" style={{
