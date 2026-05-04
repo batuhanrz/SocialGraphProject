@@ -17,5 +17,13 @@ export const nodeService = {
 
     getNodeEdges: async (id: string): Promise<IEdge[]> => {
         return fetchApi<IEdge[]>(`/nodes/${encodeURIComponent(id)}/edges`);
+    },
+
+    getAllEdges: async (): Promise<IEdge[]> => {
+        return fetchApi<IEdge[]>('/edges');
+    },
+
+    getSimulationActions: async (): Promise<any[]> => {
+        return fetchApi<any[]>('/simulation/actions');
     }
 };

@@ -134,7 +134,7 @@ namespace SocialGraph.API
             var path = GraphTraversal.ShortestPath(graph, "A", "E");
             Console.WriteLine(string.Join(", ", path));
 
-            Console.WriteLine("[BASARILI] BFS, DFS ve ShortestPath algoritmaları PropertyGraph uzerinde dogru calisiyor.");
+            Console.WriteLine("[BASARILI] BFS, DFS ve ShortestPath algoritmalari PropertyGraph uzerinde dogru calisiyor.");
         }
     }
 }

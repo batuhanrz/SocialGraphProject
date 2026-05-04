@@ -80,7 +80,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ selectedNodeId }) => {
                   lineHeight: 1.4
                 }}>
                   <Info size={14} style={{ flexShrink: 0 }} />
-                  <span>Bu veri backend simülasyon motoru tarafından otomatik olarak üretilmiştir.</span>
+                  <span>Bu veri backend simulasyon motoru tarafindan otomatik olarak uretilmistir.</span>
                 </div>
               )}
             </div>

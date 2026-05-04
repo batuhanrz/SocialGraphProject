@@ -9,6 +9,7 @@ const AppLayout: React.FC = () => {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [targetNodeId, setTargetNodeId] = useState<string>('');
   const [highlightNodeIds, setHighlightNodeIds] = useState<string[]>([]);
+  const [highlightEdgeIds, setHighlightEdgeIds] = useState<string[]>([]);
   const [highlightMode, setHighlightMode] = useState<'path' | 'recs' | 'chain'>('path');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,20 +27,21 @@ const AppLayout: React.FC = () => {
   }, []);
 
   const handleQueryStart = useCallback(() => {
-    setHighlightNodeIds([]); // Önceki aramanın / recs glow'larının kalıntılarını hemen temizle
-    setHighlightMode('path'); // Varsayılan moda dön
+    setHighlightNodeIds([]); // Onceki aramanin / recs glow'larinin kalintilarini hemen temizle
+    setHighlightEdgeIds([]);
+    setHighlightMode('path'); // Varsayilan moda don
   }, []);
 
   const handleQueryResults = useCallback((nodeIds: string[], mode: 'path' | 'recs' | 'chain' = 'path') => {
     setIsLoading(true);
     setError(null);
     setHighlightMode(mode);
-    
+
     setTimeout(() => {
       setHighlightNodeIds(nodeIds);
       setIsLoading(false);
       if (nodeIds.length === 0) {
-        setError('Sonuç bulunamadı.');
+        setError('Sonuc bulunamadi.');
       } else if (!selectedNodeId) {
         setSelectedNodeId(nodeIds[0]);
       }
@@ -49,7 +51,7 @@ const AppLayout: React.FC = () => {
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100vw', backgroundColor: '#050505', color: 'white', overflow: 'hidden' }}>
       {/* Sidebar */}
-      <aside 
+      <aside
         className="sidebar glass"
         style={{
           width: '360px',
@@ -68,7 +70,7 @@ const AppLayout: React.FC = () => {
             Social<span style={{ color: 'var(--accent-color)' }}>Graph</span>
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '4px' }}>
-            ENGINE V2.0 • Sude Framework
+            ENGINE V2.0
           </p>
         </div>
 
@@ -86,13 +88,13 @@ const AppLayout: React.FC = () => {
           )}
 
           <SearchBar onNodeSelect={handleNodeSelect} />
-          
-          <QueryPanel 
-            startNodeId={selectedNodeId} 
+
+          <QueryPanel
+            startNodeId={selectedNodeId}
             targetNodeId={targetNodeId}
             onStartChange={handleNodeSelect}
             onTargetChange={setTargetNodeId}
-            onResultsFound={handleQueryResults} 
+            onResultsFound={handleQueryResults}
             onQueryStart={handleQueryStart}
           />
 
@@ -100,23 +102,27 @@ const AppLayout: React.FC = () => {
         </div>
 
         <footer style={{ marginTop: '24px', fontSize: '0.7rem', color: 'var(--text-secondary)', opacity: 0.4 }}>
-          &copy; 2026 SocialGraph Project • Developed by Sude (Frontend Lead)
+          &copy; 2026 SocialGraph Project
         </footer>
       </aside>
 
       {/* Main Content Area */}
       <main style={{ flex: 1, position: 'relative', display: 'flex' }}>
-        <GraphCanvas 
-          selectedNodeId={selectedNodeId} 
+        <GraphCanvas
+          selectedNodeId={selectedNodeId}
           targetNodeId={targetNodeId}
           onNodeSelect={handleNodeSelect}
           onNodeRightClick={handleNodeRightClick}
           highlightNodeIds={highlightNodeIds}
+          highlightEdgeIds={highlightEdgeIds}
           highlightMode={highlightMode}
         />
 
-        <SimNodeList onNodeSelect={handleNodeSelect} />
-        
+        <SimNodeList 
+          onNodeSelect={handleNodeSelect} 
+          onEdgeSelect={(id) => setHighlightEdgeIds([id])}
+        />
+
         {/* Floating Legend */}
         <div className="legend-box" style={{
           position: 'absolute',

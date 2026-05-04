@@ -3,7 +3,7 @@ using System;
 namespace SocialGraph.API.DataStructures
 {
     /// <summary>
-    /// Dairesel dizi (circular array) tabanlı, thread-safe kuyruk yapısı.
+    /// Dairesel dizi (circular array) tabanli, thread-safe kuyruk yapisi.
     /// </summary>
     /// <typeparam name="T">Type of elements in the queue.</typeparam>
     public class CustomQueue<T>
@@ -29,8 +29,8 @@ namespace SocialGraph.API.DataStructures
         }
 
         /// <summary>
-        /// Kuyruktaki eleman sayısı.
-        /// Karmaşıklık: O(1)
+        /// Kuyruktaki eleman sayisi.
+        /// Karmasiklik: O(1)
         /// </summary>
         public int Count
         {
@@ -44,8 +44,8 @@ namespace SocialGraph.API.DataStructures
         }
 
         /// <summary>
-        /// Kuyruğun boş olup olmadığını döndürür.
-        /// Karmaşıklık: O(1)
+        /// Kuyrugun bos olup olmadigini dondurur.
+        /// Karmasiklik: O(1)
         /// </summary>
         public bool IsEmpty
         {
@@ -59,8 +59,8 @@ namespace SocialGraph.API.DataStructures
         }
 
         /// <summary>
-        /// Kuyruğun sonuna eleman ekler. Kapasite dolarsa boyutu 2 katına çıkarır.
-        /// Karmaşıklık: O(1) amortized
+        /// Kuyrugun sonuna eleman ekler. Kapasite dolarsa boyutu 2 katina cikarir.
+        /// Karmasiklik: O(1) amortized
         /// </summary>
         public void Enqueue(T item)
         {
@@ -78,8 +78,8 @@ namespace SocialGraph.API.DataStructures
         }
 
         /// <summary>
-        /// Kuyruğun başındaki elemanı çıkarır ve döndürür.
-        /// Karmaşıklık: O(1)
+        /// Kuyrugun basindaki elemani cikarir ve dondurur.
+        /// Karmasiklik: O(1)
         /// </summary>
         public T Dequeue()
         {
@@ -99,8 +99,8 @@ namespace SocialGraph.API.DataStructures
         }
 
         /// <summary>
-        /// Kuyruğun başındaki elemanı silmeden döndürür.
-        /// Karmaşıklık: O(1)
+        /// Kuyrugun basindaki elemani silmeden dondurur.
+        /// Karmasiklik: O(1)
         /// </summary>
         public T Peek()
         {

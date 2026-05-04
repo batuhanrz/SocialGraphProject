@@ -40,7 +40,7 @@ Tüm alt görevler (1.1 - 1.5) tamamlandı.
 
 ---
 
-## SPRINT 4: DAĞITIM VE FİNALİZASYON [DEVAM EDİYOR]
+## SPRINT 4: DAĞITIM VE FİNALİZASYON [TAMAMLANDI]
 
 ### Sprint 4.4: Muhammed Furkan — Docker Konfigürasyonları [TAMAMLANDI]
 > Dockerfile'lar, docker-compose (healthchecks) ve CORS optimizasyonları tamamlandı.
@@ -49,7 +49,9 @@ Tüm alt görevler (1.1 - 1.5) tamamlandı.
 > Big-O karmaşıklık analizi detaylandırıldı ve algoritmaların (BFS/DFS vb.) çalışma mantıkları pseudocode ile belgelendirildi. Zincir sorgusu (Robust Chain Query) partial result desteğiyle güçlendirildi.
 
 ### Sprint 4.3: Fatma Sude — UI Finalizasyonu & Pipeline UI [TAMAMLANDI]
-> Render optimizasyonu, loading states ve demo senaryosu finalize edildi. Canlı süzülme, akıllı pinleme ve yepyeni bir "Sequential Chain Pipeline" arayüzü sisteme kazandırıldı.
+> Render optimizasyonu, loading states ve demo senaryosu finalize edildi. Canlı süzülme, akıllı pinleme ve yepyeni bir "Sequential Chain Pipeline" arayüzü sisteme kazandırıldı. Sim dashboard etkileşimleri tamamlandı.
 
-### Sprint 4.1 & 4.5: [BEKLEMEDE]
-> UML diyagramları, Demo videosu ve Final rapor hazırlıkları devam ediyor.
+### Sprint 4.1: Batuhan — UML Diyagramları + B.3 Compliance Audit [TAMAMLANDI]
+> UML diyagramları (Class, Component, Sequence) oluşturuldu. B.3 isimlendirme şartı ve kod tabanı karakter seti temizliği (Professional Sanitization) tüm sistemde sağlandı. Dokümantasyonlar finalize edildi.
+
+

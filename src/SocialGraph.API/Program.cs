@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // --- Servis Yapilandirmalari ---
 
-// Controller desteği
+// Controller destegi
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

@@ -81,7 +81,7 @@ namespace SocialGraph.Tests
             Assert.False(cts.Token.IsCancellationRequested, "Test timed out due to possible deadlock.");
             
             double avgReadTime = readerResults.Average();
-            _output.WriteLine($"Eşzamanlı Okuma Başarılı. Ortalama Okuma Süresi: {avgReadTime:F2} ms");
+            _output.WriteLine($"Eszamanli Okuma Basarili. Ortalama Okuma Suresi: {avgReadTime:F2} ms");
             
             Assert.True(graph.NodeCount > 0);
             Assert.True(graph.EdgeCount > 0);
