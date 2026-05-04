@@ -101,16 +101,14 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
             id: edge.id,
             from: edge.sourceId,
             to: edge.targetId,
-            title: edge.relationType,
-            label: edge.relationType,
-            font: { size: 10, align: 'top', color: 'rgba(255,255,255,0.5)', background: '#050505' },
+            relationType: edge.relationType,
             arrows: edge.isDirected ? { to: { enabled: true, scaleFactor: 0.5 } } : undefined,
             dashes: getEdgeDashes(edge.relationType),
             color: existingEdge?.color || { color: 'rgba(255,255,255,0.15)', highlight: '#3b82f6' },
             width: existingEdge?.width || 1,
             shadow: existingEdge?.shadow || false,
             smooth: { enabled: true, type: 'continuous', roundness: 0.5 }
-          });
+          } as any);
         });
       }
 
@@ -175,6 +173,34 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       if (nodeId && onNodeRightClick) {
         onNodeRightClick(nodeId as string);
       }
+    });
+
+    // Hover Edge: Sadece hover yapılan çizginin label'ını göster
+    networkRef.current.on('hoverEdge', (params) => {
+      const edgeId = params.edge;
+      const edge = edgesDataSetRef.current.get(edgeId) as any;
+      if (edge && edge.relationType) {
+        edgesDataSetRef.current.update({
+          id: edgeId,
+          label: edge.relationType,
+          font: { 
+            size: 10, 
+            align: 'top', 
+            color: 'rgba(255,255,255,0.8)', 
+            background: 'rgba(10,10,10,0.8)',
+            strokeWidth: 0, // Bolding/stroke efektini engeller
+            face: 'Inter'
+          }
+        });
+      }
+    });
+
+    networkRef.current.on('blurEdge', (params) => {
+      const edgeId = params.edge;
+      edgesDataSetRef.current.update({
+        id: edgeId,
+        label: " " // undefined yerine boşluk karakteri kullanıyoruz
+      });
     });
 
     // --- Akış Nefesi: durduktan hemen sonra sessizce yeniden başlat ---

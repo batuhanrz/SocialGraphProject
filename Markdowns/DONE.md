@@ -184,3 +184,8 @@
 - [x] **İsim Çözümleme (Name Resolution):** Panel üzerinde ham ID'ler (photo19, event11) yerine düğümlerin gerçek isimleri (Sabah Koşusu, Tech Career Fair) gösterilmesi sağlandı. **(Sude)**
 - [x] **Gelişmiş Lejant:** Düğüm tiplerine ek olarak Origin, Target ve Pinned durumlarını açıklayan etkileşim rehberi (Left click, Right click, Shift) lejanta eklendi. **(Sude)**
 
+### Sprint 4.2: Özcan (Algorithm Master) — Big-O Analiz Tablosu + Algoritma Dokümantasyonu [TAMAMLANDI]
+- [x] Zaman ve uzay karmaşıklığı analiz tablosu tüm Custom veri yapılarını kapsayacak şekilde detaylandırıldı. **(Özcan)**
+- [x] Yük testi sonuçlarıyla teorik sonuçların karşılaştırması belgelendirildi. **(Özcan)**
+- [x] Temel algoritmaların (BFS, DFS, ShortestPath) Pseudocode karşılıkları ve çalışma mantıkları dokümante edildi. **(Özcan)**
+- [x] Standart kütüphane yerine Custom Data Structures kullanım gerekçeleri jüri sunumu standartlarında açıklandı. **(Özcan)**
