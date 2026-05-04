@@ -563,5 +563,24 @@ namespace SocialGraph.API.DataStructures
 
             return false;
         }
+
+        /// <summary>
+        /// Graftaki tum dugum ve kenarlari temizler.
+        /// Benchmark oncesi sistemi sifirlamak icin kullanilir.
+        /// </summary>
+        public void Reset()
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                _nodes.Clear();
+                _adjacency.Clear();
+                _edgeCount = 0;
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
     }
 }

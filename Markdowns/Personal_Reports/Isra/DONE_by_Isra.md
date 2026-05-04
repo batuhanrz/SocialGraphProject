@@ -45,4 +45,22 @@ Bu döküman, projenin "Testing & Analysis Specialist" rolünü üstlenen Isra t
 | 4 | Performans Doğrulama: 5000 düğümlü bir zincir graf üzerinde BFS ve Trie aramalarının 10ms altında kaldığı ölçüldü. | 29.04.2026 |
 | 5 | Final Dökümantasyon: Ara Rapor (Interim Report) ve DONE dökümanları projenin son haline göre revize edildi. | 29.04.2026 |
 
-*(Diğer sprintler geldikçe eklenecektir...)*
+
+---
+
+## Sprint 4 Katkıları (Performans Audit ve B.3 Compliance) [TAMAMLANDI]
+**Rol Hedefi:** Sistemin ölçeklenebilirliğini kanıtlayan otomatik benchmark sistemini kurmak ve final sanitizasyonu tamamlamak.
+
+### Yapılan İşlemler (Sprint 4.5)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | **System Performance Audit:** 100-5000 düğüm arasında BFS, DFS ve Trie hızını otomatik ölçen sistem implemente edildi. | 04.05.2026 |
+| 2 | **Benchmark UI:** Glassmorphism tasarımlı, canlı throughput gösteren ve rapor üreten modal panel geliştirildi. | 04.05.2026 |
+| 3 | **Backend Reset Logic:** API seviyesinde Reset endpoint'i eklenerek benchmarkların doğruluğu garanti altına alındı. | 04.05.2026 |
+| 4 | **B.3 Final Audit:** Projenin tamamında Türkçe karakter temizliği ve profesyonel sanitizasyon (100% ASCII) yapıldı. | 04.05.2026 |
+| 5 | **AI Prompt Doc:** Sentetik veri üretiminde kullanılan prompt stratejisi ve AI kullanım gerekçeleri belgelendi. | 04.05.2026 |
+| 6 | **Final Production Build:** Dockerize edilmiş ortamda tüm sistemin kararlılığı valide edildi. | 04.05.2026 |
+
+---
+**Isra**
+*Testing, Analysis & Optimization Specialist*

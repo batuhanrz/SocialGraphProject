@@ -213,5 +213,16 @@ namespace SocialGraph.API.DataStructures
         /// Mevcut tablo kapasitesini dondurur (Test amaclidir).
         /// </summary>
         public int GetCapacity() => _capacity;
+
+        /// <summary>
+        /// Tablodaki tum elemanlari temizler.
+        /// </summary>
+        public void Clear()
+        {
+            _keys = new TKey[_capacity];
+            _values = new TValue[_capacity];
+            _states = new byte[_capacity];
+            _count = 0;
+        }
     }
 }

@@ -346,6 +346,14 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     // Vis.js stabilized oldugunda (dugumler durdugunda) render durur, bu da akis animasyonunun donmasina neden olur.
     // Eger bir path veya vurgu varsa, render'i manuel tetikleyerek akisi surekli kiliyoruz.
     let animationFrameId: number;
+    const handleFitRequest = () => {
+      if (networkRef.current) {
+        networkRef.current.fit({ animation: { duration: 1000, easingFunction: 'easeInOutQuad' } });
+      }
+    };
+
+    window.addEventListener('fit-graph', handleFitRequest);
+
     const renderLoop = () => {
       if (networkRef.current && highlightNodeIdsRef.current.length > 0) {
         networkRef.current.redraw();

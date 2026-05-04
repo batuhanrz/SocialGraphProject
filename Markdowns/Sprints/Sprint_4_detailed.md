@@ -179,11 +179,11 @@ services:
 - Docker ile temiz bir ortamda son uçtan uca test.
 
 **Kabul Kriterleri:**
-- [ ] AI prompt dökümü tamamlandı ve rapora eklendi.
-- [ ] 4 farklı graf boyutunda benchmark tablosu hazırlandı.
-- [ ] B.3 isimlendirme kontrolü tüm kodda yapıldı.
-- [ ] Temiz ortamda `docker-compose up` ile sistem çalıştı.
-- [ ] PR açıldı (`feature/isra-optimization`).
+- [x] AI prompt dökümü tamamlandı ve rapora eklendi.
+- [x] 4 farklı graf boyutunda (100-5000) otomatik benchmark sistemi (System Audit) kuruldu.
+- [x] B.3 isimlendirme kontrolü tüm kodda yapıldı ve ASCII uyumluluğu sağlandı.
+- [x] Temiz ortamda `docker-compose up` ile sistem çalıştırılarak tüm benchmarklar valide edildi.
+- [x] PR açıldı (`feature/isra-optimization`).
 
 ---
 
