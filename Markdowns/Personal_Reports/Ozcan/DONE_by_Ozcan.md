@@ -51,3 +51,6 @@
 | 2 | Yük testi (load test) sonuçları ile Big-O teorik sınırları karşılaştırılarak analiz edildi. | 04.05.2026 |
 | 3 | Code Defense için `Algorithm_Documentation.md` hazırlandı; BFS, DFS ve ShortestPath pseudocode'ları belgelendi. | 04.05.2026 |
 | 4 | Arayüzden gelen algoritma seçimini (BFS/DFS) işleyebilmesi için `TraversalController.cs` güncellendi ve `GraphTraversal.cs`'e recursive `DFS_Path` metodu eklendi. | 04.05.2026 |
+| 5 | **Robust Chain Query:** Zincir sorgusu sırasında herhangi bir adımda veri kesilirse (eşleşme yoksa), algoritmanın boş dönmek yerine ulaşılan son başarılı katmandaki düğümleri döndürmesi sağlandı (Partial Result Support). | 04.05.2026 |
+
+*(Tüm backend algoritmaları ve veri yapıları jüri savunması için hazır ve optimize durumdadır.)*
