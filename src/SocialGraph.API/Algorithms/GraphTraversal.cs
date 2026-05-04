@@ -199,5 +199,86 @@ namespace SocialGraph.API.Algorithms
 
             return path;
         }
+        /// <summary>
+        /// İki düğüm arasındaki herhangi bir yolu (DFS algoritmasıyla) bulan metot.
+        /// Filtreleme kullanılarak belirli ilişkiler (örn. sadece LIKES) üzerinden yol aranabilir.
+        /// Karmaşıklık: O(V + E)
+        /// Uzay Karmaşıklığı: O(V)
+        /// </summary>
+        public static string[] DFS_Path(
+            PropertyGraph graph, 
+            string startNodeId, 
+            string targetNodeId, 
+            Func<Edge, bool> edgeFilter = null)
+        {
+            if (graph == null || string.IsNullOrEmpty(startNodeId) || string.IsNullOrEmpty(targetNodeId))
+                return Array.Empty<string>();
+
+            if (graph.GetNode(startNodeId) == null || graph.GetNode(targetNodeId) == null)
+                return Array.Empty<string>();
+
+            if (startNodeId == targetNodeId)
+                return new string[] { startNodeId };
+
+            var visited = new CustomHashTable<string, bool>();
+            var parents = new CustomHashTable<string, string>();
+            
+            bool found = DFS_Path_Recursive(graph, startNodeId, targetNodeId, visited, parents, edgeFilter);
+
+            if (!found) return Array.Empty<string>();
+
+            // Hedef bulundu, geriye doğru (backtrack) yolu inşa et
+            int pathLength = 1;
+            string curr = targetNodeId;
+            while (parents.ContainsKey(curr))
+            {
+                pathLength++;
+                curr = parents.Get(curr);
+            }
+
+            string[] path = new string[pathLength];
+            curr = targetNodeId;
+            for (int i = pathLength - 1; i >= 0; i--)
+            {
+                path[i] = curr;
+                if (i > 0) curr = parents.Get(curr);
+            }
+
+            return path;
+        }
+
+        private static bool DFS_Path_Recursive(
+            PropertyGraph graph, 
+            string currentId, 
+            string targetNodeId,
+            CustomHashTable<string, bool> visited, 
+            CustomHashTable<string, string> parents,
+            Func<Edge, bool> edgeFilter)
+        {
+            visited.Put(currentId, true);
+
+            if (currentId == targetNodeId)
+                return true;
+
+            Edge[] edges = graph.GetEdges(currentId);
+            for (int i = 0; i < edges.Length; i++)
+            {
+                Edge edge = edges[i];
+
+                if (edgeFilter != null && !edgeFilter(edge)) continue;
+
+                string neighborId = edge.DestinationId;
+                if (!visited.ContainsKey(neighborId))
+                {
+                    parents.Put(neighborId, currentId);
+                    if (DFS_Path_Recursive(graph, neighborId, targetNodeId, visited, parents, edgeFilter))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

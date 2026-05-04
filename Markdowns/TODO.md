@@ -51,5 +51,8 @@ Tüm alt görevler (1.1 - 1.5) tamamlandı.
 ### Sprint 4.3-B: Fatma Sude — Graf Etkileşim Sistemi Yeniden Tasarımı [TAMAMLANDI]
 > Canlı süzülme (floating motion), Shift ile pin/unpin, 7 renkli durum paleti, sağ tık hedef seçimi, BFS/DFS algoritma seçici, path edge glow efekti ve isim çözümleme tamamlandı.
 
-### Sprint 4.1 - 4.2 & 4.5: [BEKLEMEDE]
+### Sprint 4.2: Özcan — Big-O Analiz Tablosu + Algoritma Dokümantasyonu [TAMAMLANDI]
+> Big-O karmaşıklık analizi detaylandırıldı ve algoritmaların (BFS/DFS vb.) çalışma mantıkları pseudocode ile belgelendirildi.
+
+### Sprint 4.1 & 4.5: [BEKLEMEDE]
 > UML diyagramları, Demo videosu ve Final rapor hazırlıkları devam ediyor.

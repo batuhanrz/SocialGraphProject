@@ -39,3 +39,15 @@
 | 4 | Önerilerin ortak arkadaş sayısına göre büyükten küçüğe sıralanması için custom "Selection Sort" implementasyonu yapıldı. | 27.04.2026 |
 | 5 | `TraversalController` güncellenerek zincir sorgu ve öneri sistemi API uçları (`GET` tabanlı) olarak dışa açıldı. | 27.04.2026 |
 | 6 | `RelationalQueryTests.cs` ile tüm ilişkisel sorgu senaryoları (Complex Chain, Mutual Friends) %100 başarıyla test edildi. | 27.04.2026 |
+
+---
+
+## Sprint 4 Katkıları (Finalizasyon ve Dokümantasyon)
+
+### Yapılan İşlemler (Sprint 4.2)
+| No | Tamamlanan Görev Özeti | Tarih |
+|:---:|:---|:---:|
+| 1 | `BigO_Analysis.md` dosyasına teorik zaman/uzay karmaşıklık tablosu ve operasyonel analizler eklendi. | 04.05.2026 |
+| 2 | Yük testi (load test) sonuçları ile Big-O teorik sınırları karşılaştırılarak analiz edildi. | 04.05.2026 |
+| 3 | Code Defense için `Algorithm_Documentation.md` hazırlandı; BFS, DFS ve ShortestPath pseudocode'ları belgelendi. | 04.05.2026 |
+| 4 | Arayüzden gelen algoritma seçimini (BFS/DFS) işleyebilmesi için `TraversalController.cs` güncellendi ve `GraphTraversal.cs`'e recursive `DFS_Path` metodu eklendi. | 04.05.2026 |

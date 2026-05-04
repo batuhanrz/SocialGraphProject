@@ -62,11 +62,11 @@ namespace SocialGraph.API.Controllers
         }
 
         /// <summary>
-        /// İki düğüm arası en kısa yolu bulur.
-        /// GET /api/traversal/shortestpath?startNodeId=...&targetNodeId=...
+        /// İki düğüm arası yolu bulur. BFS ile en kısa yol, DFS ile herhangi bir yol bulunur.
+        /// GET /api/traversal/shortestpath?startNodeId=...&targetNodeId=...&algorithm=BFS
         /// </summary>
         [HttpGet("shortestpath")]
-        public ActionResult<IEnumerable<string>> RunShortestPath([FromQuery] string startNodeId, [FromQuery] string targetNodeId)
+        public ActionResult<IEnumerable<string>> RunShortestPath([FromQuery] string startNodeId, [FromQuery] string targetNodeId, [FromQuery] string algorithm = "BFS")
         {
             if (string.IsNullOrWhiteSpace(startNodeId) || string.IsNullOrWhiteSpace(targetNodeId))
                 return BadRequest("startNodeId ve targetNodeId gereklidir.");
@@ -74,7 +74,15 @@ namespace SocialGraph.API.Controllers
             if (_graph.GetNode(startNodeId) == null || _graph.GetNode(targetNodeId) == null)
                 return NotFound("Kaynak veya hedef düğüm bulunamadı.");
 
-            var path = GraphTraversal.ShortestPath(_graph, startNodeId, targetNodeId);
+            string[] path;
+            if (string.Equals(algorithm, "DFS", StringComparison.OrdinalIgnoreCase))
+            {
+                path = GraphTraversal.DFS_Path(_graph, startNodeId, targetNodeId);
+            }
+            else
+            {
+                path = GraphTraversal.ShortestPath(_graph, startNodeId, targetNodeId);
+            }
             return Ok(path);
         }
 

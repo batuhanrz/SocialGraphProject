@@ -54,11 +54,11 @@
 - Code Defense'e hazırlık: herkesin okuyabileceği açıklıkta yazılması.
 
 **Kabul Kriterleri:**
-- [ ] Big-O analiz tablosu tüm yapıları ve algoritmaları kapsıyor.
-- [ ] Her analiz için açıklama paragrafı mevcut.
-- [ ] Gerçek ölçüm sonuçları ile teorik analiz karşılaştırıldı.
-- [ ] Algoritma dökümantasyonu (pseudocode + açıklama) tamamlandı.
-- [ ] PR açıldı (`feature/ozcan-algorithms`).
+- [x] Big-O analiz tablosu tüm yapıları ve algoritmaları kapsıyor.
+- [x] Her analiz için açıklama paragrafı mevcut.
+- [x] Gerçek ölçüm sonuçları ile teorik analiz karşılaştırıldı.
+- [x] Algoritma dökümantasyonu (pseudocode + açıklama) tamamlandı.
+- [x] PR açıldı (`feature/ozcan-algorithms`).
 
 ---
 
