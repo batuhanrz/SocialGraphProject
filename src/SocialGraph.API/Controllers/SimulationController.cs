@@ -11,8 +11,11 @@ namespace SocialGraph.API.Controllers
     public class SimulationController : ControllerBase
     {
         // Bellekte son aksiyonlari tutan thread-safe liste
-        private static readonly ConcurrentQueue<SimulationAction> _actions = new ConcurrentQueue<SimulationAction>();
+        private static ConcurrentQueue<SimulationAction> _actions = new ConcurrentQueue<SimulationAction>();
         private const int MaxActions = 50;
+
+        // Simulasyon duraklatma bayragi
+        public static bool IsPaused { get; set; } = false;
 
         [HttpGet("actions")]
         public ActionResult<IEnumerable<SimulationAction>> GetRecentActions()
@@ -23,6 +26,8 @@ namespace SocialGraph.API.Controllers
         [HttpPost("actions")]
         public ActionResult AddAction([FromBody] SimulationAction action)
         {
+            if (IsPaused) return Ok(); // Duraklatilmissa aksiyon kaydetme
+
             _actions.Enqueue(action);
             
             // Liste cok buyurse en eskiyi cikar
@@ -32,6 +37,33 @@ namespace SocialGraph.API.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet("status")]
+        public ActionResult GetStatus()
+        {
+            return Ok(new { IsPaused });
+        }
+
+        [HttpPost("pause")]
+        public ActionResult Pause()
+        {
+            IsPaused = true;
+            return Ok(new { Message = "Simulasyon duraklatildi." });
+        }
+
+        [HttpPost("resume")]
+        public ActionResult Resume()
+        {
+            IsPaused = false;
+            return Ok(new { Message = "Simulasyon devam ettiriliyor." });
+        }
+
+        [HttpDelete("reset")]
+        public ActionResult Reset()
+        {
+            _actions = new ConcurrentQueue<SimulationAction>();
+            return Ok(new { Message = "Aksiyon akisi temizlendi." });
         }
     }
 }

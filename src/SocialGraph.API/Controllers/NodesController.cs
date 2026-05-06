@@ -177,6 +177,12 @@ namespace SocialGraph.API.Controllers
         {
             _graph.Reset();
             _trie.Clear();
+            
+            // Belleği zorla temizle (Benchmark stabilitesi için)
+            System.GC.Collect();
+            System.GC.WaitForPendingFinalizers();
+            System.GC.Collect();
+
             return Ok(new { Message = "Tum sistem basariyla sifirlandi." });
         }
 
@@ -190,26 +196,67 @@ namespace SocialGraph.API.Controllers
             // 1. Sifirla
             _graph.Reset();
             _trie.Clear();
-
-            var rnd = new System.Random();
-
-            // 2. Kullanici Listesi (50 Kisiye sabitlendi - Worker ile ayni)
-            string[] baseNames = {
-                "Batuhan", "Fatma", "Muhammed", "Isra", "Ozcan", "Ahmet", "Ayse", "Mehmet", "Zeynep", "Ali",
-                "Elif", "Huseyin", "Merve", "Hasan", "Esra", "Ibrahim", "Busra", "Halil", "Burcu", "Kemal"
+            
+            // Sabit seed ile deterministik üretim (Benchmark için önemli)
+            var rnd = new System.Random(42);
+            
+            // 1. DÜĞÜMLERİ OLUŞTUR (Önce Düğümler, Sonra İlişkiler - Hata almamak için)
+            
+            // 1.1. Fotoğraflar (30 Adet)
+            string[] photoTitles = {
+                "Hackathon Hatirasi", "Ofiste Ilk Gun", "Yapay Zeka Zirvesi", "Kahve Molasi", "Yeni Proje Toplantisi",
+                "Kodlama Gecesi", "Bahar Senligi", "Mezuniyet Toreni", "Takim Yemegi", "Haftasonu Kacamagi",
+                "Doga Yuruyusu", "Konferans Sunumu", "Sertifika Toreni", "Design Thinking Workshop", "Ofis Manzarasi",
+                "Evden Calisma Modu", "Yaz Kampi", "Kis Tatili", "Sabah Kosusu", "Kitap ve Kahve",
+                "Konser Coskusu", "Gala Gecesi", "Kod Inceleme (Code Review)", "Proje Lansmani", "Musteri Ziyareti",
+                "Agile Sprint Planning", "Server Odasi", "Yeni Ofis Masam", "Kedim ve Kod", "Gun Batimi"
             };
-            string[] surnames = { "Yilmaz", "Kaya", "Celik", "Demir", "Sahin", "Koc", "Ozturk", "Aydin", "Ozdemir", "Arslan" };
-            string[] professions = { "Software Engineer", "Data Scientist", "UI/UX Designer", "Product Manager", "DevOps" };
 
-            // 50 Kullanici Olustur
-            for (int i = 1; i <= 50; i++)
+            for (int i = 1; i <= photoTitles.Length; i++)
             {
-                string fullName = $"{baseNames[rnd.Next(baseNames.Length)]} {surnames[rnd.Next(surnames.Length)]}";
-                if (i <= 5) {
-                   string[] teamNames = { "Batuhan Yilmaz", "Fatma Sude Kaya", "Muhammed Furkan Celik", "Isra Nur Demir", "Ozcan Sahin" };
-                   fullName = teamNames[i-1];
-                }
+                var node = new Node($"photo{i}", "Photo");
+                string title = photoTitles[i - 1];
+                node.Properties.Put("Title", title);
+                node.Properties.Put("Name", title);
+                _graph.AddNode(node);
+                _trie.Insert(title, node.Id);
+            }
 
+            // 1.2. Etkinlikler (20 Adet)
+            string[] eventNames = {
+                "Global AI Summit 2026", "Web Summit Europe", "React Developer Conf", "DotNet Days", "Cloud Native Meetup",
+                "Data Science Bootcamp", "UX/UI Masterclass", "Startup Weekend", "Cyber Security Expo", "Blockchain Workshop",
+                "Tech Career Fair", "Open Source Festival", "Women in Tech", "Game Developers Conference", "IoT Innovators",
+                "Fintech Revolution", "Agile Leadership Summit", "Mobile App Developers Meetup", "Deep Learning Symposium", "Tech Makers Hackathon"
+            };
+
+            for (int i = 1; i <= eventNames.Length; i++)
+            {
+                var node = new Node($"event{i}", "Event");
+                string name = eventNames[i - 1];
+                node.Properties.Put("Name", name);
+                _graph.AddNode(node);
+                _trie.Insert(name, node.Id);
+            }
+
+            // 1.3. Kullanicilar (50 Kisi - En son ekle ki üstte görünsünler)
+            string[] userNames = {
+                "Batuhan", "Fatma Sude", "Muhammed Furkan", "Isra", "Ozcan",
+                "Ahmet Yilmaz", "Ayse Demir", "Mehmet Kaya", "Fatma Celik", "Mustafa Sahin",
+                "Zeynep Koc", "Ali Ozturk", "Elif Aydin", "Huseyin Ozdemir", "Merve Arslan",
+                "Hasan Dogan", "Esra Kilic", "Ibrahim Cetin", "Busra Gurbuz", "Halil Gok",
+                "Burcu Tekin", "Kemal Polat", "Selin Tarhan", "Caner Bulut", "Eda Yildirim",
+                "Tolga Coban", "Cemre Yildiz", "Emre Karaca", "Derya Cakir", "Sinan Tas",
+                "Gozde Akin", "Turgut Aslan", "Isil Erdogan", "Oguzhan Gunes", "Tugce Yavuz",
+                "Gokhan Kaplan", "Muge Celik", "Serkan Yucel", "Deniz Ozer", "Umut Ekinci",
+                "Aslihan Kara", "Koray Avci", "Zehra Basar", "Orhan Veli", "Nazli Cam",
+                "Eren Yalcin", "Yasemin Kurt", "Volkan Turk", "Ceren Yilmaz", "Kerem Koca"
+            };
+            string[] professions = { "Software Engineer", "Data Scientist", "UI/UX Designer", "Product Manager", "DevOps Engineer", "Marketing Specialist", "Graphic Designer", "Project Manager", "Business Analyst", "CEO" };
+
+            for (int i = 1; i <= userNames.Length; i++)
+            {
+                string fullName = userNames[i - 1];
                 var node = new Node($"user{i}", "User");
                 node.Properties.Put("Name", fullName);
                 node.Properties.Put("Profession", professions[rnd.Next(professions.Length)]);
@@ -217,30 +264,16 @@ namespace SocialGraph.API.Controllers
                 _trie.Insert(fullName, node.Id);
             }
 
-            // 3. Fotoğraflar (30 Adet)
+            // 2. İLİŞKİLERİ OLUŞTUR (Düğümler artık var, güvenle eklenebilir)
+
+            // 2.1. Fotoğraf sahipliği (POSTED)
             for (int i = 1; i <= 30; i++)
             {
-                var node = new Node($"photo{i}", "Photo");
-                node.Properties.Put("Title", $"Shared Moment {i}");
-                _graph.AddNode(node);
-                _trie.Insert($"Shared Moment {i}", node.Id);
-                
                 string ownerId = $"user{rnd.Next(1, 51)}";
-                _graph.AddEdge(new Edge($"ep{i}", ownerId, node.Id, "POSTED", true));
+                _graph.AddEdge(new Edge($"ep{i}", ownerId, $"photo{i}", "POSTED", true));
             }
 
-            // 4. Etkinlikler (20 Adet)
-            string[] eventTypes = { "Summit", "Meetup", "Workshop", "Conference", "Hackathon" };
-            for (int i = 1; i <= 20; i++)
-            {
-                var node = new Node($"event{i}", "Event");
-                string eventName = $"{eventTypes[rnd.Next(eventTypes.Length)]} {i}";
-                node.Properties.Put("Name", eventName);
-                _graph.AddNode(node);
-                _trie.Insert(eventName, node.Id);
-            }
-
-            // 5. İlişkiler
+            // 2.2. Rastgele Arkadaşlıklar (FRIEND)
             for (int i = 1; i <= 50; i++)
             {
                 int friendCount = rnd.Next(2, 5);

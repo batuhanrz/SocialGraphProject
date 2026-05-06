@@ -29,6 +29,14 @@ public class Worker : BackgroundService
         {
             try
             {
+                // Status kontrolu (Duraklatilmis mi?)
+                var status = await _httpClient.GetFromJsonAsync<SimulationStatus>("/api/simulation/status", stoppingToken);
+                if (status != null && status.IsPaused)
+                {
+                    await Task.Delay(1000, stoppingToken);
+                    continue;
+                }
+
                 if (!_isSeedDataPushed)
                 {
                     await PushSeedData(stoppingToken);
@@ -209,4 +217,9 @@ public class Worker : BackgroundService
         public string TargetId { get; set; } = "";
         public string RelationType { get; set; } = "";
     }
+}
+
+public class SimulationStatus
+{
+    public bool IsPaused { get; set; }
 }

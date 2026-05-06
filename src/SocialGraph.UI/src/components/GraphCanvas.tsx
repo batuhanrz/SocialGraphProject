@@ -349,10 +349,25 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     let animationFrameId: number;
     
     const handleRefreshRequest = () => {
+      // 1. Hard Clear: Hafizayi tamamen bosalt (Hayalet dugumleri onle)
+      nodesDataSetRef.current.clear();
+      edgesDataSetRef.current.clear();
+      
+      isFirstFitDoneRef.current = false;
+      physicsSlowedRef.current = false;
+
+      // 2. Fizik Motorunu Hizli Moda Al (Yeniden yerlesim icin)
+      if (networkRef.current) {
+        networkRef.current.setOptions({
+          physics: { maxVelocity: 20, timestep: 0.25 }
+        });
+        networkRef.current.startSimulation();
+      }
+
       initData().then(() => {
-        if (networkRef.current) {
-          networkRef.current.fit({ animation: { duration: 1000, easingFunction: 'easeInOutQuad' } });
-        }
+        // Artik burada manuel fit() cagirmiyoruz. 
+        // Cunku floatingKeeper (setInterval) isFirstFitDoneRef'in false oldugunu gorup 
+        // en saglikli zamanda (stabilizasyon sonrasi) fit() yapacak.
       });
     };
 

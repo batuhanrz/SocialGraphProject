@@ -35,14 +35,14 @@ namespace SocialGraph.API.DataStructures
         /// Dugum deposu: NodeID -> Node.
         /// Erisim: O(1) amortized.
         /// </summary>
-        private readonly CustomHashTable<string, Node> _nodes;
+        private CustomHashTable<string, Node> _nodes;
 
         /// <summary>
         /// Adjacency list: SourceID -> (DestinationID -> Edge).
         /// Dis tablo kaynak dugum ile, ic tablo hedef dugum ile indekslenir.
         /// Herhangi bir kenara O(1) erisim saglar.
         /// </summary>
-        private readonly CustomHashTable<string, CustomHashTable<string, Edge>> _adjacency;
+        private CustomHashTable<string, CustomHashTable<string, Edge>> _adjacency;
 
         /// <summary>
         /// Toplam kenar sayaci. Yonsuz kenarlarda tek kenar olarak sayilir (cift kayit yapilsa da).
@@ -573,8 +573,9 @@ namespace SocialGraph.API.DataStructures
             _lock.EnterWriteLock();
             try
             {
-                _nodes.Clear();
-                _adjacency.Clear();
+                // Hard Reset: Tablolari tamamen yeniden orneklendiriyoruz
+                _nodes = new CustomHashTable<string, Node>();
+                _adjacency = new CustomHashTable<string, CustomHashTable<string, Edge>>();
                 _edgeCount = 0;
             }
             finally

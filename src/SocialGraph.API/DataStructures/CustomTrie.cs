@@ -11,7 +11,7 @@ namespace SocialGraph.API.DataStructures
     /// </summary>
     public class CustomTrie
     {
-        private readonly TrieNode _root;
+        private TrieNode _root;
         private int _wordCount;
 
         /// <summary>
@@ -167,8 +167,7 @@ namespace SocialGraph.API.DataStructures
         /// </summary>
         public void Clear()
         {
-            _root.Children.Clear();
-            _root.NodeIds.Clear();
+            _root = new TrieNode('\0'); // Yeni root olustur (Hard Reset)
             _wordCount = 0;
         }
     }

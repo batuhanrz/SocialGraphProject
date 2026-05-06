@@ -45,7 +45,7 @@ namespace SocialGraph.AI
 
         // Gemini 3.1 Pro tarafindan uretilmis statik User listesi (Ornek 50 Kisi)
         private static readonly string[] _userNames = {
-            "Batuhan Yilmaz", "Fatma Sude Kaya", "Muhammed Furkan Celik", "Isra Nur Demir", "Ozcan Sahin",
+            "Batuhan", "Fatma Sude", "Muhammed Furkan", "Isra", "Ozcan",
             "Ahmet Yilmaz", "Ayse Demir", "Mehmet Kaya", "Fatma Celik", "Mustafa Sahin",
             "Zeynep Koc", "Ali Ozturk", "Elif Aydin", "Huseyin Ozdemir", "Merve Arslan",
             "Hasan Dogan", "Esra Kilic", "Ibrahim Cetin", "Busra Gurbuz", "Halil Gok",

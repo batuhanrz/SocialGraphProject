@@ -15,6 +15,7 @@ const AppLayout: React.FC = () => {
   const [highlightMode, setHighlightMode] = useState<'path' | 'recs' | 'chain'>('path');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBenchmarkOpen, setIsBenchmarkOpen] = useState(false);
+  const [benchmarkResults, setBenchmarkResults] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleNodeSelect = useCallback((id: string) => {
@@ -30,9 +31,9 @@ const AppLayout: React.FC = () => {
   }, []);
 
   const handleQueryStart = useCallback(() => {
-    setHighlightNodeIds([]); // Onceki aramanin / recs glow'larinin kalintilarini hemen temizle
+    setHighlightNodeIds([]); 
     setHighlightEdgeIds([]);
-    setHighlightMode('path'); // Varsayilan moda don
+    setHighlightMode('path'); 
   }, []);
 
   const handleQueryResults = useCallback((nodeIds: string[], mode: 'path' | 'recs' | 'chain' = 'path') => {
@@ -110,11 +111,9 @@ const AppLayout: React.FC = () => {
               if (window.confirm('Sistem seed verileriyle sifirlanacak. Emin misiniz?')) {
                 try {
                   await benchmarkService.seedSystem();
+                  setBenchmarkResults(null); 
                   window.dispatchEvent(new CustomEvent('refresh-graph'));
-                  // Grafin yuklenmesi ve render edilmesi icin kisa bir sure bekle
-                  setTimeout(() => {
-                    window.dispatchEvent(new CustomEvent('fit-graph'));
-                  }, 500);
+                  window.dispatchEvent(new CustomEvent('reset-benchmark'));
                 } catch (err) {
                   alert('Sifirlama hatasi: ' + err);
                 }
@@ -160,57 +159,79 @@ const AppLayout: React.FC = () => {
             RESET SYSTEM TO SEED
           </button>
 
-          <button
-            onClick={() => setIsBenchmarkOpen(true)}
-            style={{
-              width: '100%',
-              padding: '12px',
-              background: 'rgba(0, 242, 255, 0.05)',
-              border: '1px solid rgba(0, 242, 255, 0.15)',
-              borderRadius: '10px',
-              color: 'var(--accent-color)',
-              fontSize: '0.7rem',
-              fontWeight: 800,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              transition: 'all 0.2s ease',
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(0, 242, 255, 0.12)';
-              e.currentTarget.style.borderColor = 'rgba(0, 242, 255, 0.4)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(0, 242, 255, 0.05)';
-              e.currentTarget.style.borderColor = 'rgba(0, 242, 255, 0.15)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            <div style={{ 
-              width: '6px', 
-              height: '6px', 
-              borderRadius: '50%', 
-              background: 'var(--accent-color)', 
-              boxShadow: '0 0 8px var(--accent-color)' 
-            }} />
-            RUN PERFORMANCE AUDIT
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              onClick={() => setIsBenchmarkOpen(true)}
+              style={{
+                flex: benchmarkResults ? 2 : 1,
+                padding: '12px',
+                background: benchmarkResults ? 'rgba(0, 242, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                border: benchmarkResults ? '1px solid rgba(0, 242, 255, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '10px',
+                color: benchmarkResults ? 'var(--accent-color)' : '#fff',
+                fontSize: '0.7rem',
+                fontWeight: 800,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                transition: 'all 0.2s ease',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = benchmarkResults ? 'rgba(0, 242, 255, 0.15)' : 'rgba(255, 255, 255, 0.12)';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = benchmarkResults ? 'rgba(0, 242, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <div style={{ 
+                width: '6px', 
+                height: '6px', 
+                borderRadius: '50%', 
+                background: benchmarkResults ? 'var(--accent-color)' : '#fff', 
+                boxShadow: benchmarkResults ? '0 0 8px var(--accent-color)' : 'none' 
+              }} />
+              {benchmarkResults ? 'RAPORU GÖRÜNTÜLE' : 'RUN PERFORMANCE AUDIT'}
+            </button>
+
+            {benchmarkResults && (
+              <button
+                onClick={async () => {
+                   await benchmarkService.resetSystem(); // Onceden temizle
+                   setBenchmarkResults(null);
+                   setIsBenchmarkOpen(true);
+                }}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: 'rgba(245, 158, 11, 0.1)',
+                  border: '1px solid rgba(245, 158, 11, 0.2)',
+                  borderRadius: '10px',
+                  color: '#f59e0b',
+                  fontSize: '0.7rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  textTransform: 'uppercase'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(245, 158, 11, 0.2)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(245, 158, 11, 0.1)'}
+              >
+                RE-RUN
+              </button>
+            )}
+          </div>
           
           <footer style={{ marginTop: '16px', fontSize: '0.7rem', color: 'var(--text-secondary)', opacity: 0.4 }}>
             &copy; 2026 SocialGraph Project
           </footer>
         </div>
       </aside>
-
-      <BenchmarkModal 
-        isOpen={isBenchmarkOpen} 
-        onClose={() => setIsBenchmarkOpen(false)} 
-      />
 
       {/* Main Content Area */}
       <main style={{ flex: 1, position: 'relative', display: 'flex' }}>
@@ -227,6 +248,13 @@ const AppLayout: React.FC = () => {
         <SimNodeList 
           onNodeSelect={handleNodeSelect} 
           onEdgeSelect={(id) => setHighlightEdgeIds([id])}
+        />
+
+        <BenchmarkModal 
+          isOpen={isBenchmarkOpen} 
+          onClose={() => setIsBenchmarkOpen(false)} 
+          results={benchmarkResults}
+          onResultsUpdate={setBenchmarkResults}
         />
 
         {/* Floating Legend */}
@@ -246,7 +274,6 @@ const AppLayout: React.FC = () => {
           pointerEvents: 'none',
           boxShadow: '0 8px 32px rgba(0,0,0,0.4)'
         }}>
-          {/* Node Types */}
           <div style={{ display: 'flex', gap: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6', boxShadow: '0 0 8px #3b82f6' }} /> User
@@ -258,7 +285,6 @@ const AppLayout: React.FC = () => {
               <div style={{ width: '8px', height: '0', borderLeft: '4px solid transparent', borderRight: '4px solid transparent', borderBottom: '8px solid #f59e0b', filter: 'drop-shadow(0 0 4px #f59e0b)' }} /> Event
             </div>
           </div>
-          {/* State Indicators */}
           <div style={{ display: 'flex', gap: '16px', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', border: '2px solid #3b82f6' }} /> Origin

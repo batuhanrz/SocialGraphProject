@@ -1,40 +1,83 @@
-# SocialGraph Project - Ara Rapor (Interim Report)
+# SocialGraph Project - Final Teslim Raporu (Final Submission)
 
-**Teslim Tarihi:** 30.04.2026  
+**Teslim Tarihi:** 06.05.2026  
 **Proje Konusu:** Property Graph Tabanlı Sosyal Ağ Modelleme  
 **Ekip:** Batuhan, Özcan, Fatma Sude, Muhammed Furkan, Isra
 
 ---
 
-## 1. Ara Rapor Özeti (Executive Summary)
+## 1. Proje Özeti (Executive Summary)
 
-Bu proje, sosyal ağ sistemlerinin (Facebook, LinkedIn vb.) temelini oluşturan **Property Graph** veri modelini, hiçbir standart kütüphane kullanmadan (from scratch) C# ve React ile modellemeyi hedeflemektedir. 
+Bu proje, sosyal ağ sistemlerinin temelini oluşturan **Property Graph** veri modelini ve bu model üzerinde çalışan karmaşık algoritmaları, hiçbir standart veri yapısı kütüphanesi (Dictionary, Queue vb.) kullanmadan C# ve React ile modellemektedir. 
 
-30.04.2026 tarihi itibariyle proje; **Faz 1 (Veri Yapıları)**, **Faz 2 (Algoritmalar)** ve **Faz 3 (Görselleştirme)** aşamalarını tamamlamış, entegrasyon testlerinden geçmiş ve Dockerize edilerek final teslimine hazır hale getirilmiştir.
+Sistem; **Faz 1 (Veri Yapıları)**, **Faz 2 (Algoritmalar)** ve **Faz 3 (Görselleştirme)** gereksinimlerinin tamamını karşılamaktadır. Veri bütünlüğü thread-safe yapılarla sağlanmış, performans Big-O analizleri ile doğrulanmış ve tüm sistem Dockerize edilerek final teslimine hazır hale getirilmiştir.
 
 ### Proje Durum Göstergeleri:
-- **Çekirdek Veri Yapıları:** %100 (Hash Table, Trie, Queue, Adjacency List)
-- **Algoritmalar:** %100 (BFS, DFS, Shortest Path, Chain Query, Recommendations)
-- **Görselleştirme:** %100 (2D Node-Link Diyagramı, Interaktif Yan Panel)
-- **Altyapı:** %100 (Docker Compose, AI Worker Simülasyonu)
+- **Çekirdek Veri Yapıları (Faz 1):** %100 (Custom HashTable, Trie, Queue, Adjacency List)
+- **Algoritmalar ve Sorgu Motoru (Faz 2):** %100 (BFS, DFS, Filtered Traversal, Multi-step Chain Queries)
+- **Görselleştirme ve Etkileşim (Faz 3):** %100 (2D Node-Link Diyagramı, Hash Table Tabanlı Özellik Paneli)
+- **Altyapı ve Simülasyon:** %100 (Docker Compose, Asenkron AI Worker)
 
 ---
 
-## 2. Teknoloji Yığını ve Mimari
+## 2. Teknik Mimari ve Veri Yapıları
 
-Sistem, bir ana API ve bu API'ye veri basan bağımsız bir simülasyon servisinden oluşmaktadır:
+Projenin temelini oluşturan tüm veri yapıları `SocialGraph.API` katmanında sıfırdan implemente edilmiştir:
+
+| Veri Yapısı | Kullanım Amacı | Teorik Karmaşıklık |
+| :--- | :--- | :--- |
+| **PropertyGraph** | Heterojen düğüm (User, Photo, Event) ve ilişkilerin (Friend, Posted) yönetimi. | O(V + E) |
+| **CustomHashTable** | Düğümlere ID üzerinden O(1) hızında erişim ve özellik saklama. | O(1) Average |
+| **CustomTrie** | Metin tabanlı arama ve isimlerin otomatik tamamlanması (Autocomplete). | O(m) |
+| **CustomQueue** | Genişlik Öncelikli Arama (BFS) algoritması için circular-buffer tabanlı kuyruk. | O(1) |
+
+---
+
+## 3. Teknoloji Yığını ve Mimari
+
+Sistem, jüri beklentileri doğrultusunda asenkron çalışan bir AI servis motoru ve mikroservis yaklaşımıyla tasarlanmıştır:
 
 | Katman | Teknoloji | Amaç |
-|--------|-----------|------|
+| :--- | :--- | :--- |
 | **Backend (API)** | ASP.NET Core 8.0 | Core veri yapılarını ve algoritmaları barındırır. |
-| **Data Engine** | Custom C# Collections | `Dictionary` veya `List` yerine kendi yazdığımız yapılar. |
-| **AI Simulation** | .NET Worker Service | Her 15sn'de bir sentetik veri üreterek API'yi besler. |
+| **Data Engine** | Custom C# Collections | `Dictionary` yerine kendi yazdığımız `CustomHashTable` kullanımı. |
+| **AI Simulation** | .NET Worker Service | Asenkron olarak sentetik veri üreterek API'yi besler. |
 | **Frontend (UI)** | React + TypeScript | Grafın görselleştirilmesi ve sorgu yönetimi. |
-| **Görselleştirme** | Vis-network | 2D Graf render motoru. |
+| **Görselleştirme** | Vis-network | 2D Graf render motoru ve etkileşimli arayüz. |
+
+```mermaid
+graph TD
+    subgraph Frontend_Layer
+        UI["React Frontend (UI)"]
+    end
+
+    subgraph Core_Service
+        API["SocialGraph.API (Core Engine)"]
+        DB[("In-Memory Graph (HashTable)")]
+    end
+
+    subgraph Simulation_Engine
+        AI["SocialGraph.AI (Worker)"]
+    end
+
+    UI -- "REST API (JSON)" --> API
+    AI -- "Async Data Stream" --> API
+    API --- DB
+```
+
+### Akademik Dokümantasyon
+Proje savunması ve detaylı inceleme için aşağıdaki raporları kullanabilirsiniz:
+
+| Doküman | İçerik | Link |
+| :--- | :--- | :--- |
+| **Performans Analizi** | Big-O Karmaşıklık Analizi ve Benchmark Sonuçları | [BigO_Analysis.md](file:///c:/Users/React/SocialGraphProject/Markdowns/Project/BigO_Analysis.md) |
+| **UML Diyagramları** | Sınıf (Class) ve Akış (Sequence) Diyagramları | [UML_Diagrams.md](file:///c:/Users/React/SocialGraphProject/Markdowns/Project/UML_Diagrams.md) |
+| **AI Prompt Logları** | Sentetik Veri Üretimi İçin Kullanılan Promptlar | [prompt.md](file:///c:/Users/React/SocialGraphProject/Markdowns/Prompts/prompt.md) |
+| **Görev Dağılımı** | Takım Üyeleri ve Kişisel Katkı Raporları | [Personal_Reports/](file:///c:/Users/React/SocialGraphProject/Markdowns/Personal_Reports/) |
 
 ---
 
-## 3. Ekip Katkıları ve Görev Dağılımı
+## 4. Ekip Katkıları ve Görev Dağılımı
 
 Her ekip üyesi projeye kendi uzmanlık alanında ve kendi branch'i üzerinden katkı sağlamıştır:
 

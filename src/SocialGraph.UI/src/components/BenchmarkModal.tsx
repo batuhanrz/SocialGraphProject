@@ -5,21 +5,30 @@ import type { BenchmarkResult } from '../services/benchmarkService';
 interface BenchmarkModalProps {
   isOpen: boolean;
   onClose: () => void;
+  results: BenchmarkResult[] | null;
+  onResultsUpdate: (results: BenchmarkResult[] | null) => void;
 }
 
-const BenchmarkModal: React.FC<BenchmarkModalProps> = ({ isOpen, onClose }) => {
+const BenchmarkModal: React.FC<BenchmarkModalProps> = ({ isOpen, onClose, results, onResultsUpdate }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState('');
-  const [results, setResults] = useState<BenchmarkResult[] | null>(null);
+  const [iterations, setIterations] = useState(1);
+
+  // Reset olayini dinle
+  React.useEffect(() => {
+    const handleReset = () => onResultsUpdate(null);
+    window.addEventListener('reset-benchmark', handleReset);
+    return () => window.removeEventListener('reset-benchmark', handleReset);
+  }, [onResultsUpdate]);
 
   if (!isOpen) return null;
 
   const startAudit = async () => {
     setIsRunning(true);
-    setResults(null);
+    onResultsUpdate(null);
     try {
-      const data = await benchmarkService.runBenchmark(setProgress);
-      setResults(data);
+      const data = await benchmarkService.runBenchmark(iterations, setProgress);
+      onResultsUpdate(data);
       setProgress('Audit Complete: Performance Data Ready.');
       
       // Grafi aninda guncelle ve fit yap
@@ -127,12 +136,63 @@ const BenchmarkModal: React.FC<BenchmarkModalProps> = ({ isOpen, onClose }) => {
               </div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#fff', marginBottom: '8px' }}>Ready for Verification</h3>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '32px', maxWidth: '320px', margin: '0 auto 32px', lineHeight: 1.5 }}>
-                Sistem tüm veri yapılarını sıfırlayacak ve 5000 düğüme kadar stres testi uygulayacaktır.
+                Sistem tüm veri yapılarını sıfırlayacak ve seçilen batch sayısı kadar stres testi uygulayacaktır.
               </p>
+
+              {/* Iteration Selector */}
+              <div style={{ 
+                background: 'rgba(255,255,255,0.03)', 
+                padding: '20px', 
+                borderRadius: '16px', 
+                border: '1px solid rgba(255,255,255,0.05)',
+                marginBottom: '32px',
+                maxWidth: '400px',
+                margin: '0 auto 32px'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Batch Iterations (1-100)</span>
+                  <span style={{ fontSize: '1rem', color: 'var(--accent-color)', fontWeight: 700, fontFamily: 'monospace' }}>{iterations}x</span>
+                </div>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                  <input 
+                    type="range" 
+                    min="1" 
+                    max="100" 
+                    value={iterations} 
+                    onChange={(e) => setIterations(parseInt(e.target.value))}
+                    style={{
+                      flex: 1,
+                      accentColor: 'var(--accent-color)',
+                      height: '4px',
+                      borderRadius: '2px',
+                      cursor: 'pointer'
+                    }}
+                  />
+                  <input 
+                    type="number" 
+                    min="1" 
+                    max="100" 
+                    value={iterations} 
+                    onChange={(e) => setIterations(Math.min(100, Math.max(1, parseInt(e.target.value) || 1)))}
+                    style={{
+                      width: '60px',
+                      background: 'rgba(0,0,0,0.3)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '8px',
+                      color: '#fff',
+                      padding: '4px 8px',
+                      fontSize: '0.85rem',
+                      textAlign: 'center',
+                      outline: 'none'
+                    }}
+                  />
+                </div>
+              </div>
+
               <button
                 onClick={startAudit}
                 style={{
-                  padding: '12px 32px',
+                  padding: '12px 40px',
                   background: 'var(--accent-color)',
                   color: '#000',
                   border: 'none',
@@ -140,18 +200,21 @@ const BenchmarkModal: React.FC<BenchmarkModalProps> = ({ isOpen, onClose }) => {
                   fontWeight: 700,
                   fontSize: '0.9rem',
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease'
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 0 20px rgba(0, 242, 255, 0.2)'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.filter = 'brightness(1.1)';
                   e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 242, 255, 0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.filter = 'brightness(1)';
                   e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 242, 255, 0.2)';
                 }}
               >
-                SİSTEM DENETİMİNİ BAŞLAT
+                {iterations > 1 ? `BATCH DENETİMİ BAŞLAT (${iterations}x)` : 'SİSTEM DENETİMİNİ BAŞLAT'}
               </button>
             </div>
           )}
@@ -205,7 +268,9 @@ const BenchmarkModal: React.FC<BenchmarkModalProps> = ({ isOpen, onClose }) => {
               </div>
 
               <div style={{ marginTop: '20px', padding: '16px', background: 'rgba(6, 182, 212, 0.05)', borderRadius: '12px', border: '1px solid rgba(6, 182, 212, 0.1)' }}>
-                <h4 style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: 'var(--accent-color)', textTransform: 'uppercase', letterSpacing: '1px' }}>Teknik Analiz ve Sistem İçgörüleri</h4>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: 'var(--accent-color)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  Teknik Analiz ve Sistem İçgörüleri {iterations > 1 && <span style={{ opacity: 0.6, fontSize: '0.7rem' }}>({iterations} Testin Ortalaması)</span>}
+                </h4>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                   {(() => {
                     const last = results[results.length - 1];
@@ -226,6 +291,23 @@ const BenchmarkModal: React.FC<BenchmarkModalProps> = ({ isOpen, onClose }) => {
                   * Metrikler Yüksek Çözünürlüklü Performans API'si ile ölçülmüştür.
                 </span>
                 <div style={{ display: 'flex', gap: '12px' }}>
+                  <button
+                    onClick={startAudit}
+                    style={{
+                      padding: '10px 20px',
+                      background: 'rgba(245, 158, 11, 0.1)',
+                      color: '#f59e0b',
+                      border: '1px solid rgba(245, 158, 11, 0.2)',
+                      borderRadius: '8px',
+                      fontSize: '0.85rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(245, 158, 11, 0.2)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(245, 158, 11, 0.1)'}
+                  >
+                    Yeniden Denetle
+                  </button>
                   <button
                     onClick={copyToClipboard}
                     style={{
