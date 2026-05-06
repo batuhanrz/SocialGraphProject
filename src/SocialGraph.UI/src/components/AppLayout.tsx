@@ -5,6 +5,7 @@ import ResultPanel from './ResultPanel';
 import QueryPanel from './QueryPanel';
 import { SimNodeList } from './SimNodeList';
 import BenchmarkModal from './BenchmarkModal';
+import { benchmarkService } from '../services/benchmarkService';
 
 const AppLayout: React.FC = () => {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -104,6 +105,61 @@ const AppLayout: React.FC = () => {
         </div>
 
         <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
+          <button
+            onClick={async () => {
+              if (window.confirm('Sistem seed verileriyle sifirlanacak. Emin misiniz?')) {
+                try {
+                  await benchmarkService.seedSystem();
+                  window.dispatchEvent(new CustomEvent('refresh-graph'));
+                  // Grafin yuklenmesi ve render edilmesi icin kisa bir sure bekle
+                  setTimeout(() => {
+                    window.dispatchEvent(new CustomEvent('fit-graph'));
+                  }, 500);
+                } catch (err) {
+                  alert('Sifirlama hatasi: ' + err);
+                }
+              }
+            }}
+            style={{
+              width: '100%',
+              padding: '12px',
+              background: 'rgba(239, 68, 68, 0.05)',
+              border: '1px solid rgba(239, 68, 68, 0.15)',
+              borderRadius: '10px',
+              color: '#ef4444',
+              fontSize: '0.7rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              transition: 'all 0.2s ease',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              marginBottom: '10px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(239, 68, 68, 0.12)';
+              e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(239, 68, 68, 0.05)';
+              e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.15)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            <div style={{ 
+              width: '6px', 
+              height: '6px', 
+              borderRadius: '50%', 
+              background: '#ef4444', 
+              boxShadow: '0 0 8px #ef4444' 
+            }} />
+            RESET SYSTEM TO SEED
+          </button>
+
           <button
             onClick={() => setIsBenchmarkOpen(true)}
             style={{

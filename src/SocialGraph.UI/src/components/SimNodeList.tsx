@@ -30,6 +30,7 @@ export const SimNodeList: React.FC<SimNodeListProps> = ({ onNodeSelect, onEdgeSe
   const [nodeRelations, setNodeRelations] = useState<Record<string, IEdge[]>>({});
   const [nodeLabels, setNodeLabels] = useState<Record<string, string>>({});
   const [simActions, setSimActions] = useState<ISimulationAction[]>([]);
+  const [allRawEdges, setAllRawEdges] = useState<IEdge[]>([]);
 
   useEffect(() => {
     loadSimData();
@@ -38,13 +39,14 @@ export const SimNodeList: React.FC<SimNodeListProps> = ({ onNodeSelect, onEdgeSe
   }, []);
 
   const loadSimData = async () => {
-    if (simActions.length === 0) setLoading(true);
     try {
       const [allNodes, allEdges, actions] = await Promise.all([
         nodeService.getAllNodes(),
         nodeService.getAllEdges(),
         nodeService.getSimulationActions()
       ]);
+      
+      setAllRawEdges(allEdges);
 
       const labels: Record<string, string> = {};
       allNodes.forEach(n => {
@@ -227,28 +229,20 @@ export const SimNodeList: React.FC<SimNodeListProps> = ({ onNodeSelect, onEdgeSe
                 <div key={action.id} 
                      onMouseEnter={() => setHoveredNodeId(action.sourceId)}
                      onMouseLeave={() => setHoveredNodeId(null)}
-                      onClick={async () => {
-                        if (action.type === 0) {
-                          onNodeSelect(action.sourceId);
-                        } else if (action.type === 1 || action.type === 2 || action.type === 3) {
-                          onNodeSelect(action.sourceId);
+                       onClick={() => {
+                        // Her durumda source node'u sec
+                        onNodeSelect(action.sourceId);
+                        
+                        if (action.type === 1 || action.type === 2 || action.type === 3) {
+                          // Cached edge listesinden uygun kenari aninda bul
+                          const matchedEdge = allRawEdges.find(e => 
+                            (e.sourceId === action.sourceId && e.targetId === action.targetId) ||
+                            (e.sourceId === action.targetId && e.targetId === action.sourceId)
+                          );
                           
-                          // Tum kenarlari cek ve bu aksiyona uyan kenari bul (Glow icin)
-                          try {
-                            const allEdges = await nodeService.getAllEdges();
-                            const matchedEdge = allEdges.find(e => 
-                              (e.sourceId === action.sourceId && e.targetId === action.targetId) ||
-                              (e.sourceId === action.targetId && e.targetId === action.sourceId)
-                            );
-                            
-                            if (matchedEdge && onEdgeSelect) {
-                              onEdgeSelect(matchedEdge.id);
-                            }
-                          } catch (err) {
-                            console.error("Edge find failed", err);
+                          if (matchedEdge && onEdgeSelect) {
+                            onEdgeSelect(matchedEdge.id);
                           }
-                        } else {
-                          onNodeSelect(action.sourceId);
                         }
                       }}
                      style={{
