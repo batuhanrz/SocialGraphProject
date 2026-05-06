@@ -33,6 +33,11 @@ export interface IRecommendation {
     mutualFriendsCount: number;
 }
 
+export interface IPathStep {
+    nodeId: string;
+    relation: string;
+}
+
 export interface IChainStep {
     relation: string;
     count: number;

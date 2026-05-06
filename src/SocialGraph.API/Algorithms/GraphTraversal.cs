@@ -1,34 +1,14 @@
 using System;
+using System.Collections.Generic;
 using SocialGraph.API.DataStructures;
 using SocialGraph.API.Models;
 
 namespace SocialGraph.API.Algorithms
 {
-    /// <summary>
-    /// Graf arama algoritmalari (BFS, DFS ve ShortestPath).
-    /// Gelistiren: Ozcan (Algorithm Master)
-    /// Tamamen CustomQueue ve CustomHashTable kullanilarak PropertyGraph'a uyarlanmistir.
-    /// </summary>
     public static class GraphTraversal
     {
-        /// <summary>
-        /// Genislik Oncelikli Arama (Katmanli Gezinme)
-        /// Ozellikler: Dugum ve kenar bazli filtreleme destekler.
-        /// Karmasiklik: O(V + E) (V: Dugum, E: Kenar)
-        /// Uzay Karmasikligi: O(V)
-        /// </summary>
-        public static void BFS(
-            PropertyGraph graph, 
-            string startNodeId, 
-            Action<Node> onVisit, 
-            Func<Node, bool> nodeFilter = null, 
-            Func<Edge, bool> edgeFilter = null)
+        public static void BFS(PropertyGraph graph, string startNodeId, Action<string> onVisit, Func<Node, bool> nodeFilter = null, Func<Edge, bool> edgeFilter = null)
         {
-            if (graph == null || string.IsNullOrEmpty(startNodeId) || onVisit == null) return;
-
-            Node startNode = graph.GetNode(startNodeId);
-            if (startNode == null) return;
-
             var queue = new CustomQueue<string>();
             var visited = new CustomHashTable<string, bool>();
 
@@ -38,25 +18,15 @@ namespace SocialGraph.API.Algorithms
             while (!queue.IsEmpty)
             {
                 string currentId = queue.Dequeue();
-                Node currentNode = graph.GetNode(currentId);
+                var node = graph.GetNode(currentId);
 
-                if (currentNode != null)
-                {
-                    // Dugum filtresi varsa uygula, yoksa direkt ziyaret et
-                    if (nodeFilter == null || nodeFilter(currentNode))
-                    {
-                        onVisit(currentNode);
-                    }
-                }
+                if (nodeFilter != null && !nodeFilter(node)) continue;
+                onVisit(currentId);
 
                 Edge[] edges = graph.GetEdges(currentId);
-                for (int i = 0; i < edges.Length; i++)
+                foreach (var edge in edges)
                 {
-                    Edge edge = edges[i];
-
-                    // Kenar filtresi varsa uygula
                     if (edgeFilter != null && !edgeFilter(edge)) continue;
-
                     string neighborId = edge.DestinationId;
                     if (!visited.ContainsKey(neighborId))
                     {
@@ -67,50 +37,24 @@ namespace SocialGraph.API.Algorithms
             }
         }
 
-        /// <summary>
-        /// Derinlik Oncelikli Arama (Ozyinelemeli)
-        /// Ozellikler: Dugum ve kenar bazli filtreleme destekler.
-        /// Karmasiklik: O(V + E) (V: Dugum, E: Kenar)
-        /// </summary>
-        public static void DFS(
-            PropertyGraph graph, 
-            string startNodeId, 
-            Action<Node> onVisit, 
-            Func<Node, bool> nodeFilter = null, 
-            Func<Edge, bool> edgeFilter = null)
+        public static void DFS(PropertyGraph graph, string startNodeId, Action<string> onVisit, Func<Node, bool> nodeFilter = null, Func<Edge, bool> edgeFilter = null)
         {
-            if (graph == null || string.IsNullOrEmpty(startNodeId) || onVisit == null) return;
-
             var visited = new CustomHashTable<string, bool>();
             DFS_Recursive(graph, startNodeId, visited, onVisit, nodeFilter, edgeFilter);
         }
 
-        private static void DFS_Recursive(
-            PropertyGraph graph, 
-            string currentId, 
-            CustomHashTable<string, bool> visited, 
-            Action<Node> onVisit, 
-            Func<Node, bool> nodeFilter, 
-            Func<Edge, bool> edgeFilter)
+        private static void DFS_Recursive(PropertyGraph graph, string currentId, CustomHashTable<string, bool> visited, Action<string> onVisit, Func<Node, bool> nodeFilter, Func<Edge, bool> edgeFilter)
         {
             visited.Put(currentId, true);
+            var node = graph.GetNode(currentId);
 
-            Node currentNode = graph.GetNode(currentId);
-            if (currentNode != null)
-            {
-                if (nodeFilter == null || nodeFilter(currentNode))
-                {
-                    onVisit(currentNode);
-                }
-            }
+            if (nodeFilter != null && !nodeFilter(node)) return;
+            onVisit(currentId);
 
             Edge[] edges = graph.GetEdges(currentId);
-            for (int i = 0; i < edges.Length; i++)
+            foreach (var edge in edges)
             {
-                Edge edge = edges[i];
-
                 if (edgeFilter != null && !edgeFilter(edge)) continue;
-
                 string neighborId = edge.DestinationId;
                 if (!visited.ContainsKey(neighborId))
                 {
@@ -119,42 +63,23 @@ namespace SocialGraph.API.Algorithms
             }
         }
 
-        /// <summary>
-        /// Iki dugum arasindaki en kisa yolu (kenar sayisi bazinda) bulan BFS algoritmasi.
-        /// Filtreleme kullanilarak belirli iliskiler (orn. sadece LIKES) uzerinden yol aranabilir.
-        /// Karmasiklik: O(V + E)
-        /// Uzay Karmasikligi: O(V)
-        /// </summary>
-        public static string[] ShortestPath(
-            PropertyGraph graph, 
-            string startNodeId, 
-            string targetNodeId, 
-            Func<Edge, bool> edgeFilter = null)
+        public static PathStep[] ShortestPath(PropertyGraph graph, string startNodeId, string targetNodeId, Func<Edge, bool> edgeFilter = null)
         {
-            if (graph == null || string.IsNullOrEmpty(startNodeId) || string.IsNullOrEmpty(targetNodeId))
-                return Array.Empty<string>();
-
-            if (graph.GetNode(startNodeId) == null || graph.GetNode(targetNodeId) == null)
-                return Array.Empty<string>();
-
             if (startNodeId == targetNodeId)
-                return new string[] { startNodeId };
+                return new[] { new PathStep { NodeId = startNodeId, Relation = "Baslangic" } };
 
             var queue = new CustomQueue<string>();
             var visited = new CustomHashTable<string, bool>();
-            
-            // Yol takibi icin (ChildId -> ParentId)
             var parents = new CustomHashTable<string, string>();
+            var edgeRelations = new CustomHashTable<string, string>();
 
             queue.Enqueue(startNodeId);
             visited.Put(startNodeId, true);
 
             bool found = false;
-
             while (!queue.IsEmpty)
             {
                 string currentId = queue.Dequeue();
-
                 if (currentId == targetNodeId)
                 {
                     found = true;
@@ -162,123 +87,86 @@ namespace SocialGraph.API.Algorithms
                 }
 
                 Edge[] edges = graph.GetEdges(currentId);
-                for (int i = 0; i < edges.Length; i++)
+                foreach (var edge in edges)
                 {
-                    Edge edge = edges[i];
-
                     if (edgeFilter != null && !edgeFilter(edge)) continue;
-
                     string neighborId = edge.DestinationId;
                     if (!visited.ContainsKey(neighborId))
                     {
                         visited.Put(neighborId, true);
                         parents.Put(neighborId, currentId);
+                        edgeRelations.Put(neighborId, edge.RelationType);
                         queue.Enqueue(neighborId);
                     }
                 }
             }
 
-            if (!found) return Array.Empty<string>();
+            if (!found) return Array.Empty<PathStep>();
 
-            // Hedef bulundu, geriye dogru (backtrack) yolu insa et
-            int pathLength = 1;
+            var pathList = new List<PathStep>();
             string curr = targetNodeId;
-            while (parents.ContainsKey(curr))
+            while (curr != startNodeId)
             {
-                pathLength++;
+                pathList.Add(new PathStep { NodeId = curr, Relation = edgeRelations.Get(curr) });
                 curr = parents.Get(curr);
             }
-
-            string[] path = new string[pathLength];
-            curr = targetNodeId;
-            for (int i = pathLength - 1; i >= 0; i--)
-            {
-                path[i] = curr;
-                if (i > 0) curr = parents.Get(curr);
-            }
-
-            return path;
+            pathList.Add(new PathStep { NodeId = startNodeId, Relation = "Baslangic" });
+            pathList.Reverse();
+            return pathList.ToArray();
         }
-        /// <summary>
-        /// Iki dugum arasindaki herhangi bir yolu (DFS algoritmasiyla) bulan metot.
-        /// Filtreleme kullanilarak belirli iliskiler (orn. sadece LIKES) uzerinden yol aranabilir.
-        /// Karmasiklik: O(V + E)
-        /// Uzay Karmasikligi: O(V)
-        /// </summary>
-        public static string[] DFS_Path(
-            PropertyGraph graph, 
-            string startNodeId, 
-            string targetNodeId, 
-            Func<Edge, bool> edgeFilter = null)
+
+        public static PathStep[] DFS_Path(PropertyGraph graph, string startNodeId, string targetNodeId, Func<Edge, bool> edgeFilter = null)
         {
-            if (graph == null || string.IsNullOrEmpty(startNodeId) || string.IsNullOrEmpty(targetNodeId))
-                return Array.Empty<string>();
-
-            if (graph.GetNode(startNodeId) == null || graph.GetNode(targetNodeId) == null)
-                return Array.Empty<string>();
-
             if (startNodeId == targetNodeId)
-                return new string[] { startNodeId };
+                return new[] { new PathStep { NodeId = startNodeId, Relation = "Baslangic" } };
 
             var visited = new CustomHashTable<string, bool>();
             var parents = new CustomHashTable<string, string>();
-            
-            bool found = DFS_Path_Recursive(graph, startNodeId, targetNodeId, visited, parents, edgeFilter);
+            var edgeRelations = new CustomHashTable<string, string>();
 
-            if (!found) return Array.Empty<string>();
-
-            // Hedef bulundu, geriye dogru (backtrack) yolu insa et
-            int pathLength = 1;
-            string curr = targetNodeId;
-            while (parents.ContainsKey(curr))
+            if (DFS_Path_Recursive(graph, startNodeId, targetNodeId, visited, parents, edgeRelations, edgeFilter))
             {
-                pathLength++;
-                curr = parents.Get(curr);
+                var pathList = new List<PathStep>();
+                string curr = targetNodeId;
+                while (curr != startNodeId)
+                {
+                    pathList.Add(new PathStep { NodeId = curr, Relation = edgeRelations.Get(curr) });
+                    curr = parents.Get(curr);
+                }
+                pathList.Add(new PathStep { NodeId = startNodeId, Relation = "Baslangic" });
+                pathList.Reverse();
+                return pathList.ToArray();
             }
 
-            string[] path = new string[pathLength];
-            curr = targetNodeId;
-            for (int i = pathLength - 1; i >= 0; i--)
-            {
-                path[i] = curr;
-                if (i > 0) curr = parents.Get(curr);
-            }
-
-            return path;
+            return Array.Empty<PathStep>();
         }
 
-        private static bool DFS_Path_Recursive(
-            PropertyGraph graph, 
-            string currentId, 
-            string targetNodeId,
-            CustomHashTable<string, bool> visited, 
-            CustomHashTable<string, string> parents,
-            Func<Edge, bool> edgeFilter)
+        private static bool DFS_Path_Recursive(PropertyGraph graph, string currentId, string targetId, 
+            CustomHashTable<string, bool> visited, CustomHashTable<string, string> parents, CustomHashTable<string, string> edgeRelations, Func<Edge, bool> edgeFilter)
         {
             visited.Put(currentId, true);
-
-            if (currentId == targetNodeId)
-                return true;
+            if (currentId == targetId) return true;
 
             Edge[] edges = graph.GetEdges(currentId);
-            for (int i = 0; i < edges.Length; i++)
+            foreach (var edge in edges)
             {
-                Edge edge = edges[i];
-
                 if (edgeFilter != null && !edgeFilter(edge)) continue;
-
                 string neighborId = edge.DestinationId;
                 if (!visited.ContainsKey(neighborId))
                 {
                     parents.Put(neighborId, currentId);
-                    if (DFS_Path_Recursive(graph, neighborId, targetNodeId, visited, parents, edgeFilter))
-                    {
+                    edgeRelations.Put(neighborId, edge.RelationType);
+                    if (DFS_Path_Recursive(graph, neighborId, targetId, visited, parents, edgeRelations, edgeFilter))
                         return true;
-                    }
                 }
             }
-
             return false;
         }
+    }
+
+    public struct PathStep
+    {
+        public string NodeId { get; set; }
+        public string Relation { get; set; }
     }
 }

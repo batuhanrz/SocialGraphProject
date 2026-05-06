@@ -180,6 +180,93 @@ namespace SocialGraph.API.Controllers
             return Ok(new { Message = "Tum sistem basariyla sifirlandi." });
         }
 
+        /// <summary>
+        /// Sistemi sifirlar ve baslangic (Seed) verilerini yukler.
+        /// POST /api/nodes/seed
+        /// </summary>
+        [HttpPost("seed")]
+        public ActionResult Seed()
+        {
+            // 1. Sifirla
+            _graph.Reset();
+            _trie.Clear();
+
+            var rnd = new System.Random();
+
+            // 2. Kullanici Listesi (50 Kisiye sabitlendi - Worker ile ayni)
+            string[] baseNames = {
+                "Batuhan", "Fatma", "Muhammed", "Isra", "Ozcan", "Ahmet", "Ayse", "Mehmet", "Zeynep", "Ali",
+                "Elif", "Huseyin", "Merve", "Hasan", "Esra", "Ibrahim", "Busra", "Halil", "Burcu", "Kemal"
+            };
+            string[] surnames = { "Yilmaz", "Kaya", "Celik", "Demir", "Sahin", "Koc", "Ozturk", "Aydin", "Ozdemir", "Arslan" };
+            string[] professions = { "Software Engineer", "Data Scientist", "UI/UX Designer", "Product Manager", "DevOps" };
+
+            // 50 Kullanici Olustur
+            for (int i = 1; i <= 50; i++)
+            {
+                string fullName = $"{baseNames[rnd.Next(baseNames.Length)]} {surnames[rnd.Next(surnames.Length)]}";
+                if (i <= 5) {
+                   string[] teamNames = { "Batuhan Yilmaz", "Fatma Sude Kaya", "Muhammed Furkan Celik", "Isra Nur Demir", "Ozcan Sahin" };
+                   fullName = teamNames[i-1];
+                }
+
+                var node = new Node($"user{i}", "User");
+                node.Properties.Put("Name", fullName);
+                node.Properties.Put("Profession", professions[rnd.Next(professions.Length)]);
+                _graph.AddNode(node);
+                _trie.Insert(fullName, node.Id);
+            }
+
+            // 3. Fotoğraflar (30 Adet)
+            for (int i = 1; i <= 30; i++)
+            {
+                var node = new Node($"photo{i}", "Photo");
+                node.Properties.Put("Title", $"Shared Moment {i}");
+                _graph.AddNode(node);
+                _trie.Insert($"Shared Moment {i}", node.Id);
+                
+                string ownerId = $"user{rnd.Next(1, 51)}";
+                _graph.AddEdge(new Edge($"ep{i}", ownerId, node.Id, "POSTED", true));
+            }
+
+            // 4. Etkinlikler (20 Adet)
+            string[] eventTypes = { "Summit", "Meetup", "Workshop", "Conference", "Hackathon" };
+            for (int i = 1; i <= 20; i++)
+            {
+                var node = new Node($"event{i}", "Event");
+                string eventName = $"{eventTypes[rnd.Next(eventTypes.Length)]} {i}";
+                node.Properties.Put("Name", eventName);
+                _graph.AddNode(node);
+                _trie.Insert(eventName, node.Id);
+            }
+
+            // 5. İlişkiler
+            for (int i = 1; i <= 50; i++)
+            {
+                int friendCount = rnd.Next(2, 5);
+                for (int j = 0; j < friendCount; j++)
+                {
+                    int targetIdx = rnd.Next(1, 51);
+                    if (i != targetIdx)
+                    {
+                        string sourceId = $"user{i}";
+                        string targetId = $"user{targetIdx}";
+                        _graph.AddEdge(new Edge($"e_{sourceId}_{targetId}", sourceId, targetId, "FRIEND", false));
+                        _graph.AddEdge(new Edge($"e_{targetId}_{sourceId}", targetId, sourceId, "FRIEND", false));
+                    }
+                }
+            }
+
+            for (int i = 1; i <= 50; i++)
+            {
+                // Like ve Attends
+                _graph.AddEdge(new Edge($"l_{i}", $"user{i}", $"photo{rnd.Next(1, 31)}", "LIKES", true));
+                _graph.AddEdge(new Edge($"a_{i}", $"user{i}", $"event{rnd.Next(1, 21)}", "ATTENDS", true));
+            }
+
+            return Ok(new { Message = "Sistem basariyla KALABALIK seed verileriyle başlatildi (180+ Node/Interaction)." });
+        }
+
         private static NodeDto MapToDto(Node node)
         {
             var props = new Dictionary<string, object>();

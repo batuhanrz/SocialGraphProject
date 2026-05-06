@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GitBranch, Link2, Zap, UserPlus, Network } from 'lucide-react';
 import { traversalService } from '../services/traversalService';
 import { nodeService } from '../services/nodeService';
-import type { INode, IRecommendation, IChainResponse } from '../types/graph';
+import type { INode, IRecommendation, IChainResponse, IPathStep } from '../types/graph';
 
 interface QueryPanelProps {
   onResultsFound: (nodeIds: string[], mode?: 'path' | 'recs' | 'chain') => void;
@@ -20,7 +20,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
   const [nodeLabels, setNodeLabels] = useState<Record<string, string>>({});
   const [chainRelations, setChainRelations] = useState<string[]>(['FRIEND', 'ATTENDS', 'UPLOADED']);
   const [showDirectionWarning, setShowDirectionWarning] = useState(false);
-  const [reportData, setReportData] = useState<{ path: string[], algo: 'BFS' | 'DFS' } | null>(null);
+  const [reportData, setReportData] = useState<{ path: IPathStep[], algo: 'BFS' | 'DFS' } | null>(null);
   const [recsReportData, setRecsReportData] = useState<IRecommendation[] | null>(null);
   const [chainReportData, setChainReportData] = useState<IChainResponse | null>(null);
   const [isReportOpen, setIsReportOpen] = useState(false);
@@ -32,7 +32,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
       const idsToResolve = [
         startNodeId, 
         targetNodeId, 
-        ...(reportData?.path || []), 
+        ...(reportData?.path.map(p => p.nodeId) || []), 
         ...(recsReportData?.map(r => r.node.id) || [])
       ].filter(id => id && !nodeLabels[id]) as string[];
       
@@ -77,7 +77,7 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
         setReportData({ path: results, algo: selectedAlgo });
         setIsReportOpen(true);
       }
-      onResultsFound(results, 'path');
+      onResultsFound(results.map(p => p.nodeId), 'path');
     } catch (err) {
       console.error(err);
     } finally {
@@ -256,30 +256,24 @@ const QueryPanel: React.FC<QueryPanelProps> = ({ onResultsFound, startNodeId, ta
                         <div className="report-steps">
                           <div className="step">
                             <span className="step-dot origin"></span>
-                            <span><strong>{nodeLabels[reportData.path[0]] || reportData.path[0]}</strong> dugumunden arama baslatildi.</span>
+                            <span><strong>{nodeLabels[reportData.path[0].nodeId] || reportData.path[0].nodeId}</strong> dugumunden arama baslatildi.</span>
                           </div>
                           
-                          {reportData.path.length > 2 && (
-                            <div className="step">
+                          {reportData.path.slice(1).map((step, idx) => (
+                            <div className="step" key={idx}>
                               <span className="step-dot"></span>
                               <span>
-                                {reportData.algo === 'BFS'
-                                  ? 'Ara katmanlardaki komsular genisleterek taraniyor...'
-                                  : 'Hedefe dogru derinlemesine (deep-dive) iniliyor...'}
+                                <span style={{ color: 'var(--accent-color)', fontWeight: 600, fontSize: '0.65rem', marginRight: '6px' }}>
+                                  {step.relation} →
+                                </span>
+                                <strong>{nodeLabels[step.nodeId] || step.nodeId}</strong> dugumune ulasildi.
                               </span>
-                            </div>
-                          )}
-
-                          {reportData.path.slice(1, -1).map((stepId) => (
-                            <div className="step" key={stepId}>
-                              <span className="step-dot"></span>
-                              <span><strong>{nodeLabels[stepId] || stepId}</strong> dugumune ulasildi.</span>
                             </div>
                           ))}
 
                           <div className="step">
                             <span className="step-dot target"></span>
-                            <span>Hedef dugum <strong>{nodeLabels[reportData.path[reportData.path.length - 1]] || reportData.path[reportData.path.length - 1]}</strong> bulundu!</span>
+                            <span>Hedef dugum <strong>{nodeLabels[reportData.path[reportData.path.length - 1].nodeId] || reportData.path[reportData.path.length - 1].nodeId}</strong> bulundu!</span>
                           </div>
                         </div>
                         <p className="report-outro">

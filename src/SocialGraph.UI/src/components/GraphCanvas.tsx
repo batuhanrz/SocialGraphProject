@@ -40,6 +40,9 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   const highlightNodeIdsRef = useRef<string[]>([]);
   useEffect(() => { highlightNodeIdsRef.current = highlightNodeIds; }, [highlightNodeIds]);
 
+  const highlightEdgeIdsRef = useRef<string[]>([]);
+  useEffect(() => { highlightEdgeIdsRef.current = highlightEdgeIds; }, [highlightEdgeIds]);
+
   const highlightModeRef = useRef<'path' | 'recs' | 'chain'>('path');
   useEffect(() => { highlightModeRef.current = highlightMode; }, [highlightMode]);
 
@@ -343,9 +346,16 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     }, 1000);
 
     // --- Akis Canliligi (Render Loop) ---
-    // Vis.js stabilized oldugunda (dugumler durdugunda) render durur, bu da akis animasyonunun donmasina neden olur.
-    // Eger bir path veya vurgu varsa, render'i manuel tetikleyerek akisi surekli kiliyoruz.
     let animationFrameId: number;
+    
+    const handleRefreshRequest = () => {
+      initData().then(() => {
+        if (networkRef.current) {
+          networkRef.current.fit({ animation: { duration: 1000, easingFunction: 'easeInOutQuad' } });
+        }
+      });
+    };
+
     const handleFitRequest = () => {
       if (networkRef.current) {
         networkRef.current.fit({ animation: { duration: 1000, easingFunction: 'easeInOutQuad' } });
@@ -353,10 +363,17 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     };
 
     window.addEventListener('fit-graph', handleFitRequest);
+    window.addEventListener('refresh-graph', handleRefreshRequest);
 
     const renderLoop = () => {
-      if (networkRef.current && highlightNodeIdsRef.current.length > 0) {
-        networkRef.current.redraw();
+      if (networkRef.current) {
+        const hasSelection = selectedNodeIdRef.current || 
+                           highlightNodeIdsRef.current.length > 0 || 
+                           highlightEdgeIdsRef.current.length > 0;
+        
+        if (hasSelection) {
+          networkRef.current.redraw();
+        }
       }
       animationFrameId = requestAnimationFrame(renderLoop);
     };
@@ -367,6 +384,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
       clearInterval(floatingKeeper);
+      window.removeEventListener('fit-graph', handleFitRequest);
+      window.removeEventListener('refresh-graph', handleRefreshRequest);
       networkRef.current?.destroy();
       networkRef.current = null;
     };
@@ -381,13 +400,17 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   // --- Secim Guncellemesi ---
   useEffect(() => {
     if (networkRef.current && selectedNodeId) {
-      networkRef.current.selectNodes([selectedNodeId]);
-      
-      // Sadece disaridan (orn: arama kutusundan) secildiyse kamera odaklansin
-      if (!isDraggingRef.current && lastInteractedNodeIdRef.current !== selectedNodeId) {
-        networkRef.current.focus(selectedNodeId, {
-          animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
-        });
+      // Düğümün varlığını kontrol et (RangeError'ı önlemek için)
+      const nodeExists = nodesDataSetRef.current.get(selectedNodeId) !== null;
+      if (nodeExists) {
+        networkRef.current.selectNodes([selectedNodeId]);
+        
+        // Sadece disaridan (orn: arama kutusundan) secildiyse kamera odaklansin
+        if (!isDraggingRef.current && lastInteractedNodeIdRef.current !== selectedNodeId) {
+          networkRef.current.focus(selectedNodeId, {
+            animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
+          });
+        }
       }
     }
   }, [selectedNodeId]);
@@ -417,10 +440,11 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         if (highlightMode) shadow = { enabled: true, color: '#ef4444', size: 25 };
       } else if (isOrigin) {
         borderColor = '#3b82f6'; bw = 5; fontSize = 16;
-        if (highlightMode) shadow = { enabled: true, color: '#3b82f6', size: 30 };
+        // Her zaman bir parlama olsun, highlightMode varsa daha guclu olsun
+        shadow = { enabled: true, color: '#3b82f6', size: highlightMode ? 35 : 20 };
       } else if (isTarget) {
         borderColor = '#ef4444'; bw = 5; fontSize = 16;
-        if (highlightMode) shadow = { enabled: true, color: '#ef4444', size: 30 };
+        shadow = { enabled: true, color: '#ef4444', size: highlightMode ? 35 : 20 };
       } else if (isPinned) {
         borderColor = '#a855f7'; bw = 5;
       } else if (isPath) {
@@ -450,11 +474,15 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   }, [selectedNodeId, targetNodeId, highlightNodeIds, highlightMode, dataVersion]);
 
   // --- Kenar Glow Efekti ---
+  // --- Kenar Glow Efekti (Path, Chain ve Direkt Secim) ---
   useEffect(() => {
     if (!networkRef.current) return;
 
     const allEdges = edgesDataSetRef.current.get();
     const updatedEdges = allEdges.map(edge => {
+      const edgeId = edge.id as string;
+      const isDirectlyHighlighted = highlightEdgeIds.includes(edgeId);
+      
       const fromIdx = highlightNodeIds.indexOf(edge.from as string);
       const toIdx = highlightNodeIds.indexOf(edge.to as string);
       const isPathEdge = highlightMode !== 'recs' && highlightMode !== 'chain'
@@ -466,15 +494,29 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         && highlightNodeIds.includes(edge.from as string)
         && highlightNodeIds.includes(edge.to as string);
 
+      // Priority 1: Direct Highlight (Simulation Actions)
+      if (isDirectlyHighlighted) {
+        return {
+          ...edge,
+          color: { color: '#f59e0b', highlight: '#f59e0b' },
+          width: 5,
+          shadow: { enabled: true, color: '#f59e0b', size: 20 }
+        };
+      }
+
+      // Priority 2: Path Edge (BFS/DFS)
       if (isPathEdge) {
         return {
           ...edge,
           color: { color: 'rgba(16, 185, 129, 0.25)', highlight: 'rgba(16, 185, 129, 0.5)' },
           width: 4,
-          smooth: false, // Animasyonun duz cizgi uzerinde dogru calismasi icin
+          smooth: false,
           shadow: false
         };
-      } else if (isChainEdge) {
+      } 
+      
+      // Priority 3: Chain Edge (ExecuteChainQuery)
+      if (isChainEdge) {
         return {
           ...edge,
           color: { color: 'rgba(6, 182, 212, 0.25)', highlight: 'rgba(6, 182, 212, 0.5)' },
@@ -483,6 +525,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
         };
       }
 
+      // Default: Normal State
       return {
         ...edge,
         color: { color: 'rgba(255,255,255,0.15)', highlight: '#3b82f6' },
@@ -492,31 +535,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     });
 
     edgesDataSetRef.current.update(updatedEdges);
-  }, [highlightNodeIds, highlightMode, dataVersion]);
-
-  // --- Edge Highlighting (Direct Selection) ---
-  useEffect(() => {
-    if (!networkRef.current) return;
-
-    const allEdges = edgesDataSetRef.current.get();
-    const updatedEdges = allEdges.map(edge => {
-      const isHighlighted = highlightEdgeIds.includes(edge.id as string);
-
-      if (isHighlighted) {
-        return {
-          ...edge,
-          color: { color: '#f59e0b', highlight: '#f59e0b' },
-          width: 5,
-          shadow: { enabled: true, color: '#f59e0b', size: 15 }
-        };
-      }
-
-      // Default state reset (already handled in the effect above, but we ensure it matches)
-      return edge;
-    });
-
-    edgesDataSetRef.current.update(updatedEdges);
-  }, [highlightEdgeIds]);
+  }, [highlightNodeIds, highlightEdgeIds, highlightMode, dataVersion]);
 
   return (
     <div

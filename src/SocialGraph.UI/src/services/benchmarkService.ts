@@ -16,6 +16,11 @@ export const benchmarkService = {
     if (!response.ok) throw new Error('System reset failed');
   },
 
+  seedSystem: async () => {
+    const response = await fetch('http://localhost:5000/api/nodes/seed', { method: 'POST' });
+    if (!response.ok) throw new Error('System seeding failed');
+  },
+
   runBenchmark: async (onProgress: (msg: string) => void): Promise<BenchmarkResult[]> => {
     const scales = [100, 500, 1000, 5000];
     const results: BenchmarkResult[] = [];

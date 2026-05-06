@@ -21,6 +21,9 @@ const BenchmarkModal: React.FC<BenchmarkModalProps> = ({ isOpen, onClose }) => {
       const data = await benchmarkService.runBenchmark(setProgress);
       setResults(data);
       setProgress('Audit Complete: Performance Data Ready.');
+      
+      // Grafi aninda guncelle ve fit yap
+      window.dispatchEvent(new CustomEvent('refresh-graph'));
     } catch (err) {
       setProgress('Audit Failed: API Connection Error.');
       console.error(err);
