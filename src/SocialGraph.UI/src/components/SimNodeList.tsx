@@ -227,23 +227,30 @@ export const SimNodeList: React.FC<SimNodeListProps> = ({ onNodeSelect, onEdgeSe
                 <div key={action.id} 
                      onMouseEnter={() => setHoveredNodeId(action.sourceId)}
                      onMouseLeave={() => setHoveredNodeId(null)}
-                     onClick={() => {
-                        if (action.type === 0) onNodeSelect(action.sourceId);
-                        else if (action.type === 1) {
-                          // The worker doesn't log edge ID, but we can find it in our records
-                          // For now, let's just select the source node and highlight the relation if we can find it
+                      onClick={async () => {
+                        if (action.type === 0) {
                           onNodeSelect(action.sourceId);
-                          // We need the ACTUAL edge ID from the graph
-                          // I'll try to find an edge that matches source and target
-                          const matchedEdge = Object.values(nodeRelations).flat().find(e => 
-                            (e.sourceId === action.sourceId && e.targetId === action.targetId) ||
-                            (e.sourceId === action.targetId && e.targetId === action.sourceId)
-                          );
-                          if (matchedEdge && onEdgeSelect) onEdgeSelect(matchedEdge.id);
+                        } else if (action.type === 1 || action.type === 2 || action.type === 3) {
+                          onNodeSelect(action.sourceId);
+                          
+                          // Tum kenarlari cek ve bu aksiyona uyan kenari bul (Glow icin)
+                          try {
+                            const allEdges = await nodeService.getAllEdges();
+                            const matchedEdge = allEdges.find(e => 
+                              (e.sourceId === action.sourceId && e.targetId === action.targetId) ||
+                              (e.sourceId === action.targetId && e.targetId === action.sourceId)
+                            );
+                            
+                            if (matchedEdge && onEdgeSelect) {
+                              onEdgeSelect(matchedEdge.id);
+                            }
+                          } catch (err) {
+                            console.error("Edge find failed", err);
+                          }
                         } else {
                           onNodeSelect(action.sourceId);
                         }
-                     }}
+                      }}
                      style={{
                         padding: '10px 12px', borderRadius: '8px', marginBottom: '2px', display: 'flex', alignItems: 'flex-start', gap: '10px', transition: 'all 0.2s',
                         background: hoveredNodeId === action.sourceId ? 'rgba(255,255,255,0.05)' : 'transparent',

@@ -1,5 +1,5 @@
 import { fetchApi } from './apiService';
-import type { IRecommendation, IChainResponse } from '../types/graph';
+import type { IRecommendation, IChainResponse, IPathStep } from '../types/graph';
 
 export const traversalService = {
     bfs: async (startNodeId: string): Promise<string[]> => {
@@ -10,8 +10,8 @@ export const traversalService = {
         return fetchApi<string[]>(`/traversal/dfs?startNodeId=${encodeURIComponent(startNodeId)}`);
     },
 
-    shortestPath: async (startNodeId: string, targetNodeId: string, algorithm: string): Promise<string[]> => {
-        return fetchApi<string[]>(
+    shortestPath: async (startNodeId: string, targetNodeId: string, algorithm: string): Promise<IPathStep[]> => {
+        return fetchApi<IPathStep[]>(
             `/traversal/shortestpath?startNodeId=${encodeURIComponent(startNodeId)}&targetNodeId=${encodeURIComponent(targetNodeId)}&algorithm=${encodeURIComponent(algorithm)}`
         );
     },

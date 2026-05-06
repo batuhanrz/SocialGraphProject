@@ -76,16 +76,24 @@ classDiagram
 The system is designed with a decoupled architecture involving Frontend, API, and a background AI service.
 
 ```mermaid
-componentDiagram
-    [React Frontend] as UI
-    [SocialGraph.API] as API
-    [SocialGraph.AI] as AI
-    database "In-Memory Graph" as DB
+graph TD
+    subgraph Frontend
+        UI["React Frontend (UI)"]
+    end
 
-    UI --( REST API --> API
-    API --( Internal Service --> AI : Requests Data
-    AI --( Data Stream --> API : Seed Data
-    API ..> DB : Manages
+    subgraph Backend
+        API["SocialGraph.API (Core Engine)"]
+        DB[("In-Memory Graph (HashTable)")]
+    end
+
+    subgraph Simulation
+        AI["SocialGraph.AI (Worker)"]
+    end
+
+    UI -- "REST API (JSON)" --> API
+    API -- "Internal Service" --> AI
+    AI -- "Data Stream (Seed)" --> API
+    API --- DB
 ```
 
 ---

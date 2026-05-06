@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using SocialGraph.API.DataStructures;
 using SocialGraph.API.Models;
 using SocialGraph.API.Algorithms;
@@ -123,16 +124,16 @@ namespace SocialGraph.API
             graph.AddEdge(new Edge("e4", "C", "E", "FRIEND"));
 
             Console.Write("BFS Ciktisi (Beklenen: A, B, C, D, E): ");
-            GraphTraversal.BFS(graph, "A", (node) => Console.Write(node.Id + ", "));
+            GraphTraversal.BFS(graph, "A", (id) => Console.Write(id + ", "));
             Console.WriteLine();
 
             Console.Write("DFS Ciktisi: ");
-            GraphTraversal.DFS(graph, "A", (node) => Console.Write(node.Id + ", "));
+            GraphTraversal.DFS(graph, "A", (id) => Console.Write(id + ", "));
             Console.WriteLine();
 
             Console.Write("Shortest Path A to E (Beklenen: A, C, E): ");
             var path = GraphTraversal.ShortestPath(graph, "A", "E");
-            Console.WriteLine(string.Join(", ", path));
+            Console.WriteLine(string.Join(", ", path.Select(p => p.NodeId)));
 
             Console.WriteLine("[BASARILI] BFS, DFS ve ShortestPath algoritmalari PropertyGraph uzerinde dogru calisiyor.");
         }

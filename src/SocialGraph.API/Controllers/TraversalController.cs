@@ -37,7 +37,7 @@ namespace SocialGraph.API.Controllers
                 return NotFound($"Dugum bulunamadi: {startNodeId}");
 
             var visitedIds = new List<string>();
-            GraphTraversal.BFS(_graph, startNodeId, node => visitedIds.Add(node.Id));
+            GraphTraversal.BFS(_graph, startNodeId, (id) => visitedIds.Add(id));
 
             return Ok(visitedIds);
         }
@@ -56,7 +56,7 @@ namespace SocialGraph.API.Controllers
                 return NotFound($"Dugum bulunamadi: {startNodeId}");
 
             var visitedIds = new List<string>();
-            GraphTraversal.DFS(_graph, startNodeId, node => visitedIds.Add(node.Id));
+            GraphTraversal.DFS(_graph, startNodeId, (id) => visitedIds.Add(id));
 
             return Ok(visitedIds);
         }
@@ -66,7 +66,7 @@ namespace SocialGraph.API.Controllers
         /// GET /api/traversal/shortestpath?startNodeId=...&targetNodeId=...&algorithm=BFS
         /// </summary>
         [HttpGet("shortestpath")]
-        public ActionResult<IEnumerable<string>> RunShortestPath([FromQuery] string startNodeId, [FromQuery] string targetNodeId, [FromQuery] string algorithm = "BFS")
+        public ActionResult<IEnumerable<PathStep>> RunShortestPath([FromQuery] string startNodeId, [FromQuery] string targetNodeId, [FromQuery] string algorithm = "BFS")
         {
             if (string.IsNullOrWhiteSpace(startNodeId) || string.IsNullOrWhiteSpace(targetNodeId))
                 return BadRequest("startNodeId ve targetNodeId gereklidir.");
@@ -74,7 +74,7 @@ namespace SocialGraph.API.Controllers
             if (_graph.GetNode(startNodeId) == null || _graph.GetNode(targetNodeId) == null)
                 return NotFound("Kaynak veya hedef dugum bulunamadi.");
 
-            string[] path;
+            PathStep[] path;
             if (string.Equals(algorithm, "DFS", StringComparison.OrdinalIgnoreCase))
             {
                 path = GraphTraversal.DFS_Path(_graph, startNodeId, targetNodeId);

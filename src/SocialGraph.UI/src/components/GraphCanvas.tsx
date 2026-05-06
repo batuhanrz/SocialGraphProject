@@ -343,9 +343,16 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     }, 1000);
 
     // --- Akis Canliligi (Render Loop) ---
-    // Vis.js stabilized oldugunda (dugumler durdugunda) render durur, bu da akis animasyonunun donmasina neden olur.
-    // Eger bir path veya vurgu varsa, render'i manuel tetikleyerek akisi surekli kiliyoruz.
     let animationFrameId: number;
+    
+    const handleRefreshRequest = () => {
+      initData().then(() => {
+        if (networkRef.current) {
+          networkRef.current.fit({ animation: { duration: 1000, easingFunction: 'easeInOutQuad' } });
+        }
+      });
+    };
+
     const handleFitRequest = () => {
       if (networkRef.current) {
         networkRef.current.fit({ animation: { duration: 1000, easingFunction: 'easeInOutQuad' } });
@@ -353,6 +360,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     };
 
     window.addEventListener('fit-graph', handleFitRequest);
+    window.addEventListener('refresh-graph', handleRefreshRequest);
 
     const renderLoop = () => {
       if (networkRef.current && highlightNodeIdsRef.current.length > 0) {
@@ -367,6 +375,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
       clearInterval(floatingKeeper);
+      window.removeEventListener('fit-graph', handleFitRequest);
+      window.removeEventListener('refresh-graph', handleRefreshRequest);
       networkRef.current?.destroy();
       networkRef.current = null;
     };
@@ -381,13 +391,17 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
   // --- Secim Guncellemesi ---
   useEffect(() => {
     if (networkRef.current && selectedNodeId) {
-      networkRef.current.selectNodes([selectedNodeId]);
-      
-      // Sadece disaridan (orn: arama kutusundan) secildiyse kamera odaklansin
-      if (!isDraggingRef.current && lastInteractedNodeIdRef.current !== selectedNodeId) {
-        networkRef.current.focus(selectedNodeId, {
-          animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
-        });
+      // Düğümün varlığını kontrol et (RangeError'ı önlemek için)
+      const nodeExists = nodesDataSetRef.current.get(selectedNodeId) !== null;
+      if (nodeExists) {
+        networkRef.current.selectNodes([selectedNodeId]);
+        
+        // Sadece disaridan (orn: arama kutusundan) secildiyse kamera odaklansin
+        if (!isDraggingRef.current && lastInteractedNodeIdRef.current !== selectedNodeId) {
+          networkRef.current.focus(selectedNodeId, {
+            animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
+          });
+        }
       }
     }
   }, [selectedNodeId]);
