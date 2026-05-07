@@ -111,3 +111,59 @@ function ReconstructPath(parents, targetNode):
     path.add(current)  // startNode
     return reverse(path)
 ```
+---
+
+## 5. Önek Ağacı (Trie - Autocomplete)
+
+**Çalışma Mantığı:** Her düğümün bir harfi temsil ettiği ve kökten uca doğru gidildiğinde kelimelerin oluştuğu hiyerarşik bir ağaç yapısıdır. Metin tabanlı aramalarda kelimenin tamamını gezmek yerine sadece harf sayısı kadar derinliğe inilir.
+
+**Neden Kullanıldı?** 
+Arayüzdeki arama kutusunda kullanıcı isimlerini veya fotoğraf başlıklarını O(m) karmaşıklığında (m = kelime uzunluğu) bulmak ve otomatik tamamlama önerileri sunmak için.
+
+**Pseudocode:**
+```text
+function Trie_Insert(root, word):
+    currentNode = root
+    for char in word:
+        if not currentNode.children.containsKey(char):
+            currentNode.children.put(char, new TrieNode())
+        currentNode = currentNode.children.get(char)
+    currentNode.isEndOfWord = true
+
+function Trie_SearchSuggestions(root, prefix):
+    currentNode = root
+    for char in prefix:
+        if not currentNode.children.containsKey(char):
+            return empty_list
+        currentNode = currentNode.children.get(char)
+    
+    return CollectAllWordsUnderNode(currentNode, prefix)
+```
+
+---
+
+## 6. Çok Adımlı İlişkisel Sorgular (Relational Chain Queries)
+
+**Çalışma Mantığı:** Graf üzerinde belirli bir ilişki sırasını takip eden "Pipeline" tipi sorgulardır. (Örn: Kullanıcı -> Arkadaş -> Katıldığı Etkinlik -> Etkinlikteki Fotoğraflar). Her adım bir önceki adımın çıktılarını girdi olarak alır.
+
+**Neden Kullanıldı?** 
+Sosyal ağlardaki karmaşık ilişkisel verileri (Kullanıcının arkadaşlarının katıldığı etkinlikler vb.) tek bir seferde ve verimli bir şekilde çekebilmek için.
+
+**Pseudocode:**
+```text
+function ExecuteChainQuery(graph, startNode, relationTypes[]):
+    currentNodes = [startNode]
+    
+    for relationType in relationTypes:
+        nextNodes = new Set() // Tekilleştirme için CustomHashTable kullanılabilir
+        for node in currentNodes:
+            neighbors = graph.getNeighborsByType(node, relationType)
+            for neighbor in neighbors:
+                nextNodes.add(neighbor)
+        currentNodes = nextNodes.toList()
+        
+    return currentNodes
+```
+
+**Performans Analizi:** 
+Bu algoritma, O(k * (V + E)) karmaşıklığında çalışır (k = zincir uzunluğu). Her adımda grafın bir katmanı taranır. `CustomHashTable` kullanılarak ara sonuçların tekilleştirilmesi, verim kaybını ve sonsuz döngüleri engeller.
