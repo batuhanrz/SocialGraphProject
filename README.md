@@ -142,7 +142,7 @@ Projenin final teslimatına (12-13. Hafta) kadar geçecek sürede aşağıdaki a
 - **Demo:** Tüm sistemin çalıştığını gösteren final sunum videosu hazırlanacaktır.
 
 **Daha detaylı dökümantasyon için:**
-- [Detaylandırılmış Ara Rapor (Teknik Dökümantasyon)](./Markdowns/Project/Interim_Report.md)
+- [Algoritma Dokümantasyonu (Teknik Detaylar)](./Markdowns/Project/Algorithm_Documentation.md)
 - [Big-O Analiz Raporu](./Markdowns/Project/BigO_Analysis.md)
 - [Sprint Detayları](./Markdowns/Sprints/Sprint_3_detailed.md)
 - [Kişisel Raporlar](./Markdowns/Personal_Reports/)
