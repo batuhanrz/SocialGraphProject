@@ -66,14 +66,13 @@ graph TD
 ```
 
 ### Akademik Dokümantasyon
-Proje savunması ve detaylı inceleme için aşağıdaki raporları kullanabilirsiniz:
+Proje savunması (Code Defense) ve teknik detaylar için hazırlanan kapsamlı nihai rapor:
 
 | Doküman | İçerik | Link |
 | :--- | :--- | :--- |
-| **Performans Analizi** | Big-O Karmaşıklık Analizi ve Benchmark Sonuçları | [BigO_Analysis.md](file:///c:/Users/React/SocialGraphProject/Markdowns/Project/BigO_Analysis.md) |
-| **UML Diyagramları** | Sınıf (Class) ve Akış (Sequence) Diyagramları | [UML_Diagrams.md](file:///c:/Users/React/SocialGraphProject/Markdowns/Project/UML_Diagrams.md) |
-| **AI Prompt Logları** | Sentetik Veri Üretimi İçin Kullanılan Promptlar | [prompt.md](file:///c:/Users/React/SocialGraphProject/Markdowns/Prompts/prompt.md) |
-| **Görev Dağılımı** | Takım Üyeleri ve Kişisel Katkı Raporları | [Personal_Reports/](file:///c:/Users/React/SocialGraphProject/Markdowns/Personal_Reports/) |
+| **Nihai Teknik Rapor** | UML Diyagramları, Big-O Analizi, Algoritmalar ve AI Prompt Logları | [Final_Report.md](file:///c:/Users/React/SocialGraphProject/Markdowns/Project/Final_Report.md) |
+
+---
 
 ---
 
@@ -142,7 +141,6 @@ Projenin final teslimatına (12-13. Hafta) kadar geçecek sürede aşağıdaki a
 - **Demo:** Tüm sistemin çalıştığını gösteren final sunum videosu hazırlanacaktır.
 
 **Daha detaylı dökümantasyon için:**
-- [Algoritma Dokümantasyonu (Teknik Detaylar)](./Markdowns/Project/Algorithm_Documentation.md)
-- [Big-O Analiz Raporu](./Markdowns/Project/BigO_Analysis.md)
+- [Nihai Teknik Rapor (Tüm Detaylar)](./Markdowns/Project/Final_Report.md)
+- [Kişisel Raporlar ve Görev Dağılımı](./Markdowns/Personal_Reports/)
 - [Sprint Detayları](./Markdowns/Sprints/Sprint_3_detailed.md)
-- [Kişisel Raporlar](./Markdowns/Personal_Reports/)

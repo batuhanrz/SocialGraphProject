@@ -16,7 +16,9 @@ classDiagram
         +AddNode(Node node)
         +AddEdge(Edge edge)
         +GetNode(string id) Node
-        +GetNeighbors(string id) List~Node~
+        +GetAllNodes() Node[]
+        +GetNeighbors(string id) Node[]
+        +GetEdgesByType(string id, string type) Edge[]
     }
 
     class CustomHashTable~TKey, TValue~ {
@@ -26,6 +28,7 @@ classDiagram
         -int count
         +Put(TKey key, TValue value)
         +Get(TKey key) TValue
+        +TryGetValue(TKey key, out TValue value) bool
         +Remove(TKey key) bool
         -Rehash()
     }
@@ -61,12 +64,19 @@ classDiagram
         +CustomHashTable properties
     }
 
+    class TrieNode {
+        -CustomHashTable children
+        -bool IsEndOfWord
+    }
+
     PropertyGraph "1" *-- "many" Node : Contains
     PropertyGraph "1" *-- "many" Edge : Manages
     PropertyGraph ..> CustomHashTable : Uses for storage
     Node "1" *-- "1" CustomHashTable : Stores Properties
     Edge "1" *-- "1" CustomHashTable : Stores Properties
-    CustomTrie "1" *-- "many" TrieNode : Contains
+    CustomTrie "1" *-- "1" TrieNode : Root Node
+    TrieNode "1" *-- "many" TrieNode : Children
+    TrieNode ..> CustomHashTable : Uses for child storage
 ```
 
 ---
@@ -86,13 +96,12 @@ graph TD
         DB[("In-Memory Graph (HashTable)")]
     end
 
-    subgraph Simulation
+    subgraph Simulation_Engine
         AI["SocialGraph.AI (Worker)"]
     end
 
     UI -- "REST API (JSON)" --> API
-    API -- "Internal Service" --> AI
-    AI -- "Data Stream (Seed)" --> API
+    AI -- "Async Data Stream" --> API
     API --- DB
 ```
 
