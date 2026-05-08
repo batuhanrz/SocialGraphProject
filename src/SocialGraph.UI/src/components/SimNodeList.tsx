@@ -230,11 +230,13 @@ export const SimNodeList: React.FC<SimNodeListProps> = ({ onNodeSelect, onEdgeSe
                      onMouseEnter={() => setHoveredNodeId(action.sourceId)}
                      onMouseLeave={() => setHoveredNodeId(null)}
                        onClick={() => {
+                        // Grafı anında güncellemeye zorla (Yeni düğümlerin hemen yüklenmesi için)
+                        window.dispatchEvent(new CustomEvent('refresh-graph'));
+                        
                         // Her durumda source node'u sec
                         onNodeSelect(action.sourceId);
                         
                         if (action.type === 1 || action.type === 2 || action.type === 3) {
-                          // Cached edge listesinden uygun kenari aninda bul
                           const matchedEdge = allRawEdges.find(e => 
                             (e.sourceId === action.sourceId && e.targetId === action.targetId) ||
                             (e.sourceId === action.targetId && e.targetId === action.sourceId)

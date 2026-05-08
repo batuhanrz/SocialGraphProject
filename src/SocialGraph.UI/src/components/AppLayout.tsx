@@ -20,10 +20,6 @@ const AppLayout: React.FC = () => {
 
   const handleNodeSelect = useCallback((id: string) => {
     setSelectedNodeId(id);
-    setHighlightNodeIds(prev => {
-      if (!prev.includes(id)) return [];
-      return prev;
-    });
   }, []);
 
   const handleNodeRightClick = useCallback((id: string) => {
@@ -112,7 +108,7 @@ const AppLayout: React.FC = () => {
                 try {
                   await benchmarkService.seedSystem();
                   setBenchmarkResults(null); 
-                  window.dispatchEvent(new CustomEvent('refresh-graph'));
+                  window.dispatchEvent(new CustomEvent('refresh-graph', { detail: { hard: true } }));
                   window.dispatchEvent(new CustomEvent('reset-benchmark'));
                 } catch (err) {
                   alert('Sifirlama hatasi: ' + err);

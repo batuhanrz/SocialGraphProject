@@ -181,16 +181,16 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
           springLength: 150,
           springConstant: 0.04
         },
-        maxVelocity: 20,
+        maxVelocity: 40,
         solver: 'forceAtlas2Based',
-        timestep: 0.25,
-        stabilization: false // Hemen basla, bekleme yok
+        timestep: 0.3,
+        stabilization: { enabled: true, iterations: 50 }
       },
       interaction: {
         hover: true,
         tooltipDelay: 200,
         hideEdgesOnDrag: false,
-        multiselect: false, // Shift+Drag (box selection) iptal ederek pinleme cakismasini giderir
+        multiselect: false,
         selectable: true,
         dragNodes: true
       }
@@ -201,7 +201,30 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       { nodes: nodesDataSetRef.current, edges: edgesDataSetRef.current },
       options
     );
-    
+
+    // --- Akilli Fizik Kontrolu (Sok ve Sakinlestirme) ---
+    networkRef.current.on('stabilized', () => {
+      if (!physicsSlowedRef.current) {
+        networkRef.current?.setOptions({
+          physics: { maxVelocity: 25, timestep: 0.2, stabilization: false }
+        });
+        physicsSlowedRef.current = true;
+        // Stabilize oldugunda ekrana sigdir (Chaos bittigi an)
+        networkRef.current?.fit({ animation: { duration: 1000, easingFunction: 'easeInOutQuad' } });
+      }
+    });
+
+    // Eger 4 saniye gecti hala stabilize olmadiysa zorla sakinlestir ve sığdır
+    setTimeout(() => {
+      if (!physicsSlowedRef.current && networkRef.current) {
+        networkRef.current.setOptions({
+          physics: { maxVelocity: 25, timestep: 0.2, stabilization: false }
+        });
+        physicsSlowedRef.current = true;
+        networkRef.current.fit({ animation: { duration: 800, easingFunction: 'easeInOutQuad' } });
+      }
+    }, 4000);
+
     // Senkronizasyon sorunlarini (lag) onlemek icin ref'i aninda guncelleyen yardimci
     const selectNodeImmediate = (id: string) => {
       selectedNodeIdRef.current = id;
@@ -323,7 +346,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     // --- Floating Keeper + Otomatik Fit ---
     const floatingKeeper = setInterval(() => {
       if (!networkRef.current || isDraggingRef.current) return;
-      
+
       // Ilk fit: veri yuklendikten hemen sonra
       if (!isFirstFitDoneRef.current && nodesDataSetRef.current.length > 0) {
         networkRef.current.fit({
@@ -335,8 +358,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       // Yavas suzulme moduna gec (1 kere)
       if (!physicsSlowedRef.current && isFirstFitDoneRef.current) {
         networkRef.current.setOptions({
-          physics: { 
-            maxVelocity: 2, 
+          physics: {
+            maxVelocity: 2,
             timestep: 0.2,
             minVelocity: 0.001 // Neredeyse hic durma seviyesi
           }
@@ -347,28 +370,27 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
 
     // --- Akis Canliligi (Render Loop) ---
     let animationFrameId: number;
-    
-    const handleRefreshRequest = () => {
-      // 1. Hard Clear: Hafizayi tamamen bosalt (Hayalet dugumleri onle)
-      nodesDataSetRef.current.clear();
-      edgesDataSetRef.current.clear();
-      
-      isFirstFitDoneRef.current = false;
-      physicsSlowedRef.current = false;
 
-      // 2. Fizik Motorunu Hizli Moda Al (Yeniden yerlesim icin)
-      if (networkRef.current) {
-        networkRef.current.setOptions({
-          physics: { maxVelocity: 20, timestep: 0.25 }
-        });
-        networkRef.current.startSimulation();
+    const handleRefreshRequest = (e: any) => {
+      const isHard = e.detail?.hard === true;
+
+      if (isHard) {
+        // Hard Clear: Hafizayi tamamen bosalt (Sistem sifirlama durumunda)
+        nodesDataSetRef.current.clear();
+        edgesDataSetRef.current.clear();
+        isFirstFitDoneRef.current = false;
+        physicsSlowedRef.current = false;
+
+        if (networkRef.current) {
+          networkRef.current.setOptions({
+            physics: { maxVelocity: 40, timestep: 0.3, stabilization: { enabled: true, iterations: 50 } }
+          });
+          networkRef.current.startSimulation();
+        }
       }
 
-      initData().then(() => {
-        // Artik burada manuel fit() cagirmiyoruz. 
-        // Cunku floatingKeeper (setInterval) isFirstFitDoneRef'in false oldugunu gorup 
-        // en saglikli zamanda (stabilizasyon sonrasi) fit() yapacak.
-      });
+      // Her durumda verileri cek ve guncelle (Soft Update)
+      initData();
     };
 
     const handleFitRequest = () => {
@@ -382,10 +404,10 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
 
     const renderLoop = () => {
       if (networkRef.current) {
-        const hasSelection = selectedNodeIdRef.current || 
-                           highlightNodeIdsRef.current.length > 0 || 
-                           highlightEdgeIdsRef.current.length > 0;
-        
+        const hasSelection = selectedNodeIdRef.current ||
+          highlightNodeIdsRef.current.length > 0 ||
+          highlightEdgeIdsRef.current.length > 0;
+
         if (hasSelection) {
           networkRef.current.redraw();
         }
@@ -419,7 +441,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
       const nodeExists = nodesDataSetRef.current.get(selectedNodeId) !== null;
       if (nodeExists) {
         networkRef.current.selectNodes([selectedNodeId]);
-        
+
         // Sadece disaridan (orn: arama kutusundan) secildiyse kamera odaklansin
         if (!isDraggingRef.current && lastInteractedNodeIdRef.current !== selectedNodeId) {
           networkRef.current.focus(selectedNodeId, {
@@ -486,6 +508,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     });
 
     nodesDataSetRef.current.update(updatedNodes);
+    networkRef.current?.redraw();
   }, [selectedNodeId, targetNodeId, highlightNodeIds, highlightMode, dataVersion]);
 
   // --- Kenar Glow Efekti ---
@@ -497,7 +520,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     const updatedEdges = allEdges.map(edge => {
       const edgeId = edge.id as string;
       const isDirectlyHighlighted = highlightEdgeIds.includes(edgeId);
-      
+
       const fromIdx = highlightNodeIds.indexOf(edge.from as string);
       const toIdx = highlightNodeIds.indexOf(edge.to as string);
       const isPathEdge = highlightMode !== 'recs' && highlightMode !== 'chain'
@@ -528,8 +551,8 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
           smooth: false,
           shadow: false
         };
-      } 
-      
+      }
+
       // Priority 3: Chain Edge (ExecuteChainQuery)
       if (isChainEdge) {
         return {
@@ -550,6 +573,7 @@ const GraphCanvas: React.FC<GraphCanvasProps> = ({
     });
 
     edgesDataSetRef.current.update(updatedEdges);
+    networkRef.current?.redraw();
   }, [highlightNodeIds, highlightEdgeIds, highlightMode, dataVersion]);
 
   return (
