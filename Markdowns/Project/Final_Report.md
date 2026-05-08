@@ -318,7 +318,7 @@ sequenceDiagram
 | Shortest Path | BFS-based | O(V + E) | O(V + E) | O(V) |
 | Multi-step Query | Chain traversal | O(k x (V + E)) | O(k x (V + E)) | O(V) |
 
-## 2. Karma siklik Aciklamalari
+## 2. Karmasiklik Aciklamalari
 
 ### CustomHashTable
 Hash Table, anahtarin hash degerini hesaplayarak dogrudan ilgili indekse erisir. Cakisma (collision) olmadigi surece okuma ve yazma islemleri sabit zamanda O(1) gerceklesir.
