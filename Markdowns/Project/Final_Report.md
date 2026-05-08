@@ -347,11 +347,9 @@ Deneysel veriler, teorik Big-O analizleri ile %100 ortusmektedir. 5000 dugum ici
 
 ## 5. AI Prompt Loglari (Sentetik Veri Uretimi)
 
-**Prompt 1 (Kullanici Verileri):**
-*"Bana 50 adet gercekci Turk adi ve soyadi olustur. ASCII karakterlere (c, s, g icermeyen) uygun olsun."*
+**Ana Veri Uretim Promptu (Master Prompt):**
 
-**Prompt 2 (Iliski Modelleme):**
-*"Bir sosyal ag icin 'FRIEND', 'LIKES', 'POSTED' ve 'ATTENDS' iliskilerini iceren 100 adet anlamli kenar verisi uret."*
+*Act as an Expert Data Scientist and C# Architect. I am building a 'Property Graph-based Social Network Simulation' for a university Data Structures project. I need highly realistic, sophisticated, and diverse synthetic seed data. Because of potential output token limits, we will generate the data in 3 separate parts. Strictly follow the formatting rules: 1. Users (50 total): Realistic Turkish and International full names, creative usernames, professions. 2. Photos (30 total): Sophisticated titles, descriptive captions, tags. 3. Events (20 total): Professional event names (AI Summits, Hackathons), locations, and dates. Generate the data strictly as C# static string arrays so I can directly copy-paste it into my DataGenerator.cs class without any external dependencies.*
 
 ---
 
