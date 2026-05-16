@@ -1,6 +1,6 @@
 # SocialGraph Project - Final Teslim Raporu (Final Submission)
 
-**Teslim Tarihi:** 06.05.2026  
+**Teslim Tarihi:** 16.05.2026  
 **Proje Konusu:** Property Graph Tabanlı Sosyal Ağ Modelleme  
 **Ekip:** Batuhan, Özcan, Fatma Sude, Muhammed Furkan, Isra
 
@@ -133,14 +133,7 @@ docker-compose up --build
 
 ---
 
-## 7. Gelecek Adımlar ve Final Hazırlığı (Sprint 4)
-
-Projenin final teslimatına (12-13. Hafta) kadar geçecek sürede aşağıdaki adımlar izlenecektir:
-- **Sprint 4:** Sistem genelinde dökümantasyonun nihai hale getirilmesi, tüm modüllerin uctan uca test edilerek çalışılırlığının %100 onaylanması ve sistemin polish (iyileştirme) süreçlerinin tamamlanması sağlanacaktır.
-- **Teknik Rapor:** UML diyagramları ve Big-O analiz tablosu final verileriyle güncellenecektir.
-- **Demo:** Tüm sistemin çalıştığını gösteren final sunum videosu hazırlanacaktır.
-
 **Daha detaylı dökümantasyon için:**
 - [Nihai Teknik Rapor (Tüm Detaylar)](./Markdowns/Project/Final_Report.md)
 - [Kişisel Raporlar ve Görev Dağılımı](./Markdowns/Personal_Reports/)
-- [Sprint Detayları](./Markdowns/Sprints/Sprint_3_detailed.md)
+- [Sprint Detayları](./Markdowns/Sprints/)
