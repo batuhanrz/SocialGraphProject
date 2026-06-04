@@ -111,4 +111,3 @@ Bu proje, sosyal ağ sistemlerinde kullanılan property graph veri modelinin sad
 * GitHub üzerinde branch yönetimi ve PR mekanizması aktif olarak kullanılmıştır.
 * Tüm ekip üyeleri, herhangi bir modülün çalışma mantığını ve karmaşıklığını açıklayabilir durumdadır (Code Defense).
 * Big-O analiz raporu, UML diyagramları ve AI prompt dökümü teslim edilmiştir.
-* Demo videosu (max. 10 dk) çekilmiş ve teslim edilmiştir.
