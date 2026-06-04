@@ -355,3 +355,6 @@ Deneysel veriler, teorik Big-O analizleri ile %100 ortusmektedir. 5000 dugum ici
 
 ## 6. Sonuc ve Degerlendirme
 Proje, belirtilen tum Faz 1-3 gereksinimlerini eksiksiz karsilamaktadir. Sistem, akademik savunmaya (Code Defense) tam uyumlu bir muhendislik dokumantasyonuna sahiptir.
+
+## 7. Video Link 
+https://youtu.be/y1dRvauxgOs
